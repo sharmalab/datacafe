@@ -8,10 +8,7 @@
  */
 package edu.emory.bmi.datacafe;
 
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.MongoClient;
-import com.mongodb.ServerAddress;
+import com.mongodb.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,9 +21,10 @@ public class DatacafeEngine {
         DB db = mongoClient.getDB("pathology");
         DBCollection pathologyDataCollection = db.getCollection("pathologyData");
 
-        int data = pathologyDataCollection.find().size();
+        DBCursor cursor = pathologyDataCollection.find();
 
-        logger.info(data);
-
+        while(cursor.hasNext()) {
+            logger.info(cursor.next());
+        }
     }
 }
