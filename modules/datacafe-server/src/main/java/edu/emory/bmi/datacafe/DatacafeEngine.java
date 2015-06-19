@@ -12,6 +12,9 @@ import com.mongodb.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Core class of Datacafe
+ */
 public class DatacafeEngine {
     private static Logger logger = LogManager.getLogger(DatacafeEngine.class.getName());
 
