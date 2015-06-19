@@ -21,13 +21,24 @@ public class DatacafeEngine {
     public static void main(String[] args) {
 
         MongoClient mongoClient = new MongoClient(new ServerAddress("localhost", 27017));
+
         DB db = mongoClient.getDB("pathology");
         DBCollection pathologyDataCollection = db.getCollection("pathologyData");
 
-        DBCursor cursor = pathologyDataCollection.find();
+        DBCursor pathologyCursor = pathologyDataCollection.find();
 
-        while(cursor.hasNext()) {
-            logger.info(cursor.next());
+        while(pathologyCursor.hasNext()) {
+            logger.info(pathologyCursor.next());
         }
+
+        DB db2 = mongoClient.getDB("clinical");
+        DBCollection clinicalDataCollection = db2.getCollection("clinicalData");
+
+        DBCursor clinicalCursor = clinicalDataCollection.find();
+
+        while(clinicalCursor.hasNext()) {
+            logger.info(clinicalCursor.next());
+        }
+
     }
 }
