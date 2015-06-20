@@ -17,26 +17,19 @@ import org.apache.logging.log4j.Logger;
  */
 public class DatacafeEngine {
     private static Logger logger = LogManager.getLogger(DatacafeEngine.class.getName());
+    private static MongoConnector mongoConnector = new MongoConnector();
 
     public static void main(String[] args) {
 
-        MongoClient mongoClient = new MongoClient(new ServerAddress("localhost", 27017));
+        DBCursor pathologyCursor = mongoConnector.getCursor("pathology", "pathologyData");
 
-        DB db = mongoClient.getDB("pathology");
-        DBCollection pathologyDataCollection = db.getCollection("pathologyData");
-
-        DBCursor pathologyCursor = pathologyDataCollection.find();
-
-        while(pathologyCursor.hasNext()) {
+        while (pathologyCursor.hasNext()) {
             logger.info(pathologyCursor.next());
         }
 
-        DB db2 = mongoClient.getDB("clinical");
-        DBCollection clinicalDataCollection = db2.getCollection("clinicalData");
+        DBCursor clinicalCursor = mongoConnector.getCursor("clinical", "clinicalData");
 
-        DBCursor clinicalCursor = clinicalDataCollection.find();
-
-        while(clinicalCursor.hasNext()) {
+        while (clinicalCursor.hasNext()) {
             logger.info(clinicalCursor.next());
         }
 
