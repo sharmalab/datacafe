@@ -29,4 +29,23 @@ public class MongoConnector {
         DBCollection dbCollection = db.getCollection(collection);
         return dbCollection.find();
     }
+
+    /**
+     * Return a long query by combining parts of the query through a string concatenation.
+     * @param queryEntries parts of the query
+     * @return the query
+     */
+    public String constructQuery(String... queryEntries) {
+        String query = "";
+        for (String queryEntry : queryEntries) {
+            query += queryEntry;
+        }
+        return query;
+    }
+
+    public String getJoinedResult(DB db1, DBCollection dbCollection1, DB db2, DBCollection dbCollection2, String
+            joinQuery) {
+        String joinedResult = "";
+        return joinedResult;
+    }
 }
