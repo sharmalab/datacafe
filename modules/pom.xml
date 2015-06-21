@@ -136,5 +136,9 @@
           <groupId>org.mongodb</groupId>
           <artifactId>mongo-java-driver</artifactId>
       </dependency>
-</dependencies>
+      <dependency>
+          <groupId>org.jongo</groupId>
+          <artifactId>jongo</artifactId>
+      </dependency>
+  </dependencies>
 </project>

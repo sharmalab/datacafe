@@ -6,17 +6,17 @@
  *
  * Copyright (c) 2015, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
-package edu.emory.bmi.datacafe;
+package edu.emory.bmi.datacafe.core;
 
 import com.mongodb.*;
 
 /**
  * Connects to the Mongo database
  */
-public class MongoConnector {
+public class MongoConnector implements Connector {
 
-    private static final MongoClient mongoClient = new MongoClient(new ServerAddress(DatacafeConstants.MONGO_CLIENT_HOST,
-            DatacafeConstants.MONGO_CLIENT_PORT));
+    private static final MongoClient mongoClient = new MongoClient(new ServerAddress(
+            DatacafeConstants.MONGO_CLIENT_HOST, DatacafeConstants.MONGO_CLIENT_PORT));
 
     /**
      * Gets cursor for a collection in a given database.
@@ -43,9 +43,9 @@ public class MongoConnector {
         return query;
     }
 
-    public String getJoinedResult(DB db1, DBCollection dbCollection1, DB db2, DBCollection dbCollection2, String
-            joinQuery) {
-        String joinedResult = "";
-        return joinedResult;
+    @Override
+    public String getJoinedResult(DB db1, DBCollection dbCollection1, DB db2, DBCollection dbCollection2,
+                                  String joinQuery) {
+        return null;
     }
 }

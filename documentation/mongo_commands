@@ -1,6 +1,0 @@
-mongoimport --db pathology --collection pathologyData --type csv --headerline --file /home/pradeeban/Dropbox/Pradeeban/datasets/pathology.csv
-mongoimport --db clinical --collection clinicalData --type csv --headerline --file /home/pradeeban/Dropbox/Pradeeban/datasets/clinical.csv
-
-
-use pathology
-db.pathologyData.find()

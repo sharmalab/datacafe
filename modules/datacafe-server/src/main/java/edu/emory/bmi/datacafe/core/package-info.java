@@ -3,4 +3,4 @@
  * Core of the Datacafe Engine..
  */
 
-package edu.emory.bmi.datacafe;
+package edu.emory.bmi.datacafe.core;

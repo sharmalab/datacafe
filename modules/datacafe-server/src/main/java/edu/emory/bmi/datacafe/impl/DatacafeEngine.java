@@ -6,9 +6,10 @@
  *
  * Copyright (c) 2015, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
-package edu.emory.bmi.datacafe;
+package edu.emory.bmi.datacafe.impl;
 
 import com.mongodb.*;
+import edu.emory.bmi.datacafe.core.MongoConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
