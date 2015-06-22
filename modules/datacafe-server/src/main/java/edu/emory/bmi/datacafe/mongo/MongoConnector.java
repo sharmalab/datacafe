@@ -6,9 +6,11 @@
  *
  * Copyright (c) 2015, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
-package edu.emory.bmi.datacafe.core;
+package edu.emory.bmi.datacafe.mongo;
 
 import com.mongodb.*;
+import edu.emory.bmi.datacafe.core.Connector;
+import edu.emory.bmi.datacafe.constants.DatacafeConstants;
 
 /**
  * Connects to the Mongo database

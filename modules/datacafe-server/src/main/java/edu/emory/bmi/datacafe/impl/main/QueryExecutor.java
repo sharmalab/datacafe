@@ -9,7 +9,7 @@
 package edu.emory.bmi.datacafe.impl.main;
 
 import edu.emory.bmi.datacafe.core.Composer;
-import edu.emory.bmi.datacafe.core.JongoConnector;
+import edu.emory.bmi.datacafe.mongo.JongoConnector;
 import edu.emory.bmi.datacafe.core.Merger;
 import edu.emory.bmi.datacafe.impl.data.Patient;
 import edu.emory.bmi.datacafe.impl.data.Slice;
@@ -17,8 +17,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
-
-import java.util.ArrayList;
 
 /**
  * Testing the Mongo data integration
@@ -75,7 +73,6 @@ public class QueryExecutor {
         for (Merger merg : composer.getMergerList()) {
             merg.print();
         }
-
     }
 
     public static void main(String[] args) {

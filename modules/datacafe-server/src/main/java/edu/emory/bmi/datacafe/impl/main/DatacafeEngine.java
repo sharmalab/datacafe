@@ -9,7 +9,7 @@
 package edu.emory.bmi.datacafe.impl.main;
 
 import com.mongodb.*;
-import edu.emory.bmi.datacafe.core.MongoConnector;
+import edu.emory.bmi.datacafe.mongo.MongoConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
