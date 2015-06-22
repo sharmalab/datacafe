@@ -6,8 +6,9 @@
  *
  * Copyright (c) 2015, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
-package edu.emory.bmi.datacafe.impl;
+package edu.emory.bmi.datacafe.impl.main;
 
+import edu.emory.bmi.datacafe.core.Composer;
 import edu.emory.bmi.datacafe.core.JongoConnector;
 import edu.emory.bmi.datacafe.core.Merger;
 import edu.emory.bmi.datacafe.impl.data.Patient;
@@ -18,7 +19,6 @@ import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Testing the Mongo data integration
@@ -27,7 +27,6 @@ public class QueryExecutor {
     private static Logger logger = LogManager.getLogger(QueryExecutor.class.getName());
     private static MongoCursor<Patient> patientCursors;
     private static MongoCursor<Slice> sliceCursors;
-    private static List<Merger> mergerList;
 
 
     /**
@@ -53,8 +52,8 @@ public class QueryExecutor {
     }
 
     public static void join() {
+        Composer composer = Composer.getComposer();
         Merger merger;
-        mergerList = new ArrayList<>();
 
         for (Patient patient: patientCursors) {
             if (patient.getAge_at_Initial_Diagnosis() > 70) {
@@ -68,12 +67,12 @@ public class QueryExecutor {
                         String sliceID = slice.getKey();
                         merger.addEntry("SlideBarCodeID", sliceID);
                         merger.addEntry("SlideBarCode", slideBarCode);
-                        mergerList.add(merger);
+                        composer.addEntry(merger);
                     }
                 }
             }
         }
-        for (Merger merg : mergerList) {
+        for (Merger merg : composer.getMergerList()) {
             merg.print();
         }
 

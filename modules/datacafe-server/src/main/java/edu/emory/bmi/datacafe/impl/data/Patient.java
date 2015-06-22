@@ -17,7 +17,7 @@ import org.jongo.marshall.jackson.oid.MongoObjectId;
  * Class to represent a Patient from the clinical data.
  * BCR Patient UID (From Clinical) in clinical.csv is the _id.
  * <p/>
- * 19:13:04.177 [main] INFO  edu.emory.bmi.datacafe.impl.DatacafeEngine - { "Race" : "WHITE" , "Gender" : "FEMALE" ,
+ * 19:13:04.177 [main] INFO  edu.emory.bmi.datacafe.impl.main.DatacafeEngine - { "Race" : "WHITE" , "Gender" : "FEMALE" ,
  * "Supratentorial_Localization" : "[Not Available]" , "Tumor_Site" : "Supratentorial, Frontal Lobe" ,
  * "Laterality" : "Left" , "Histologic_Diagnosis" : "Oligoastrocytoma" , "Age_at_Initial_Diagnosis" : 48 ,
  * "Karnofsky_Score" : "[Not Available]" , "Patient_Barcode" : "TCGA-WY-A85E" , "Cancer_Type" : "LGG" ,

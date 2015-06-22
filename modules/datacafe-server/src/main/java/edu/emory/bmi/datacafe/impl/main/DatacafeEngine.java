@@ -6,7 +6,7 @@
  *
  * Copyright (c) 2015, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
-package edu.emory.bmi.datacafe.impl;
+package edu.emory.bmi.datacafe.impl.main;
 
 import com.mongodb.*;
 import edu.emory.bmi.datacafe.core.MongoConnector;
