@@ -9,6 +9,7 @@
 package edu.emory.bmi.datacafe.impl.main;
 
 import edu.emory.bmi.datacafe.core.Composer;
+import edu.emory.bmi.datacafe.core.WarehouseComposer;
 import edu.emory.bmi.datacafe.mongo.JongoConnector;
 import edu.emory.bmi.datacafe.core.Merger;
 import edu.emory.bmi.datacafe.impl.data.Patient;
@@ -70,9 +71,7 @@ public class QueryExecutor {
                 }
             }
         }
-        for (Merger merg : composer.getMergerList()) {
-            merg.print();
-        }
+        WarehouseComposer.writeToFile();
     }
 
     public static void main(String[] args) {

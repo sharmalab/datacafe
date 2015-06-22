@@ -8,7 +8,6 @@
  */
 package edu.emory.bmi.datacafe.core;
 
-import edu.emory.bmi.datacafe.impl.data.Patient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,7 +19,7 @@ import java.util.Map;
  */
 public class Merger {
     private Map<String, String> joinedMap;
-    private static Logger logger = LogManager.getLogger(Patient.class.getName());
+    private static Logger logger = LogManager.getLogger(Merger.class.getName());
 
     public Merger() {
         if (joinedMap == null) {

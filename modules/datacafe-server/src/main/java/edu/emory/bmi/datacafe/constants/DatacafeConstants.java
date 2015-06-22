@@ -14,4 +14,8 @@ package edu.emory.bmi.datacafe.constants;
 public class DatacafeConstants {
     public static final String MONGO_CLIENT_HOST = "localhost";
     public static final int MONGO_CLIENT_PORT = 27017;
+
+    public static final String OUTPUT_FILE = "datawarehouse.csv";
+    public static final String CONF_FOLDER = "conf";
+    public static final String DELIMITER = ",";
 }
