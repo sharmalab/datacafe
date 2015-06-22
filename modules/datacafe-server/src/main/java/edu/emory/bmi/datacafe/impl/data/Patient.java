@@ -8,6 +8,8 @@
  */
 package edu.emory.bmi.datacafe.impl.data;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
@@ -23,6 +25,8 @@ import org.jongo.marshall.jackson.oid.MongoObjectId;
 
  */
 public class Patient {
+    private static Logger logger = LogManager.getLogger(Patient.class.getName());
+
 
     @MongoId // auto
     @MongoObjectId
@@ -86,8 +90,16 @@ public class Patient {
         return Histologic_Diagnosis;
     }
 
-    public String getAge_at_Initial_Diagnosis() {
-        return Age_at_Initial_Diagnosis;
+    public int getAge_at_Initial_Diagnosis() {
+        int age = -1;
+        if (!Age_at_Initial_Diagnosis.trim().equals("")) {
+            try {
+                age = Integer.parseInt(Age_at_Initial_Diagnosis);
+            } catch (NumberFormatException e) {
+                logger.error("Error in parsing the age", e);
+            }
+        }
+        return age;
     }
 
     public String getKarnofsky_Score() {

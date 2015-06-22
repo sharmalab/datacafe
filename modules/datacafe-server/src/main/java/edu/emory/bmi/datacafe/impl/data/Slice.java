@@ -14,6 +14,7 @@ import org.jongo.marshall.jackson.oid.MongoObjectId;
 /**
  * Class to represent a Slice from the pathology data.
  * BCR Slide UID in pathology.csv is the _id.
+ * BCR Patient ID is the foreign key.
  *
  * 19:39:25.619 [main] INFO  edu.emory.bmi.datacafe.impl.DatacafeEngine - {
  * "BCR_Patient_UID_From_Pathology" : "2272DFF7-A509-496F-B500-467C1BCE2F79" ,
