@@ -16,17 +16,15 @@ import org.jongo.marshall.jackson.oid.MongoObjectId;
 /**
  * Class to represent a Patient from the clinical data.
  * BCR Patient UID (From Clinical) in clinical.csv is the _id.
- *
+ * <p/>
  * 19:13:04.177 [main] INFO  edu.emory.bmi.datacafe.impl.DatacafeEngine - { "Race" : "WHITE" , "Gender" : "FEMALE" ,
  * "Supratentorial_Localization" : "[Not Available]" , "Tumor_Site" : "Supratentorial, Frontal Lobe" ,
  * "Laterality" : "Left" , "Histologic_Diagnosis" : "Oligoastrocytoma" , "Age_at_Initial_Diagnosis" : 48 ,
  * "Karnofsky_Score" : "[Not Available]" , "Patient_Barcode" : "TCGA-WY-A85E" , "Cancer_Type" : "LGG" ,
  * "_id" : "2272DFF7-A509-496F-B500-467C1BCE2F79"}
-
  */
 public class Patient {
     private static Logger logger = LogManager.getLogger(Patient.class.getName());
-
 
     @MongoId // auto
     @MongoObjectId
