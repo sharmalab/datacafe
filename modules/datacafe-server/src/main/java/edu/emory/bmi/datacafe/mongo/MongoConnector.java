@@ -11,11 +11,16 @@ package edu.emory.bmi.datacafe.mongo;
 import com.mongodb.*;
 import edu.emory.bmi.datacafe.core.Connector;
 import edu.emory.bmi.datacafe.constants.DatacafeConstants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Connects to the Mongo database
  */
 public class MongoConnector implements Connector {
+    private static Logger logger = LogManager.getLogger(MongoConnector.class.getName());
+    private static MongoConnector mongoConnector = new MongoConnector();
+
 
     private static final MongoClient mongoClient = new MongoClient(new ServerAddress(
             DatacafeConstants.MONGO_CLIENT_HOST, DatacafeConstants.MONGO_CLIENT_PORT));
@@ -49,5 +54,19 @@ public class MongoConnector implements Connector {
     public String getJoinedResult(DB db1, DBCollection dbCollection1, DB db2, DBCollection dbCollection2,
                                   String joinQuery) {
         return null;
+    }
+
+    /**
+     * Prints the collection to console
+     * @param database the data base
+     * @param collection the collection in the data base
+     */
+    public static void printMongoCollection(String database, String collection) {
+        DBCursor clinicalCursor = mongoConnector.getCursor(database, collection);
+        if (logger.isDebugEnabled()) {
+            while (clinicalCursor.hasNext()) {
+                logger.debug(clinicalCursor.next());
+            }
+        }
     }
 }

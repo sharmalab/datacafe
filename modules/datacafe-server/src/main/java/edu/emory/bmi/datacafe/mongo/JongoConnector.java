@@ -29,4 +29,15 @@ public class JongoConnector {
         Jongo jongo = new Jongo(db);
         return jongo.getCollection(collection);
     }
+
+    /**
+     * Initializes the given collection in a data base
+     * @param database the data base name
+     * @param collection the collection name
+     * @return the Jongo object.
+     */
+    public static MongoCollection initCollection(String database, String collection) {
+        MongoConnector.printMongoCollection(database, collection);
+        return initialize(database, collection);
+    }
 }

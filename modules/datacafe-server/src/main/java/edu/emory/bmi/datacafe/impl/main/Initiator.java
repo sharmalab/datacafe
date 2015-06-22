@@ -20,10 +20,10 @@ import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
 
 /**
- * Testing the Mongo data integration
+ * An Initiator implementation for testing the Mongo data integration
  */
-public class QueryExecutor {
-    private static Logger logger = LogManager.getLogger(QueryExecutor.class.getName());
+public class Initiator {
+    private static Logger logger = LogManager.getLogger(Initiator.class.getName());
     private static MongoCursor<Patient> patientCursors;
     private static MongoCursor<Slice> sliceCursors;
 
@@ -34,8 +34,7 @@ public class QueryExecutor {
      * @param collection collection name
      */
     public static void initializePatient(String database, String collection) {
-        MongoCollection patients = JongoConnector.initialize(database, collection);
-
+        MongoCollection patients = JongoConnector.initCollection(database, collection);
         patientCursors = patients.find().as(Patient.class);
     }
 
@@ -45,7 +44,7 @@ public class QueryExecutor {
      * @param collection collection name
      */
     public static void initializeSlice(String database, String collection) {
-        MongoCollection slices = JongoConnector.initialize(database, collection);
+        MongoCollection slices = JongoConnector.initCollection(database, collection);
 
         sliceCursors = slices.find().as(Slice.class);
     }
