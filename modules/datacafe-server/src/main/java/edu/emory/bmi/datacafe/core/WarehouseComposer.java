@@ -43,7 +43,7 @@ public class WarehouseComposer {
             }
             writeBody(merger.getJoinedMap());
         }
-        createFile(false);
+        createFile();
     }
 
     /**
@@ -103,14 +103,13 @@ public class WarehouseComposer {
 
     /**
      * Makes a file from the results.
-     * @param isAppend should the content be appended.
      */
-    public static void createFile(boolean isAppend) {
+    public static void createFile() {
 
         Charset utf8 = StandardCharsets.UTF_8;
 
         try {
-            if (isAppend) {
+            if (DatacafeConstants.IS_APPEND) {
                 Files.write(Paths.get(DatacafeConstants.CONF_FOLDER + File.separator +
                                 DatacafeConstants.DATAWAREHOUSE_CSV), lines, utf8, StandardOpenOption.CREATE,
                         StandardOpenOption.APPEND

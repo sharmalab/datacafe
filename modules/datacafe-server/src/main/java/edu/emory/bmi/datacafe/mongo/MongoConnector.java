@@ -9,8 +9,8 @@
 package edu.emory.bmi.datacafe.mongo;
 
 import com.mongodb.*;
+import edu.emory.bmi.datacafe.constants.MongoConstants;
 import edu.emory.bmi.datacafe.core.Connector;
-import edu.emory.bmi.datacafe.constants.DatacafeConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,7 +23,7 @@ public class MongoConnector implements Connector {
 
 
     private static final MongoClient mongoClient = new MongoClient(new ServerAddress(
-            DatacafeConstants.MONGO_CLIENT_HOST, DatacafeConstants.MONGO_CLIENT_PORT));
+            MongoConstants.CLIENT_HOST, MongoConstants.CLIENT_PORT));
 
     /**
      * Gets cursor for a collection in a given database.

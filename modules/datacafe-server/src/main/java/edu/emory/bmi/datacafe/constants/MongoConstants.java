@@ -8,15 +8,10 @@
  */
 package edu.emory.bmi.datacafe.constants;
 
-import java.io.File;
-
 /**
- * The common constants of Datacafe
+ * Constants for Mongo Integration
  */
-public class DatacafeConstants {
-
-    public static final String DATAWAREHOUSE_CSV = "datawarehouse.csv";
-    public static final String CONF_FOLDER = "conf";
-    public static final String DELIMITER = ",";
-    public static final boolean IS_APPEND = false;
+public class MongoConstants {
+    public static final String CLIENT_HOST = "localhost";
+    public static final int CLIENT_PORT = 27017;
 }

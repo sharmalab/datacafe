@@ -11,12 +11,10 @@ package edu.emory.bmi.datacafe.constants;
 import java.io.File;
 
 /**
- * The common constants of Datacafe
+ * Constants for Hadoop/Hive Integration.
  */
-public class DatacafeConstants {
-
-    public static final String DATAWAREHOUSE_CSV = "datawarehouse.csv";
-    public static final String CONF_FOLDER = "conf";
-    public static final String DELIMITER = ",";
-    public static final boolean IS_APPEND = false;
+public class HDFSConstants {
+    public static final String HADOOP_HOME = "/home/pradeeban/programs/hadoop-2.7.0";
+    public static final String HADOOP_CONF = HADOOP_HOME + File.separator + "etc" + File.separator + "hadoop";
+    public static final String HDFS_PATH = "/user/datacafe/";
 }
