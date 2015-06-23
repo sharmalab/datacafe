@@ -29,7 +29,6 @@ public class WarehouseComposer {
     private static Logger logger = LogManager.getLogger(WarehouseComposer.class.getName());
 
 
-
     /**
      * Writes the mergerList into a file
      *
@@ -44,7 +43,7 @@ public class WarehouseComposer {
             }
             writeBody(merger.getJoinedMap());
         }
-        createFile();
+        createFile(false);
     }
 
     /**
@@ -104,15 +103,24 @@ public class WarehouseComposer {
 
     /**
      * Makes a file from the results.
+     * @param isAppend should the content be appended.
      */
-    public static void createFile() {
+    public static void createFile(boolean isAppend) {
 
         Charset utf8 = StandardCharsets.UTF_8;
 
         try {
-            Files.write(Paths.get(DatacafeConstants.CONF_FOLDER + File.separator + DatacafeConstants.OUTPUT_FILE),
-                    lines, utf8, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-            logger.info("Successfully written the output to the file, " + DatacafeConstants.OUTPUT_FILE);
+            if (isAppend) {
+                Files.write(Paths.get(DatacafeConstants.CONF_FOLDER + File.separator +
+                                DatacafeConstants.DATAWAREHOUSE_CSV), lines, utf8, StandardOpenOption.CREATE,
+                        StandardOpenOption.APPEND
+                );
+            } else {
+                Files.write(Paths.get(DatacafeConstants.CONF_FOLDER + File.separator +
+                                DatacafeConstants.DATAWAREHOUSE_CSV), lines, utf8, StandardOpenOption.CREATE,
+                        StandardOpenOption.TRUNCATE_EXISTING);
+            }
+            logger.info("Successfully written the output to the file, " + DatacafeConstants.DATAWAREHOUSE_CSV);
         } catch (IOException e) {
             logger.error("Error in creating the warehouse file", e);
         }

@@ -10,6 +10,7 @@ package edu.emory.bmi.datacafe.impl.main;
 
 import edu.emory.bmi.datacafe.core.Composer;
 import edu.emory.bmi.datacafe.core.WarehouseComposer;
+import edu.emory.bmi.datacafe.hdfs.HadoopConnector;
 import edu.emory.bmi.datacafe.mongo.JongoConnector;
 import edu.emory.bmi.datacafe.core.Merger;
 import edu.emory.bmi.datacafe.impl.data.Patient;
@@ -71,6 +72,7 @@ public class Initiator {
             }
         }
         WarehouseComposer.writeToFile();
+        HadoopConnector.writeToHDFS();
     }
 
     public static void main(String[] args) {
