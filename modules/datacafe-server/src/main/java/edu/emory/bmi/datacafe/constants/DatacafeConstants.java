@@ -19,4 +19,6 @@ public class DatacafeConstants {
     public static final String CONF_FOLDER = "conf";
     public static final String DELIMITER = ",";
     public static final boolean IS_APPEND = false;
+
+    public static final String DATACAFE_PROPERTIES_FILE = "conf/datacafe.properties";
 }
