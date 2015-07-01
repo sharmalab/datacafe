@@ -71,8 +71,7 @@ public class Initiator {
                 }
             }
         }
-        WarehouseComposer.writeToFile();
-        HadoopConnector.writeToHDFS();
+        Merger.join();
     }
 
     public static void main(String[] args) {

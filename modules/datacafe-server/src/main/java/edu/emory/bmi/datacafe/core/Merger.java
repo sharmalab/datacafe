@@ -8,6 +8,7 @@
  */
 package edu.emory.bmi.datacafe.core;
 
+import edu.emory.bmi.datacafe.hdfs.HadoopConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,6 +26,11 @@ public class Merger {
         if (joinedMap == null) {
             joinedMap = new HashMap<>();
         }
+    }
+
+    public static void join() {
+        WarehouseComposer.writeToFile();
+        HadoopConnector.writeToHDFS();
     }
 
     public Map<String, String> getJoinedMap() {
