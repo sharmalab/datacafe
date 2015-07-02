@@ -30,7 +30,10 @@ public class Merger {
 
     public static void join() {
         WarehouseComposer.writeToFile();
+        double startTime = System.nanoTime();
         HadoopConnector.writeToHDFS();
+        double estimatedTime = (System.nanoTime() - startTime) / 1000000.0;
+        logger.info("Time Spent writing to HDFS: " + estimatedTime + " milliseconds");
     }
 
     public Map<String, String> getJoinedMap() {
