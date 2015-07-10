@@ -13,13 +13,13 @@ public class HiveConnector {
     private static Logger logger = LogManager.getLogger(HiveConnector.class.getName());
 
 
-    public static void main(String[] args) throws SQLException {
-        String query = " (SlideBarCodeID string, SlideBarCode string, PatientID string," +
-                "Gender string, Laterality string) row format delimited fields terminated by ',' stored as textfile";
-        writeToHive(HDFSConstants.HIVE_CSV_FILE, HDFSConstants.HIVE_FIRST_TABLE_NAME, query);
-
-    }
-
+    /**
+     * Writes to Hive
+     * @param csvFileName, file to be written to Hive
+     * @param hiveTable, the table name in Hive
+     * @param query, query to execute
+     * @throws SQLException, if execution failed.
+     */
     public static void writeToHive(String csvFileName, String hiveTable, String query)  throws SQLException {
         try {
             Class.forName(HDFSConstants.DRIVER_NAME);
@@ -35,43 +35,9 @@ public class HiveConnector {
 
         stmt.execute("create table " + hiveTable+ query);
 
-        // show tables
-        String sql = "show tables '" + hiveTable + "'";
-        logger.info("Running: " + sql);
-        ResultSet res = stmt.executeQuery(sql);
-        if (res.next()) {
-            logger.info(res.getString(1));
-        }
-        // describe table
-        sql = "describe " + hiveTable;
-        logger.info("Running: " + sql);
-        res = stmt.executeQuery(sql);
-        while (res.next()) {
-            logger.info(res.getString(1) + "\t" + res.getString(2));
-        }
-
         String csvFilePath = HDFSConstants.HIVE_CSV_DIR + csvFileName;
 
-        sql = "load data local inpath '" + csvFilePath + "' into table " + hiveTable;
-        logger.info("Running: " + sql);
+        String sql = "load data local inpath '" + csvFilePath + "' into table " + hiveTable;
         stmt.execute(sql);
-
-//        // select * query
-//        sql = "select * from " + hiveTable;
-//        logger.info("Running: " + sql);
-//        res = stmt.executeQuery(sql);
-//        while (res.next()) {
-//            logger.info(String.valueOf(res.getString(1)) + "\t" + res.getString(2) + "\t" + res.getString(3) + "\t" +
-//                    res.getString(4) + "\t" + res.getString(5));
-//        }
-//
-//        // regular hive query
-//        sql = "select count(1) from " + hiveTable;
-//        logger.info("Running: " + sql);
-//        res = stmt.executeQuery(sql);
-//        while (res.next()) {
-//            logger.info(res.getString(1));
-//        }
-
     }
 }
