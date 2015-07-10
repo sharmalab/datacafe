@@ -28,22 +28,22 @@ public class HiveJdbcClient {
         Connection con = DriverManager.getConnection(HDFSConstants.HIVE_CONNECTION_URI, HDFSConstants.HIVE_USER_NAME,
                 HDFSConstants.HIVE_PASSWORD);
         Statement stmt = con.createStatement();
-        String tableName = "testHiveDriverTable";
-        stmt.execute("drop table if exists " + tableName);
 
-        stmt.execute("create table " + tableName + " (SlideBarCodeID string, SlideBarCode string, PatientID string," +
+        stmt.execute("drop table if exists " + HDFSConstants.HIVE_FIRST_TABLE_NAME);
+
+        stmt.execute("create table " + HDFSConstants.HIVE_FIRST_TABLE_NAME + " (SlideBarCodeID string, SlideBarCode string, PatientID string," +
                 "Gender string, Laterality string) row format delimited fields terminated by ',' stored as textfile");
 
 //        stmt.execute("create table " + tableName + " (key int, value string)");
         // show tables
-        String sql = "show tables '" + tableName + "'";
+        String sql = "show tables '" + HDFSConstants.HIVE_FIRST_TABLE_NAME + "'";
         logger.info("Running: " + sql);
         ResultSet res = stmt.executeQuery(sql);
         if (res.next()) {
             logger.info(res.getString(1));
         }
         // describe table
-        sql = "describe " + tableName;
+        sql = "describe " + HDFSConstants.HIVE_FIRST_TABLE_NAME;
         logger.info("Running: " + sql);
         res = stmt.executeQuery(sql);
         while (res.next()) {
@@ -53,12 +53,12 @@ public class HiveJdbcClient {
         String filepath = HDFSConstants.HIVE_CSV_PATH;
 
 
-        sql = "load data local inpath '" + filepath + "' into table " + tableName;
+        sql = "load data local inpath '" + filepath + "' into table " + HDFSConstants.HIVE_FIRST_TABLE_NAME;
         logger.info("Running: " + sql);
         stmt.execute(sql);
 
         // select * query
-        sql = "select * from " + tableName;
+        sql = "select * from " + HDFSConstants.HIVE_FIRST_TABLE_NAME;
         logger.info("Running: " + sql);
         res = stmt.executeQuery(sql);
         while (res.next()) {
@@ -67,7 +67,7 @@ public class HiveJdbcClient {
         }
 
         // regular hive query
-        sql = "select count(1) from " + tableName;
+        sql = "select count(1) from " + HDFSConstants.HIVE_FIRST_TABLE_NAME;
         logger.info("Running: " + sql);
         res = stmt.executeQuery(sql);
         while (res.next()) {

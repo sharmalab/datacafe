@@ -23,5 +23,7 @@ public class HDFSConstants {
     public static String HIVE_PASSWORD = "";
 
     public static final String HIVE_CSV_PATH = "gsoc2015/conf/datawarehouse.csv";
+    public static final String HIVE_FIRST_TABLE_NAME = "patientsTable";
+
 
 }

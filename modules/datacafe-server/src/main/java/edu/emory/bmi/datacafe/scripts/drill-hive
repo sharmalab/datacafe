@@ -6,3 +6,5 @@
     "hive.metastore.sasl.enabled": "false"
   }
 }
+
+ SELECT * FROM hive.`patientsTable`
