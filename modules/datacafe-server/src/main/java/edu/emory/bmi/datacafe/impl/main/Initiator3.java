@@ -1,15 +1,17 @@
 /*
- * Title:        S²DN 
- * Description:  Orchestration Middleware for Incremental
- *               Development of Software-Defined Cloud Networks.
- * Licence:      Eclipse Public License - v 1.0 - https://www.eclipse.org/legal/epl-v10.html
- *
- * Copyright (c) 2015, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
- */
+* Title:        S²DN
+* Description:  Orchestration Middleware for Incremental
+*               Development of Software-Defined Cloud Networks.
+* Licence:      Eclipse Public License - v 1.0 - https://www.eclipse.org/legal/epl-v10.html
+*
+* Copyright (c) 2015, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
+*/
 package edu.emory.bmi.datacafe.impl.main;
 
-import edu.emory.bmi.datacafe.core.Composer;
-import edu.emory.bmi.datacafe.core.Merger;
+import edu.emory.bmi.datacafe.constants.DatacafeConstants;
+import edu.emory.bmi.datacafe.constants.HDFSConstants;
+import edu.emory.bmi.datacafe.core.WarehouseComposer;
+import edu.emory.bmi.datacafe.hdfs.HiveConnector;
 import edu.emory.bmi.datacafe.impl.data.Patient;
 import edu.emory.bmi.datacafe.impl.data.Slice;
 import edu.emory.bmi.datacafe.mongo.JongoConnector;
@@ -18,17 +20,27 @@ import org.apache.logging.log4j.Logger;
 import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * An Initiator implementation for testing the Mongo data integration
- */
+* An Initiator implementation for testing the Mongo data integration
+*/
 public class Initiator3 {
     private static Logger logger = LogManager.getLogger(Initiator3.class.getName());
     private static MongoCursor<Patient> patientCursors;
 
+    private static List<Slice> initSliceList = new ArrayList<>();
+
+    private static List<Patient> patientList = new ArrayList<>();
+    private static List<Slice> sliceList = new ArrayList<>();
+
 
     /**
      * Initializes the patient cursors
-     * @param database database name
+     *
+     * @param database   database name
      * @param collection collection name
      * @param constraint constraint to be satisfied
      */
@@ -40,7 +52,8 @@ public class Initiator3 {
 
     /**
      * Finds the patient with the given id with more details.
-     * @param database database name
+     *
+     * @param database   database name
      * @param collection collection name
      * @param constraint constraint to be satisfied
      * @return the Patient details
@@ -49,6 +62,12 @@ public class Initiator3 {
         MongoCollection patients = JongoConnector.initCollection(database, collection);
 
         return patients.findOne(constraint).as(Patient.class);
+    }
+
+    public static Slice findSlice(String database, String collection, String constraint) {
+        MongoCollection slices = JongoConnector.initCollection(database, collection);
+
+        return slices.findOne(constraint).as(Slice.class);
     }
 
 
@@ -65,34 +84,87 @@ public class Initiator3 {
     }
 
     public static void main(String[] args) {
-        Composer composer = Composer.getComposer();
-
-        Merger merger;
-
+        // Get the IDs
         initializePatient("clinical", "clinicalData", "{Age_at_Initial_Diagnosis: {$gt: 70}}, {_id:1}");
 
         for (Patient patient : patientCursors) {
-            MongoCursor<Slice> sliceCursors = initializeSlice("pathology", "pathologyData",
-                    "{BCR_Patient_UID_From_Pathology: '" + patient.getKey() + "'}, {Slide_Barcode:1}, {_id:1}");
-            for (Slice slice : sliceCursors) {
-                Patient tempPatient = findPatient("clinical", "clinicalData", "{_id:'" + patient.getKey() + "'}, " +
-                        "{Gender:1}, {Laterality:1}");
-                merger = new Merger();
+            Patient tempPatient = findPatient("clinical", "clinicalData", "{_id:'" + patient.getKey() + "'}, " +
+                    "{Gender:1}, {Laterality:1}");
+            patientList.add(tempPatient);
 
-                // separate into two csv.
-                String currentKey = tempPatient.getKey();
-                String gender = tempPatient.getGender();
-                String laterality = tempPatient.getLaterality();
-                merger.addEntry("PatientID", currentKey);
-                merger.addEntry("Gender", gender);
-                merger.addEntry("Laterality", laterality);
-                String slideBarCode = slice.getSlide_Barcode();
-                String sliceID = slice.getKey();
-                merger.addEntry("SlideBarCodeID", sliceID);
-                merger.addEntry("SlideBarCode", slideBarCode);
-                composer.addEntry(merger);
+        }
+
+        String file1 = "patients";
+        String file2 = "slices";
+
+        for (Patient patient : patientCursors) {
+            MongoCursor<Slice> tempSliceCursors = initializeSlice("pathology", "pathologyData",
+                    "{BCR_Patient_UID_From_Pathology: '" + patient.getKey() + "'}, {Slide_Barcode:1}, {_id:1}");
+            while (tempSliceCursors.hasNext()) {
+                initSliceList.add(tempSliceCursors.next());
             }
         }
-        Merger.join();
+
+        for (Slice slice: initSliceList) {
+            Slice tempSlice = findSlice("pathology", "pathologyData", "{_id:'"  + slice.getKey() + "'}, " +
+                    "{Slide_Barcode:1}, {_id:1}");
+            sliceList.add(tempSlice);
+        }
+
+        // patientID, gender, laterality.
+        List<String> patientsText = new ArrayList<>();
+        List<String> slicesText = new ArrayList<>();
+
+        for (Patient patient: patientList) {
+            String currentKey = patient.getKey();
+            String gender = patient.getGender();
+            String laterality = patient.getLaterality();
+            String line = currentKey + DatacafeConstants.DELIMITER + gender + DatacafeConstants.DELIMITER + laterality;
+            patientsText.add(line);
+        }
+
+        WarehouseComposer.createFile("patients",patientsText);
+
+        String query = " (PatientID string, Gender string, Laterality string) row format delimited fields " +
+                "terminated by ',' stored as textfile";
+        try {
+            HiveConnector.writeToHive("patients.csv", HDFSConstants.HIVE_FIRST_TABLE_NAME, query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+//        for (Patient patient: patientList) {
+//            System.out.println(patient);
+//        }
+//        System.out.println();
+//
+
+//        for (Patient patient : patientCursors) {
+//            // separate into two csv.
+
+//            merger.addEntry("PatientID", currentKey);
+//            merger.addEntry("Gender", gender);
+//            merger.addEntry("Laterality", laterality);
+//        }
+//        composer.addEntry(file1, merger);
+//        merger.write(file1 + ".csv");
+//
+//         = null;
+//
+//
+//
+//        Composer composer1 = new Composer();
+//        Merger merger1 = new Merger();
+//
+//        assert sliceCursors != null;
+//        for (Slice slice : sliceCursors) {
+//
+//            String slideBarCode = slice.getSlide_Barcode();
+//            String sliceID = slice.getKey();
+//            merger1.addEntry("SlideBarCodeID", sliceID);
+//            merger1.addEntry("SlideBarCode", slideBarCode);
+//        }
+//        composer1.addEntry(merger1);
+//        merger1.write("slices.csv");
     }
 }

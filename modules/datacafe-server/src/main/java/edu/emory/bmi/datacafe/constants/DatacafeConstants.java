@@ -21,4 +21,5 @@ public class DatacafeConstants {
     public static final boolean IS_APPEND = false;
 
     public static final String DATACAFE_PROPERTIES_FILE = "conf/datacafe.properties";
+    public static final String FILE_EXTENSION = ".csv";
 }

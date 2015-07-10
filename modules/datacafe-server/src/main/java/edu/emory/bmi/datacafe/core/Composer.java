@@ -9,20 +9,22 @@
 package edu.emory.bmi.datacafe.core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Composes the composite object from the queries. A Singleton.
+ * Composes the composite object from the queries.
  */
 public class Composer {
     private static Composer composer;
-    private static List<Merger> mergerList;
+    private static Map<String, Merger> mergerList;
 
     /**
      * Singleton. Not to invoke from outside. Constructs the mergerList.
      */
     private Composer() {
-        mergerList = new ArrayList<>();
+        mergerList = new HashMap<>();
     }
 
     /**
@@ -40,7 +42,7 @@ public class Composer {
      * Gets the merger list.
      * @return the merger list.
      */
-    public List<Merger> getMergerList() {
+    public Map<String,Merger> getMergerList() {
         return mergerList;
     }
 
@@ -48,8 +50,12 @@ public class Composer {
      * Adds entry to the list.
      * @param merger entry to be added to the list.
      */
-    public void addEntry(Merger merger) {
-        mergerList.add(merger);
+    public void addEntry(String id, Merger merger) {
+        mergerList.put(id, merger);
+    }
+
+    public Merger getMerger(String id) {
+        return mergerList.get(id);
     }
 }
 

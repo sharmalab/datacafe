@@ -4,17 +4,13 @@ import edu.emory.bmi.datacafe.constants.HDFSConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.SQLException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.DriverManager;
+import java.sql.*;
 
 /**
  * Connecting to Hive through Datacafe.
  */
-public class HiveJdbcClient {
-    private static Logger logger = LogManager.getLogger(HiveJdbcClient.class.getName());
+public class HiveConnector {
+    private static Logger logger = LogManager.getLogger(HiveConnector.class.getName());
 
 
     public static void main(String[] args) throws SQLException {
@@ -60,22 +56,22 @@ public class HiveJdbcClient {
         logger.info("Running: " + sql);
         stmt.execute(sql);
 
-        // select * query
-        sql = "select * from " + hiveTable;
-        logger.info("Running: " + sql);
-        res = stmt.executeQuery(sql);
-        while (res.next()) {
-            logger.info(String.valueOf(res.getString(1)) + "\t" + res.getString(2) + "\t" + res.getString(3) + "\t" +
-                    res.getString(4) + "\t" + res.getString(5));
-        }
-
-        // regular hive query
-        sql = "select count(1) from " + hiveTable;
-        logger.info("Running: " + sql);
-        res = stmt.executeQuery(sql);
-        while (res.next()) {
-            logger.info(res.getString(1));
-        }
+//        // select * query
+//        sql = "select * from " + hiveTable;
+//        logger.info("Running: " + sql);
+//        res = stmt.executeQuery(sql);
+//        while (res.next()) {
+//            logger.info(String.valueOf(res.getString(1)) + "\t" + res.getString(2) + "\t" + res.getString(3) + "\t" +
+//                    res.getString(4) + "\t" + res.getString(5));
+//        }
+//
+//        // regular hive query
+//        sql = "select count(1) from " + hiveTable;
+//        logger.info("Running: " + sql);
+//        res = stmt.executeQuery(sql);
+//        while (res.next()) {
+//            logger.info(res.getString(1));
+//        }
 
     }
 }
