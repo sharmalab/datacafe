@@ -30,7 +30,11 @@ public class HiveJdbcClient {
         Statement stmt = con.createStatement();
         String tableName = "testHiveDriverTable";
         stmt.execute("drop table if exists " + tableName);
-        stmt.execute("create table " + tableName + " (key int, value string)");
+
+        stmt.execute("create table " + tableName + " (SlideBarCodeID string, SlideBarCode string, PatientID string," +
+                "Gender string, Laterality string) row format delimited fields terminated by ',' stored as textfile");
+
+//        stmt.execute("create table " + tableName + " (key int, value string)");
         // show tables
         String sql = "show tables '" + tableName + "'";
         logger.info("Running: " + sql);
@@ -58,7 +62,8 @@ public class HiveJdbcClient {
         logger.info("Running: " + sql);
         res = stmt.executeQuery(sql);
         while (res.next()) {
-            logger.info(String.valueOf(res.getInt(1)) + "\t" + res.getString(2));
+            logger.info(String.valueOf(res.getString(1)) + "\t" + res.getString(2) + "\t" + res.getString(3) + "\t" +
+                    res.getString(4) + "\t" + res.getString(5));
         }
 
         // regular hive query
