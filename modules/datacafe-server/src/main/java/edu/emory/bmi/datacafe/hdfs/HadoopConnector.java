@@ -38,6 +38,8 @@ public class HadoopConnector {
 
         FileSystem fs = FileSystem.get(config);
 
+//        LOAD DATA LOCAL INPATH '/your/local/filesystem/file.csv' INTO TABLE `sandbox.test` PARTITION (day='20130221')
+
         fs.copyFromLocalFile(new Path(DatacafeConstants.CONF_FOLDER + File.separator +
                         DatacafeConstants.DATAWAREHOUSE_CSV), new Path(HDFSConstants.HDFS_PATH));
     }

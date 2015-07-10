@@ -1,0 +1,8 @@
+{
+  "type": "hive",
+  "enabled": true,
+  "configProps": {
+    "hive.metastore.uris": "thrift://localhost:9083",
+    "hive.metastore.sasl.enabled": "false"
+  }
+}
