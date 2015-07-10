@@ -27,6 +27,5 @@ public class HDFSConstants {
     public static final String HIVE_CSV_PATH = HIVE_CSV_DIR + HIVE_CSV_FILE;
 
     public static final String HIVE_FIRST_TABLE_NAME = "patientsTable";
-
-
+    public static final String HIVE_SECOND_TABLE_NAME = "slicesTable";
 }

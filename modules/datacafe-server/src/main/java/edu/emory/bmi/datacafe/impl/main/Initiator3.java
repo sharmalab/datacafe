@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
-* An Initiator implementation for testing the Mongo data integration
-*/
+ * An Initiator implementation for testing the Mongo data integration
+ */
 public class Initiator3 {
     private static Logger logger = LogManager.getLogger(Initiator3.class.getName());
     private static MongoCursor<Patient> patientCursors;
@@ -105,8 +105,8 @@ public class Initiator3 {
             }
         }
 
-        for (Slice slice: initSliceList) {
-            Slice tempSlice = findSlice("pathology", "pathologyData", "{_id:'"  + slice.getKey() + "'}, " +
+        for (Slice slice : initSliceList) {
+            Slice tempSlice = findSlice("pathology", "pathologyData", "{_id:'" + slice.getKey() + "'}, " +
                     "{Slide_Barcode:1}, {_id:1}");
             sliceList.add(tempSlice);
         }
@@ -115,7 +115,7 @@ public class Initiator3 {
         List<String> patientsText = new ArrayList<>();
         List<String> slicesText = new ArrayList<>();
 
-        for (Patient patient: patientList) {
+        for (Patient patient : patientList) {
             String currentKey = patient.getKey();
             String gender = patient.getGender();
             String laterality = patient.getLaterality();
@@ -123,48 +123,30 @@ public class Initiator3 {
             patientsText.add(line);
         }
 
-        WarehouseComposer.createFile("patients",patientsText);
+        WarehouseComposer.createFile("patients", patientsText);
 
         String query = " (PatientID string, Gender string, Laterality string) row format delimited fields " +
                 "terminated by ',' stored as textfile";
-        try {
-            HiveConnector.writeToHive("patients.csv", HDFSConstants.HIVE_FIRST_TABLE_NAME, query);
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+        for (Slice slice : sliceList) {
+            String sliceID = slice.getKey();
+            String patientID = slice.getBCR_Patient_UID_From_Pathology();
+            String slideBarCode = slice.getSlide_Barcode();
+
+            String line = sliceID + DatacafeConstants.DELIMITER + patientID + DatacafeConstants.DELIMITER + slideBarCode;
+            slicesText.add(line);
         }
 
-//        for (Patient patient: patientList) {
-//            System.out.println(patient);
-//        }
-//        System.out.println();
-//
+        WarehouseComposer.createFile("slices", slicesText);
 
-//        for (Patient patient : patientCursors) {
-//            // separate into two csv.
+        String query1 = " (sliceID string, patientID string, slideBarCode string) row format delimited fields " +
+                "terminated by ',' stored as textfile";
 
-//            merger.addEntry("PatientID", currentKey);
-//            merger.addEntry("Gender", gender);
-//            merger.addEntry("Laterality", laterality);
-//        }
-//        composer.addEntry(file1, merger);
-//        merger.write(file1 + ".csv");
-//
-//         = null;
-//
-//
-//
-//        Composer composer1 = new Composer();
-//        Merger merger1 = new Merger();
-//
-//        assert sliceCursors != null;
-//        for (Slice slice : sliceCursors) {
-//
-//            String slideBarCode = slice.getSlide_Barcode();
-//            String sliceID = slice.getKey();
-//            merger1.addEntry("SlideBarCodeID", sliceID);
-//            merger1.addEntry("SlideBarCode", slideBarCode);
-//        }
-//        composer1.addEntry(merger1);
-//        merger1.write("slices.csv");
+        try {
+            HiveConnector.writeToHive("patients.csv", HDFSConstants.HIVE_FIRST_TABLE_NAME, query);
+            HiveConnector.writeToHive("slices.csv", HDFSConstants.HIVE_SECOND_TABLE_NAME, query1);
+        } catch (SQLException e) {
+            logger.error("SQL Exception in writing to Hive", e);
+        }
     }
 }

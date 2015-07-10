@@ -8,3 +8,8 @@
 }
 
  SELECT * FROM hive.`patientsTable`
+ SELECT * FROM hive.`slicesTable`
+
+ SELECT slicesTable.sliceID, slicesTable.slideBarCode, patientsTable.patientID, patientsTable.gender, patientsTable.laterality
+ FROM hive.`patientsTable`, hive.`slicesTable`
+ WHERE patientsTable.patientID = slicesTable.patientID
