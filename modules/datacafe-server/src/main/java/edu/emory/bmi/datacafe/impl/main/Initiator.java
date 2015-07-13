@@ -10,14 +10,13 @@ package edu.emory.bmi.datacafe.impl.main;
 
 import edu.emory.bmi.datacafe.constants.DatacafeConstants;
 import edu.emory.bmi.datacafe.constants.HDFSConstants;
+import edu.emory.bmi.datacafe.core.DatacafeEngine;
 import edu.emory.bmi.datacafe.core.WarehouseComposer;
 import edu.emory.bmi.datacafe.hdfs.HiveConnector;
 import edu.emory.bmi.datacafe.impl.data.Patient;
 import edu.emory.bmi.datacafe.impl.data.Slice;
-import edu.emory.bmi.datacafe.mongo.JongoConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
 
 import java.sql.SQLException;
@@ -37,95 +36,34 @@ public class Initiator {
     private static List<Slice> sliceList = new ArrayList<>();
 
 
-    /**
-     * Initializes the patient cursors
-     *
-     * @param database   database name
-     * @param collection collection name
-     * @param constraint constraint to be satisfied
-     */
-    public static void initializePatient(String database, String collection, String constraint) {
-        MongoCollection patients = JongoConnector.initCollection(database, collection);
-
-        patientCursors = patients.find(constraint).as(Patient.class);
-    }
-
-    /**
-     * Finds the patient with the given id with more details.
-     *
-     * @param database   database name
-     * @param collection collection name
-     * @param constraint constraint to be satisfied
-     * @return the Patient details
-     */
-    public static Patient findPatient(String database, String collection, String constraint) {
-        MongoCollection patients = JongoConnector.initCollection(database, collection);
-
-        return patients.findOne(constraint).as(Patient.class);
-    }
-
-    public static Slice findSlice(String database, String collection, String constraint) {
-        MongoCollection slices = JongoConnector.initCollection(database, collection);
-
-        return slices.findOne(constraint).as(Slice.class);
-    }
-
-
-    /**
-     * Initializes Jongo for Slices information
-     *
-     * @param database   database name
-     * @param collection collection name
-     */
-    public static MongoCursor<Slice> initializeSlice(String database, String collection, String constraint) {
-        MongoCollection slices = JongoConnector.initCollection(database, collection);
-
-        return slices.find(constraint).as(Slice.class);
-    }
-
     public static void main(String[] args) {
+        Class<Patient> clazz = Patient.class;
+
         // Get the IDs
-        initializePatient("clinical", "clinicalData", "{Age_at_Initial_Diagnosis: {$gt: 70}}, {_id:1}");
+        patientCursors = (MongoCursor<Patient>) DatacafeEngine.initializeEntry("clinical", "clinicalData",
+                "{Age_at_Initial_Diagnosis: {$gt: 70}}, {_id:1}", clazz);
 
         for (Patient patient : patientCursors) {
-            Patient tempPatient = findPatient("clinical", "clinicalData", "{_id:'" + patient.getKey() + "'}, " +
-                    "{Gender:1}, {Laterality:1}");
+            Patient tempPatient = (Patient) DatacafeEngine.findEntry("clinical", "clinicalData",
+                    "{_id:'" + patient.getKey() + "'}, {Gender:1}, {Laterality:1}", clazz);
             patientList.add(tempPatient);
 
         }
 
-//        1. Gets IDs
-//        2. Intersect IDs
-//        3. Get results from DS1
-//        4. Gets results from DS2
+        Class<Slice> clazz1 = Slice.class;
 
-//        String file1 = "patients";
-//        String file2 = "slices";
-
-//        {input:
-//        idMap,
-//                clinical.find({...},{id:1})
-//
-//        pathology.find({...},{id:1})
-//        clinical.find({...})
-//        pathology.find({...})
-//        Run Clinical Query || Run Pathology Query
-//        reconcileIDs(idMap, ID.query.clinical, ID.query,pathology)
-//        RunClinicalQuery(ReconcileIDs) --> Push to HIVE
-//        RunPathologyQuery(ReconcileIDs) --> Push to HIVE
-
-
-//
         for (Patient patient : patientCursors) {
-            MongoCursor<Slice> tempSliceCursors = initializeSlice("pathology", "pathologyData",
-                    "{BCR_Patient_UID_From_Pathology: '" + patient.getKey() + "'}, {Slide_Barcode:1}, {_id:1}");
+            MongoCursor<Slice> tempSliceCursors = (MongoCursor<Slice>) DatacafeEngine.initializeEntry("pathology",
+                    "pathologyData",
+                    "{BCR_Patient_UID_From_Pathology: '" + patient.getKey() + "'}, {Slide_Barcode:1}, {_id:1}", clazz1);
             while (tempSliceCursors.hasNext()) {
                 initSliceList.add(tempSliceCursors.next());
             }
         }
 
         for (Slice slice : initSliceList) {
-            Slice tempSlice = findSlice("pathology", "pathologyData", "{_id:'" + slice.getKey() + "'}, ");
+            Slice tempSlice = (Slice) DatacafeEngine.findEntry(
+                    "pathology", "pathologyData", "{_id:'" + slice.getKey() + "'}, ", clazz1);
             sliceList.add(tempSlice);
         }
 
