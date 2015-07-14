@@ -7,9 +7,9 @@
   }
 }
 
- SELECT * FROM hive.`patientsTable`
- SELECT * FROM hive.`slicesTable`
+ SELECT * FROM hive.`patients`
+ SELECT * FROM hive.`slices`
 
- SELECT slicesTable.sliceID, slicesTable.slideBarCode, patientsTable.patientID, patientsTable.gender, patientsTable.laterality
- FROM hive.`patientsTable`, hive.`slicesTable`
- WHERE patientsTable.patientID = slicesTable.patientID
+ SELECT slices.sliceID, slices.slideBarCode, patients.patientID, patients.gender, patients.laterality
+ FROM hive.`patients`, hive.`slices`
+ WHERE patients.patientID = slices.patientID

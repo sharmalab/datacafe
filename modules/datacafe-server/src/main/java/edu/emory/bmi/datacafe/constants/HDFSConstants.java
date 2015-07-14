@@ -25,7 +25,4 @@ public class HDFSConstants {
     public static final String HIVE_CSV_DIR = "gsoc2015/conf/";
     public static final String HIVE_CSV_FILE = "datawarehouse.csv";
     public static final String HIVE_CSV_PATH = HIVE_CSV_DIR + HIVE_CSV_FILE;
-
-    public static final String HIVE_FIRST_TABLE_NAME = "patientsTable";
-    public static final String HIVE_SECOND_TABLE_NAME = "slicesTable";
 }

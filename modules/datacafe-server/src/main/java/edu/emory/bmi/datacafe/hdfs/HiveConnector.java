@@ -1,15 +1,25 @@
 package edu.emory.bmi.datacafe.hdfs;
 
+import edu.emory.bmi.datacafe.constants.DatacafeConstants;
 import edu.emory.bmi.datacafe.constants.HDFSConstants;
+import edu.emory.bmi.datacafe.core.WarehouseComposer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.sql.*;
+import java.util.List;
 
 /**
  * Connecting to Hive through Datacafe.
  */
-public class HiveConnector {
+public class HiveConnector extends WarehouseConnector{
     private static Logger logger = LogManager.getLogger(HiveConnector.class.getName());
 
 
@@ -20,7 +30,7 @@ public class HiveConnector {
      * @param query, query to execute
      * @throws SQLException, if execution failed.
      */
-    public static void writeToHive(String csvFileName, String hiveTable, String query)  throws SQLException {
+    public void writeToHive(String csvFileName, String hiveTable, String query)  throws SQLException {
         try {
             Class.forName(HDFSConstants.DRIVER_NAME);
         } catch (ClassNotFoundException e) {
@@ -40,4 +50,41 @@ public class HiveConnector {
         String sql = "load data local inpath '" + csvFilePath + "' into table " + hiveTable;
         stmt.execute(sql);
     }
+
+    @Override
+    public void writeToWarehouse(String[] datasourcesNames, List<String>[] texts, String[] queries) {
+        for (int i = 0; i < DatacafeConstants.NUMBER_OF_COMPOSING_DATA_SOURCES; i++) {
+            createFile(datasourcesNames[i], texts[i]);
+
+            try {
+                writeToHive(datasourcesNames[i] + DatacafeConstants.FILE_EXTENSION,
+                        datasourcesNames[i], queries[i]);
+            } catch (SQLException e) {
+                logger.error("SQL Exception in writing to Hive Table: " + datasourcesNames[i], e);
+            }
+        }
+    }
+
+    @Override
+    public void createFile(String fileName, List<String> lines) {
+
+        Charset utf8 = StandardCharsets.UTF_8;
+
+        try {
+            if (DatacafeConstants.IS_APPEND) {
+                Files.write(Paths.get(DatacafeConstants.CONF_FOLDER + File.separator + fileName +
+                                DatacafeConstants.FILE_EXTENSION), lines, utf8, StandardOpenOption.CREATE,
+                        StandardOpenOption.APPEND
+                );
+            } else {
+                Files.write(Paths.get(DatacafeConstants.CONF_FOLDER + File.separator + fileName +
+                                DatacafeConstants.FILE_EXTENSION), lines, utf8, StandardOpenOption.CREATE,
+                        StandardOpenOption.TRUNCATE_EXISTING);
+            }
+            logger.info("Successfully written the output to the file, " + fileName);
+        } catch (IOException e) {
+            logger.error("Error in creating the warehouse file", e);
+        }
+    }
+
 }

@@ -13,11 +13,12 @@ package edu.emory.bmi.datacafe.constants;
  */
 public class DatacafeConstants {
 
-    public static final String DATAWAREHOUSE_CSV = "datawarehouse.csv";
     public static final String CONF_FOLDER = "conf";
     public static final String DELIMITER = ",";
     public static final boolean IS_APPEND = false;
 
     public static final String DATACAFE_PROPERTIES_FILE = "conf/datacafe.properties";
     public static final String FILE_EXTENSION = ".csv";
+
+    public static final int NUMBER_OF_COMPOSING_DATA_SOURCES = 2;
 }

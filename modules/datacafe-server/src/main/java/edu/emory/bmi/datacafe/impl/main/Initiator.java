@@ -9,17 +9,15 @@
 package edu.emory.bmi.datacafe.impl.main;
 
 import edu.emory.bmi.datacafe.constants.DatacafeConstants;
-import edu.emory.bmi.datacafe.constants.HDFSConstants;
 import edu.emory.bmi.datacafe.core.DatacafeEngine;
-import edu.emory.bmi.datacafe.core.WarehouseComposer;
 import edu.emory.bmi.datacafe.hdfs.HiveConnector;
+import edu.emory.bmi.datacafe.hdfs.WarehouseConnector;
 import edu.emory.bmi.datacafe.impl.data.Patient;
 import edu.emory.bmi.datacafe.impl.data.Slice;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jongo.MongoCursor;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +35,7 @@ public class Initiator {
 
 
     public static void main(String[] args) {
-        String datasourceName1 = "patients";
-        String datasourceName2 = "slices";
+        String[] datasourceNames = {"patients", "slices"};
 
         Class<Patient> clazz = Patient.class;
 
@@ -84,8 +81,9 @@ public class Initiator {
 
 
         /*Remove this*/
-        String query = " (PatientID string, Gender string, Laterality string) row format delimited fields " +
-                "terminated by ',' stored as textfile";
+        String[] queries = {" (PatientID string, Gender string, Laterality string) row format delimited fields " +
+                "terminated by ',' stored as textfile", " (sliceID string, patientID string, slideBarCode string) " +
+                "row format delimited fields terminated by ',' stored as textfile"};
 
         for (Slice slice : sliceList) {
             String sliceID = slice.getKey();
@@ -96,25 +94,12 @@ public class Initiator {
             slicesText.add(line);
         }
 
+        List<String> texts[] = new ArrayList[DatacafeConstants.NUMBER_OF_COMPOSING_DATA_SOURCES];
+        texts[0] = patientsText;
+        texts[1] = slicesText;
 
-        String query1 = " (sliceID string, patientID string, slideBarCode string) row format delimited fields " +
-                "terminated by ',' stored as textfile";
-
-        writeToWarehouse(datasourceName1, datasourceName2, patientsText, slicesText, query, query1);
+        WarehouseConnector warehouseConnector = new HiveConnector();
+        warehouseConnector.writeToWarehouse(datasourceNames, texts, queries);
     }
 
-    private static void writeToWarehouse(String datasourceName1, String datasourceName2,
-                                         List<String> text1, List<String> text2, String query, String query1) {
-        WarehouseComposer.createFile(datasourceName1, text1);
-
-        WarehouseComposer.createFile(datasourceName2, text2);
-
-        try {
-            HiveConnector.writeToHive(datasourceName1 + DatacafeConstants.FILE_EXTENSION,
-                    HDFSConstants.HIVE_FIRST_TABLE_NAME, query);
-            HiveConnector.writeToHive(datasourceName2, HDFSConstants.HIVE_SECOND_TABLE_NAME, query1);
-        } catch (SQLException e) {
-            logger.error("SQL Exception in writing to Hive", e);
-        }
-    }
 }
