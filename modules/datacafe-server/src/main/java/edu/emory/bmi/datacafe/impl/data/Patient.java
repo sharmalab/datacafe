@@ -1,10 +1,9 @@
 /*
- * Title:        S²DN 
- * Description:  Orchestration Middleware for Incremental
- *               Development of Software-Defined Cloud Networks.
- * Licence:      Eclipse Public License - v 1.0 - https://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2015 Pradeeban Kathiravelu and others. All rights reserved.
  *
- * Copyright (c) 2015, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 package edu.emory.bmi.datacafe.impl.data;
 

@@ -1,13 +1,10 @@
 /*
- * Title:        Cloud2Sim
- * Description:  Distributed and Concurrent Cloud Simulation
- *               Toolkit for Modeling and Simulation
- *               of Clouds - Enhanced version of CloudSim.
- * Licence:      GPL - http://www.gnu.org/copyleft/gpl.html
+ * Copyright (c) 2015 Pradeeban Kathiravelu and others. All rights reserved.
  *
- * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
-
 package edu.emory.bmi.datacafe.hazelcast;
 
 

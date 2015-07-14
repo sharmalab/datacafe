@@ -7,16 +7,11 @@
  */
 package edu.emory.bmi.datacafe.core;
 
-import edu.emory.bmi.datacafe.constants.DatacafeConstants;
-import edu.emory.bmi.datacafe.hdfs.HiveConnector;
 import edu.emory.bmi.datacafe.mongo.JongoConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
-
-import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Core initialization engine of DataCafe.
