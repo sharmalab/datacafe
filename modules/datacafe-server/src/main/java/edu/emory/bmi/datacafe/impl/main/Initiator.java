@@ -37,6 +37,9 @@ public class Initiator {
 
 
     public static void main(String[] args) {
+        String datasourceName1 = "patients";
+        String datasourceName2 = "slices";
+
         Class<Patient> clazz = Patient.class;
 
         // Get the IDs
@@ -55,7 +58,7 @@ public class Initiator {
         for (Patient patient : patientCursors) {
             MongoCursor<Slice> tempSliceCursors = (MongoCursor<Slice>) DatacafeEngine.initializeEntry("pathology",
                     "pathologyData",
-                    "{BCR_Patient_UID_From_Pathology: '" + patient.getKey() + "'}, {Slide_Barcode:1}, {_id:1}", clazz1);
+                    "{BCR_Patient_UID_From_Pathology: '" + patient.getKey() + "'}, {_id:1}", clazz1);
             while (tempSliceCursors.hasNext()) {
                 initSliceList.add(tempSliceCursors.next());
             }
@@ -79,7 +82,6 @@ public class Initiator {
             patientsText.add(line);
         }
 
-        WarehouseComposer.createFile("patients", patientsText);
 
         /*Remove this*/
         String query = " (PatientID string, Gender string, Laterality string) row format delimited fields " +
@@ -94,14 +96,23 @@ public class Initiator {
             slicesText.add(line);
         }
 
-        WarehouseComposer.createFile("slices", slicesText);
 
         String query1 = " (sliceID string, patientID string, slideBarCode string) row format delimited fields " +
                 "terminated by ',' stored as textfile";
 
+        writeToWarehouse(datasourceName1, datasourceName2, patientsText, slicesText, query, query1);
+    }
+
+    private static void writeToWarehouse(String datasourceName1, String datasourceName2,
+                                         List<String> text1, List<String> text2, String query, String query1) {
+        WarehouseComposer.createFile(datasourceName1, text1);
+
+        WarehouseComposer.createFile(datasourceName2, text2);
+
         try {
-            HiveConnector.writeToHive("patients.csv", HDFSConstants.HIVE_FIRST_TABLE_NAME, query);
-            HiveConnector.writeToHive("slices.csv", HDFSConstants.HIVE_SECOND_TABLE_NAME, query1);
+            HiveConnector.writeToHive(datasourceName1 + DatacafeConstants.FILE_EXTENSION,
+                    HDFSConstants.HIVE_FIRST_TABLE_NAME, query);
+            HiveConnector.writeToHive(datasourceName2, HDFSConstants.HIVE_SECOND_TABLE_NAME, query1);
         } catch (SQLException e) {
             logger.error("SQL Exception in writing to Hive", e);
         }
