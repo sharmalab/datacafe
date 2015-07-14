@@ -68,3 +68,9 @@ $HIVE_HOME/bin/hiveserver2
 
 SELECT firstname,lastname FROM hive.`customers` 
 
+ SELECT * FROM hive.`patients`
+ SELECT * FROM hive.`slices`
+
+ SELECT slices.sliceID, slices.slideBarCode, patients.patientID, patients.gender, patients.laterality
+ FROM hive.`patients`, hive.`slices`
+ WHERE patients.patientID = slices.patientID
