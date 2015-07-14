@@ -65,6 +65,7 @@ public class HiveConnector extends WarehouseConnector{
             try {
                 writeToHive(datasourcesNames[i] + DatacafeConstants.FILE_EXTENSION,
                         datasourcesNames[i], queries[i]);
+                logger.info("Successfully written the data to the warehouse: " + datasourcesNames[i]);
             } catch (SQLException e) {
                 logger.error("SQL Exception in writing to Hive Table: " + datasourcesNames[i], e);
             }
