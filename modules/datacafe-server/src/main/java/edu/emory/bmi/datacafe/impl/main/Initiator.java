@@ -14,6 +14,7 @@ import edu.emory.bmi.datacafe.hdfs.HiveConnector;
 import edu.emory.bmi.datacafe.hdfs.WarehouseConnector;
 import edu.emory.bmi.datacafe.impl.data.Patient;
 import edu.emory.bmi.datacafe.impl.data.Slice;
+import edu.emory.bmi.datacafe.util.DatacafeUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jongo.MongoCursor;
@@ -38,7 +39,13 @@ public class Initiator {
         String[] datasourceNames = {"patients", "slices"};
 
         Class<Patient> clazz = Patient.class;
+        Class<Slice> clazz1 = Slice.class;
+        initiate(datasourceNames, clazz, clazz1);
 
+
+    }
+
+    private static void initiate(String[] datasourceNames, Class<Patient> clazz, Class<Slice> clazz1) {
         // Get the IDs
         patientCursors = (MongoCursor<Patient>) DatacafeEngine.initializeEntry("clinical", "clinicalData",
                 "{Age_at_Initial_Diagnosis: {$gt: 70}}, {_id:1}", clazz);
@@ -50,7 +57,6 @@ public class Initiator {
 
         }
 
-        Class<Slice> clazz1 = Slice.class;
 
         for (Patient patient : patientCursors) {
             MongoCursor<Slice> tempSliceCursors = (MongoCursor<Slice>) DatacafeEngine.initializeEntry("pathology",
@@ -94,12 +100,9 @@ public class Initiator {
             slicesText.add(line);
         }
 
-        List<String> texts[] = new ArrayList[DatacafeConstants.NUMBER_OF_COMPOSING_DATA_SOURCES];
-        texts[0] = patientsText;
-        texts[1] = slicesText;
+        List<String>[] texts = DatacafeUtil.generateArrayOfLists(patientsText, slicesText);
 
         WarehouseConnector warehouseConnector = new HiveConnector();
         warehouseConnector.writeToWarehouse(datasourceNames, texts, queries);
     }
-
 }
