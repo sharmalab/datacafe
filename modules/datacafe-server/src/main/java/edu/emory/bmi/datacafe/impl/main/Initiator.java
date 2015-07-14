@@ -27,6 +27,7 @@ import java.util.List;
 public class Initiator {
     private static Logger logger = LogManager.getLogger(Initiator.class.getName());
     private static MongoCursor<Patient> patientCursors;
+    private static MongoCursor<Slice> sliceCursors;
 
     private static List<Slice> initSliceList = new ArrayList<>();
 
@@ -56,17 +57,11 @@ public class Initiator {
 
         }
 
+        sliceCursors = (MongoCursor<Slice>) DatacafeEngine.initializeEntry("pathology",
+                "pathologyData",
+                "{Tumor_Nuclei_Percentage: {$gt: 65}}, {_id:1}", clazz1);
 
-        for (Patient patient : patientCursors) {
-            MongoCursor<Slice> tempSliceCursors = (MongoCursor<Slice>) DatacafeEngine.initializeEntry("pathology",
-                    "pathologyData",
-                    "{BCR_Patient_UID_From_Pathology: '" + patient.getKey() + "'}, {_id:1}", clazz1);
-            while (tempSliceCursors.hasNext()) {
-                initSliceList.add(tempSliceCursors.next());
-            }
-        }
-
-        for (Slice slice : initSliceList) {
+        for (Slice slice : sliceCursors) {
             Slice tempSlice = (Slice) DatacafeEngine.findEntry(
                     "pathology", "pathologyData", "{_id:'" + slice.getKey() + "'}, ", clazz1);
             sliceList.add(tempSlice);
