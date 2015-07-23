@@ -8,6 +8,7 @@
 package edu.emory.bmi.datacafe.mongo;
 
 import com.mongodb.*;
+import edu.emory.bmi.datacafe.constants.DatacafeConstants;
 import edu.emory.bmi.datacafe.constants.MongoConstants;
 import edu.emory.bmi.datacafe.core.DataSourceConnector;
 import org.apache.logging.log4j.LogManager;
@@ -23,6 +24,26 @@ public class MongoConnector implements DataSourceConnector {
 
     private static final MongoClient mongoClient = new MongoClient(new ServerAddress(
             MongoConstants.CLIENT_HOST, MongoConstants.CLIENT_PORT));
+
+    public static String[] constructQueries(String[][] params) {
+        String[] queries = new String[params.length];
+        for (int i = 0; i < params.length; i++) {
+            queries[i] = constructQuery(params[i]);
+        }
+        return queries;
+    }
+
+    public static String constructQuery(String[] params) {
+        String out = "";
+        for (int i = 0; i < params.length; i++) {
+            out += params[i] + " " + "string";
+            if (i < params.length - 1) {
+                out += DatacafeConstants.DELIMITER;
+            }
+        }
+        return " (" + out + ") row format delimited fields " +
+                "terminated by '" + DatacafeConstants.DELIMITER + "' stored as textfile";
+    }
 
     /**
      * Gets cursor for a collection in a given database.
@@ -41,7 +62,7 @@ public class MongoConnector implements DataSourceConnector {
      * @param queryEntries parts of the query
      * @return the query
      */
-    public String constructQuery(String... queryEntries) {
+    public String constructQueryFromParts(String... queryEntries) {
         String query = "";
         for (String queryEntry : queryEntries) {
             query += queryEntry;

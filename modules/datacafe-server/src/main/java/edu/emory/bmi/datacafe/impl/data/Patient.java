@@ -77,11 +77,11 @@ public class Patient {
         return Gender;
     }
 
-    public String getSupratentorial_Localization() {
+    public String getSupratentorialLocalization() {
         return Supratentorial_Localization;
     }
 
-    public String getTumor_Site() {
+    public String getTumorSite() {
         return Tumor_Site;
     }
 
@@ -89,11 +89,11 @@ public class Patient {
         return Laterality;
     }
 
-    public String getHistologic_Diagnosis() {
+    public String getHistologicDiagnosis() {
         return Histologic_Diagnosis;
     }
 
-    public int getAge_at_Initial_Diagnosis() {
+    public int getAgeatInitialDiagnosis() {
         int age = -1;
         if (!Age_at_Initial_Diagnosis.trim().equals("")) {
             try {
@@ -105,15 +105,15 @@ public class Patient {
         return age;
     }
 
-    public String getKarnofsky_Score() {
+    public String getKarnofskyScore() {
         return Karnofsky_Score;
     }
 
-    public String getPatient_Barcode() {
+    public String getPatientBarcode() {
         return Patient_Barcode;
     }
 
-    public String getCancer_Type() {
+    public String getCancerType() {
         return Cancer_Type;
     }
 }

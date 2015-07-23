@@ -8,6 +8,7 @@
 package edu.emory.bmi.datacafe.impl.main;
 
 import edu.emory.bmi.datacafe.core.CoreDataObject;
+import edu.emory.bmi.datacafe.mongo.MongoConnector;
 import edu.emory.bmi.datacafe.mongo.MongoEngine;
 import edu.emory.bmi.datacafe.hdfs.HiveConnector;
 import edu.emory.bmi.datacafe.core.WarehouseConnector;
@@ -70,18 +71,13 @@ public class Initiator {
         }
 
 
-
         // patientID, gender, laterality.
         List<String> patientsText = new ArrayList<>();
         List<String> slicesText = new ArrayList<>();
 
-        String[][] params = {{"patientID", "gender", "laterality"},{"sliceID", "patientID", "slideBarCode"}};
+        String[][] params = {{"patientID", "gender", "laterality"}, {"sliceID", "patientID", "slideBarCode"}};
 
-        /*Remove this*/
-        String[] queries = {" (PatientID string, Gender string, Laterality string) row format delimited fields " +
-                "terminated by ',' stored as textfile", " (sliceID string, patientID string, slideBarCode string) " +
-                "row format delimited fields terminated by ',' stored as textfile"};
-
+        String[] queries = MongoConnector.constructQueries(params);
 
         for (Patient patient : patientList) {
             String line = CoreDataObject.getWritableString(params[0], patient);
@@ -98,5 +94,4 @@ public class Initiator {
         WarehouseConnector warehouseConnector = new HiveConnector();
         warehouseConnector.writeToWarehouse(datasourceNames, texts, queries);
     }
-
 }

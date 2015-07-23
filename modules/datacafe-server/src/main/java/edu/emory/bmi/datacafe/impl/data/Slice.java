@@ -66,7 +66,7 @@ public class Slice {
         return _id;
     }
 
-    public String getBCR_Patient_UID_From_Pathology() {
+    public String getBCRPatientUIDFromPathology() {
         return BCR_Patient_UID_From_Pathology;
     }
 
@@ -74,39 +74,39 @@ public class Slice {
         return BCR_Patient_UID_From_Pathology;
     }
 
-    public String getSample_Barcode() {
+    public String getSampleBarCode() {
         return Sample_Barcode;
     }
 
-    public String getSlide_Barcode() {
+    public String getSlideBarCode() {
         return Slide_Barcode;
     }
 
-    public String getImage_File_Name() {
+    public String getImageFileName() {
         return Image_File_Name;
     }
 
-    public String getSection_Location() {
+    public String getSectionLocation() {
         return Section_Location;
     }
 
-    public String getTumor_Cells_Percentage() {
+    public String getTumorCellsPercentage() {
         return Tumor_Cells_Percentage;
     }
 
-    public String getNecrosis_Percentage() {
+    public String getNecrosisPercentage() {
         return Necrosis_Percentage;
     }
 
-    public String getStromal_Cells_Percentage() {
+    public String getStromalCellsPercentage() {
         return Stromal_Cells_Percentage;
     }
 
-    public String getNormal_Cells_Percentage() {
+    public String getNormalCellsPercentage() {
         return Normal_Cells_Percentage;
     }
 
-    public String getTumor_Nuclei_Percentage() {
+    public String getTumorNucleiPercentage() {
         return Tumor_Nuclei_Percentage;
     }
 }
