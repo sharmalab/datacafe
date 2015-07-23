@@ -29,8 +29,6 @@ public class Initiator {
     private static MongoCursor<Patient> patientCursors;
     private static MongoCursor<Slice> sliceCursors;
 
-    private static List<Slice> initSliceList = new ArrayList<>();
-
     private static List<Patient> patientList = new ArrayList<>();
     private static List<Slice> sliceList = new ArrayList<>();
 
