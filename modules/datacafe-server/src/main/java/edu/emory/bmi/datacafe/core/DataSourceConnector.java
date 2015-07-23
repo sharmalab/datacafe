@@ -13,7 +13,7 @@ import com.mongodb.DBCollection;
 /**
  * The connector interface for each of the data sources
  */
-public interface Connector {
+public interface DataSourceConnector {
     /**
      * Execute a query on db1.dbCollection1 and db2.dbCollection2 and returns the final result as a string
      * @param db1 database1

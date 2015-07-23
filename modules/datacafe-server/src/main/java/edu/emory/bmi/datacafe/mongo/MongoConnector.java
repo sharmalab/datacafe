@@ -9,14 +9,14 @@ package edu.emory.bmi.datacafe.mongo;
 
 import com.mongodb.*;
 import edu.emory.bmi.datacafe.constants.MongoConstants;
-import edu.emory.bmi.datacafe.core.Connector;
+import edu.emory.bmi.datacafe.core.DataSourceConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
  * Connects to the Mongo database
  */
-public class MongoConnector implements Connector {
+public class MongoConnector implements DataSourceConnector {
     private static Logger logger = LogManager.getLogger(MongoConnector.class.getName());
     private static MongoConnector mongoConnector = new MongoConnector();
 

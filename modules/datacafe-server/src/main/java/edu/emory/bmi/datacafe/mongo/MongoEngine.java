@@ -5,19 +5,22 @@
  * terms of the Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
-package edu.emory.bmi.datacafe.core;
+package edu.emory.bmi.datacafe.mongo;
 
-import edu.emory.bmi.datacafe.mongo.JongoConnector;
+import edu.emory.bmi.datacafe.core.DataSourceEngine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * Core initialization engine of DataCafe.
+ * Core initialization engine of DataCafe with Mongo datasource.
  */
-public class DatacafeEngine {
-    private static Logger logger = LogManager.getLogger(DatacafeEngine.class.getName());
+public class MongoEngine extends DataSourceEngine {
+    private static Logger logger = LogManager.getLogger(MongoEngine.class.getName());
 
     /**
      * Initializes the patient cursors
@@ -45,5 +48,12 @@ public class DatacafeEngine {
         MongoCollection patients = JongoConnector.initCollection(database, collection);
 
         return patients.findOne(constraint).as(clazz);
+    }
+
+    public String addDataSource(String database, String collection) {
+        Map<String, String> dsMap = new HashMap<>();
+        dsMap.put("database", database);
+        dsMap.put("collection", collection);
+        return super.addDataSource(dsMap);
     }
 }

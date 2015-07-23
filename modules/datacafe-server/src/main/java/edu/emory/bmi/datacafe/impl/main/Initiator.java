@@ -7,10 +7,10 @@
  */
 package edu.emory.bmi.datacafe.impl.main;
 
-import edu.emory.bmi.datacafe.constants.DatacafeConstants;
-import edu.emory.bmi.datacafe.core.DatacafeEngine;
+import edu.emory.bmi.datacafe.core.CoreDataObject;
+import edu.emory.bmi.datacafe.mongo.MongoEngine;
 import edu.emory.bmi.datacafe.hdfs.HiveConnector;
-import edu.emory.bmi.datacafe.hdfs.WarehouseConnector;
+import edu.emory.bmi.datacafe.core.WarehouseConnector;
 import edu.emory.bmi.datacafe.impl.data.Patient;
 import edu.emory.bmi.datacafe.impl.data.Slice;
 import edu.emory.bmi.datacafe.util.DatacafeUtil;
@@ -46,51 +46,52 @@ public class Initiator {
     }
 
     private static void initiate(String[] datasourceNames, Class<Patient> clazz, Class<Slice> clazz1) {
+        MongoEngine dataSourceEngine = new MongoEngine();
+        dataSourceEngine.addDataSource("clinical", "clinicalData");
+        dataSourceEngine.addDataSource("pathology", "pathologyData");
+
         // Get the IDs
-        patientCursors = (MongoCursor<Patient>) DatacafeEngine.initializeEntry("clinical", "clinicalData",
+        patientCursors = (MongoCursor<Patient>) MongoEngine.initializeEntry("clinical", "clinicalData",
                 "{Age_at_Initial_Diagnosis: {$gt: 70}}, {_id:1}", clazz);
 
-        for (Patient patient : patientCursors) {
-            Patient tempPatient = (Patient) DatacafeEngine.findEntry("clinical", "clinicalData",
-                    "{_id:'" + patient.getKey() + "'}, {Gender:1}, {Laterality:1}", clazz);
-            patientList.add(tempPatient);
 
-        }
-
-        sliceCursors = (MongoCursor<Slice>) DatacafeEngine.initializeEntry("pathology",
+        sliceCursors = (MongoCursor<Slice>) MongoEngine.initializeEntry("pathology",
                 "pathologyData",
                 "{Tumor_Nuclei_Percentage: {$gt: 65}}, {_id:1}", clazz1);
 
+        for (Patient patient : patientCursors) {
+            Patient tempPatient = (Patient) MongoEngine.findEntry("clinical", "clinicalData",
+                    "{_id:'" + patient.getKey() + "'}, {Gender:1}, {Laterality:1}", clazz);
+            patientList.add(tempPatient);
+        }
+
         for (Slice slice : sliceCursors) {
-            Slice tempSlice = (Slice) DatacafeEngine.findEntry(
+            Slice tempSlice = (Slice) MongoEngine.findEntry(
                     "pathology", "pathologyData", "{_id:'" + slice.getKey() + "'}, ", clazz1);
             sliceList.add(tempSlice);
         }
+
+
 
         // patientID, gender, laterality.
         List<String> patientsText = new ArrayList<>();
         List<String> slicesText = new ArrayList<>();
 
-        for (Patient patient : patientList) {
-            String currentKey = patient.getKey();
-            String gender = patient.getGender();
-            String laterality = patient.getLaterality();
-            String line = currentKey + DatacafeConstants.DELIMITER + gender + DatacafeConstants.DELIMITER + laterality;
-            patientsText.add(line);
-        }
-
+        String[][] params = {{"patientID", "gender", "laterality"},{"sliceID", "patientID", "slideBarCode"}};
 
         /*Remove this*/
         String[] queries = {" (PatientID string, Gender string, Laterality string) row format delimited fields " +
                 "terminated by ',' stored as textfile", " (sliceID string, patientID string, slideBarCode string) " +
                 "row format delimited fields terminated by ',' stored as textfile"};
 
-        for (Slice slice : sliceList) {
-            String sliceID = slice.getKey();
-            String patientID = slice.getBCR_Patient_UID_From_Pathology();
-            String slideBarCode = slice.getSlide_Barcode();
 
-            String line = sliceID + DatacafeConstants.DELIMITER + patientID + DatacafeConstants.DELIMITER + slideBarCode;
+        for (Patient patient : patientList) {
+            String line = CoreDataObject.getWritableString(params[0], patient);
+            patientsText.add(line);
+        }
+
+        for (Slice slice : sliceList) {
+            String line = CoreDataObject.getWritableString(params[1], slice);
             slicesText.add(line);
         }
 
@@ -99,4 +100,5 @@ public class Initiator {
         WarehouseConnector warehouseConnector = new HiveConnector();
         warehouseConnector.writeToWarehouse(datasourceNames, texts, queries);
     }
+
 }

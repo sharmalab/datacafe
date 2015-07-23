@@ -62,7 +62,15 @@ public class Slice {
         return _id;
     }
 
+    public String getSliceID() {
+        return _id;
+    }
+
     public String getBCR_Patient_UID_From_Pathology() {
+        return BCR_Patient_UID_From_Pathology;
+    }
+
+    public String getPatientID() {
         return BCR_Patient_UID_From_Pathology;
     }
 

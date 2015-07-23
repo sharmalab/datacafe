@@ -12,6 +12,8 @@ import org.apache.logging.log4j.Logger;
 import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
+import java.lang.reflect.Field;
+
 /**
  * Class to represent a Patient from the clinical data.
  * BCR Patient UID (From Clinical) in clinical.csv is the _id.
@@ -60,6 +62,10 @@ public class Patient {
     private String Cancer_Type;
 
     public String getKey() {
+        return _id;
+    }
+
+    public String getPatientID() {
         return _id;
     }
 

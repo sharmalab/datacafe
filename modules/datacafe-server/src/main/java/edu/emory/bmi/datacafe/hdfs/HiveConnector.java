@@ -9,6 +9,7 @@ package edu.emory.bmi.datacafe.hdfs;
 
 import edu.emory.bmi.datacafe.constants.DatacafeConstants;
 import edu.emory.bmi.datacafe.constants.HDFSConstants;
+import edu.emory.bmi.datacafe.core.WarehouseConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,7 +26,7 @@ import java.util.List;
 /**
  * Connecting to Hive through Datacafe.
  */
-public class HiveConnector extends WarehouseConnector{
+public class HiveConnector implements WarehouseConnector {
     private static Logger logger = LogManager.getLogger(HiveConnector.class.getName());
 
 

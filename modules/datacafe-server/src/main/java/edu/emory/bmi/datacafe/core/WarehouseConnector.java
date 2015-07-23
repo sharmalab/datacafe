@@ -5,7 +5,7 @@
  * terms of the Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
-package edu.emory.bmi.datacafe.hdfs;
+package edu.emory.bmi.datacafe.core;
 
 import edu.emory.bmi.datacafe.constants.DatacafeConstants;
 import org.apache.logging.log4j.LogManager;
@@ -23,9 +23,7 @@ import java.util.*;
 /**
  * Makes a warehouse from the merger.
  */
-public abstract class WarehouseConnector {
-
-    private static Logger logger = LogManager.getLogger(WarehouseConnector.class.getName());
+public interface WarehouseConnector {
 
     /**
      * Makes a file from the results.
