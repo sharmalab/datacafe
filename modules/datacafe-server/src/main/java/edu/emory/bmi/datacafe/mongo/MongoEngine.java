@@ -7,6 +7,7 @@
  */
 package edu.emory.bmi.datacafe.mongo;
 
+import edu.emory.bmi.datacafe.constants.MongoConstants;
 import edu.emory.bmi.datacafe.core.DataSourceEngine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -52,8 +53,8 @@ public class MongoEngine extends DataSourceEngine {
 
     public String addDataSource(String database, String collection) {
         Map<String, String> dsMap = new HashMap<>();
-        dsMap.put("database", database);
-        dsMap.put("collection", collection);
+        dsMap.put(MongoConstants.DATABASE_KEY_ENTRY, database);
+        dsMap.put(MongoConstants.COLLECTION_KEY_ENTRY, collection);
         return super.addDataSource(dsMap);
     }
 }

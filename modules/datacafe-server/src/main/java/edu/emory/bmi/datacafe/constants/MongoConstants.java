@@ -13,4 +13,6 @@ package edu.emory.bmi.datacafe.constants;
 public class MongoConstants {
     public static final String CLIENT_HOST = "localhost";
     public static final int CLIENT_PORT = 27017;
+    public static final String DATABASE_KEY_ENTRY = "database";
+    public static final String COLLECTION_KEY_ENTRY = "collection";
 }
