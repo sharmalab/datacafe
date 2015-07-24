@@ -72,16 +72,18 @@ public class Initiator {
 
         String[][] params = {{"patientID", "gender", "laterality"}, {"sliceID", "patientID", "slideBarCode"}};
 
-        // patientID, gender, laterality.
+        writeDataSourcesToWarehouse(datasourceNames, params, patientList, sliceList);
+    }
 
-
+    private static void writeDataSourcesToWarehouse(String[] datasourceNames, String[][] params,
+                                                    List<?> firstList, List<?> secondList) {
         String[] queries = MongoConnector.constructQueries(params);
 
-        List<String> patientsText = CoreDataObject.getWritableString(params[0], patientList);
+        List<String> firstText = CoreDataObject.getWritableString(params[0], firstList);
 
-        List<String> slicesText = CoreDataObject.getWritableString(params[1], sliceList);
+        List<String> secondText = CoreDataObject.getWritableString(params[1], secondList);
 
-        List<String>[] texts = DatacafeUtil.generateArrayOfLists(patientsText, slicesText);
+        List<String>[] texts = DatacafeUtil.generateArrayOfLists(firstText, secondText);
 
         WarehouseConnector warehouseConnector = new HiveConnector();
         warehouseConnector.writeToWarehouse(datasourceNames, texts, queries);
