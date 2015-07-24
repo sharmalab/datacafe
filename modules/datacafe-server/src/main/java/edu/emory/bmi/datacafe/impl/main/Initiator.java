@@ -70,28 +70,21 @@ public class Initiator {
             sliceList.add(tempSlice);
         }
 
+        String[][] params = {{"patientID", "gender", "laterality"}, {"sliceID", "patientID", "slideBarCode"}};
 
         // patientID, gender, laterality.
-        List<String> patientsText = new ArrayList<>();
-        List<String> slicesText = new ArrayList<>();
 
-        String[][] params = {{"patientID", "gender", "laterality"}, {"sliceID", "patientID", "slideBarCode"}};
 
         String[] queries = MongoConnector.constructQueries(params);
 
-        for (Patient patient : patientList) {
-            String line = CoreDataObject.getWritableString(params[0], patient);
-            patientsText.add(line);
-        }
+        List<String> patientsText = CoreDataObject.getWritableString(params[0], patientList);
 
-        for (Slice slice : sliceList) {
-            String line = CoreDataObject.getWritableString(params[1], slice);
-            slicesText.add(line);
-        }
+        List<String> slicesText = CoreDataObject.getWritableString(params[1], sliceList);
 
         List<String>[] texts = DatacafeUtil.generateArrayOfLists(patientsText, slicesText);
 
         WarehouseConnector warehouseConnector = new HiveConnector();
         warehouseConnector.writeToWarehouse(datasourceNames, texts, queries);
     }
+
 }
