@@ -9,6 +9,7 @@ package edu.emory.bmi.datacafe.hdfs;
 
 import edu.emory.bmi.datacafe.constants.DatacafeConstants;
 import edu.emory.bmi.datacafe.constants.HDFSConstants;
+import edu.emory.bmi.datacafe.core.CoreDataObject;
 import edu.emory.bmi.datacafe.core.WarehouseConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +30,25 @@ import java.util.List;
  */
 public class HiveConnector implements WarehouseConnector {
     private static Logger logger = LogManager.getLogger(HiveConnector.class.getName());
+
+    /**
+     * Writes the data sources to Hive
+     * @param datasourceNames names of the data sources
+     * @param params parameters of the data sources as a 2-d array - an array for each of the data source
+     * @param queries queries for each of the data source.
+     * @param writables array of lists for each data sources to be written to the data warehouse.
+     */
+    public static void writeDataSourcesToWarehouse(String[] datasourceNames, String[][] params,
+                                                   String[] queries, List<?>[] writables){
+        List<String>[] texts = new ArrayList[writables.length];
+
+        for (int i = 0; i < writables.length; i++) {
+            texts[i] = CoreDataObject.getWritableString(params[i], writables[i]);
+        }
+
+        WarehouseConnector warehouseConnector = new HiveConnector();
+        warehouseConnector.writeToWarehouse(datasourceNames, texts, queries);
+    }
 
 
     /**

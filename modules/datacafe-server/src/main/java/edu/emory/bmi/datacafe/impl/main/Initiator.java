@@ -7,14 +7,11 @@
  */
 package edu.emory.bmi.datacafe.impl.main;
 
-import edu.emory.bmi.datacafe.core.CoreDataObject;
 import edu.emory.bmi.datacafe.mongo.MongoConnector;
 import edu.emory.bmi.datacafe.mongo.MongoEngine;
 import edu.emory.bmi.datacafe.hdfs.HiveConnector;
-import edu.emory.bmi.datacafe.core.WarehouseConnector;
 import edu.emory.bmi.datacafe.impl.data.Patient;
 import edu.emory.bmi.datacafe.impl.data.Slice;
-import edu.emory.bmi.datacafe.util.DatacafeUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jongo.MongoCursor;
@@ -71,22 +68,9 @@ public class Initiator {
         }
 
         String[][] params = {{"patientID", "gender", "laterality"}, {"sliceID", "patientID", "slideBarCode"}};
-
-        writeDataSourcesToWarehouse(datasourceNames, params, patientList, sliceList);
-    }
-
-    private static void writeDataSourcesToWarehouse(String[] datasourceNames, String[][] params,
-                                                    List<?> firstList, List<?> secondList) {
         String[] queries = MongoConnector.constructQueries(params);
 
-        List<String> firstText = CoreDataObject.getWritableString(params[0], firstList);
-
-        List<String> secondText = CoreDataObject.getWritableString(params[1], secondList);
-
-        List<String>[] texts = DatacafeUtil.generateArrayOfLists(firstText, secondText);
-
-        WarehouseConnector warehouseConnector = new HiveConnector();
-        warehouseConnector.writeToWarehouse(datasourceNames, texts, queries);
+        HiveConnector.writeDataSourcesToWarehouse(datasourceNames, params, queries, new List[]{patientList, sliceList});
     }
 
 }
