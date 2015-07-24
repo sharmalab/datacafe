@@ -37,8 +37,6 @@ public class Initiator {
         Class<Patient> clazz = Patient.class;
         Class<Slice> clazz1 = Slice.class;
         initiate(datasourceNames, clazz, clazz1);
-
-
     }
 
     private static void initiate(String[] datasourceNames, Class<Patient> clazz, Class<Slice> clazz1) {
@@ -72,5 +70,4 @@ public class Initiator {
 
         HiveConnector.writeDataSourcesToWarehouse(datasourceNames, params, queries, new List[]{patientList, sliceList});
     }
-
 }
