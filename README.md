@@ -3,7 +3,39 @@ A Dynamic Data Warehousing System
 
 Apache Drill can be used to query Hadoop and HDFS in a very efficient way. The steps are as below. Refer to the linked pages for each step.
 
-1. Configure Hadoop 
+1. Configuring Mongo in EC2.
+
+Connecting to the remote EC2/Mongo Instance
+$ ssh -i "pradeeban.pem" ubuntu@ec2-54-166-90-207.compute-1.amazonaws.com
+
+Copy files to the remote instance.
+
+$ scp -i "pradeeban.pem" /home/pradeeban/gsoc2015/conf/clinical.csv ubuntu@ec2-54-166-90-207.compute-1.amazonaws.com:/home/ubuntu
+
+$ scp -i "pradeeban.pem" /home/pradeeban/gsoc2015/conf/pathology.csv ubuntu@ec2-54-166-90-207.compute-1.amazonaws.com:/home/ubuntu
+
+
+Importing the collections from the csv files
+
+mongoimport --db pathology --collection pathologyData --type csv --headerline --file pathology.csv
+mongoimport --db clinical --collection clinicalData --type csv --headerline --file clinical.csv
+
+
+Executing mongo commands.
+
+mongo
+
+use pathology
+
+db.pathologyData.find()
+
+
+use clinical
+
+db.clinicalData.find()
+
+
+2. Configure Hadoop 
 
 There may be some errors encountered when executing Hadoop with Java 8 with the default configurations. Further, formatting the file system will fix any error from Hadoop.
 
@@ -11,7 +43,7 @@ There may be some errors encountered when executing Hadoop with Java 8 with the 
 
 
 
-2. Start Hadoop NameNode daemon and DataNode daemon -
+3. Start Hadoop NameNode daemon and DataNode daemon -
 
 $ $HADOOP_HOME/sbin/start-dfs.sh
 
@@ -21,12 +53,12 @@ Once you are done with the experiments, you may stop the daemons with
 $ $HADOOP_HOME/sbin/stop-dfs.sh
 
 
-3. Browse the web interface for the name node - http://localhost:50070/
+4. Browse the web interface for the name node - http://localhost:50070/
 
 
-4. Configure Drill
+5. Configure Drill
 
-5. Launch Drill in Embedded mode -
+* Launch Drill in Embedded mode -
 
 $ $DRILL_HOME/bin/drill-embedded 
 
@@ -74,3 +106,9 @@ SELECT firstname,lastname FROM hive.`customers`
  SELECT slices.sliceID, slices.slideBarCode, patients.patientID, patients.gender, patients.laterality
  FROM hive.`patients`, hive.`slices`
  WHERE patients.patientID = slices.patientID
+
+
+
+
+
+
