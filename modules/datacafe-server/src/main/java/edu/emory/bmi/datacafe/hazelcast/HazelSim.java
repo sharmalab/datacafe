@@ -10,7 +10,6 @@ package edu.emory.bmi.datacafe.hazelcast;
 import com.hazelcast.config.Config;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ public class HazelSim {
         if (multiTenanted) {
             for (String key : instancesMap.keySet()) {
                 List<HazelcastInstance> instances = new ArrayList<>();
-                instancesMap.putIfAbsent(key, instances);
+                instancesMap.put(key, instances);
             }
         }
     }

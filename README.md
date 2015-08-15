@@ -10,9 +10,9 @@ $ ssh -i "pradeeban.pem" ubuntu@ec2-54-166-90-207.compute-1.amazonaws.com
 
 Copy files to the remote instance.
 
-$ scp -i "pradeeban.pem" /home/pradeeban/gsoc2015/conf/clinical.csv ubuntu@ec2-54-166-90-207.compute-1.amazonaws.com:/home/ubuntu
+$ scp -i "pradeeban.pem" /home/pradeeban/gsoc2015/conf/clinical.csv ubuntu@ec2-54-157-62-174.compute-1.amazonaws.com:/home/ubuntu
 
-$ scp -i "pradeeban.pem" /home/pradeeban/gsoc2015/conf/pathology.csv ubuntu@ec2-54-166-90-207.compute-1.amazonaws.com:/home/ubuntu
+$ scp -i "pradeeban.pem" /home/pradeeban/gsoc2015/conf/pathology.csv ubuntu@ec2-54-157-62-174.compute-1.amazonaws.com:/home/ubuntu
 
 
 Importing the collections from the csv files
@@ -81,7 +81,7 @@ $ $HIVE_HOME/bin/hive --service metastore &
 
 Start HiveServer2
 
-$HIVE_HOME/bin/hiveserver2
+$ HIVE_HOME/bin/hiveserver2
 
 
 9.  Configure and enable Storage Plugin for Hive in Drill
@@ -109,6 +109,9 @@ SELECT firstname,lastname FROM hive.`customers`
 
 
 
+11. Executing DataCafe
+$ mvn clean install
+$ java -classpath lib/datacafe-server-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi.datacafe.impl.main.Initiator
 
 
 
