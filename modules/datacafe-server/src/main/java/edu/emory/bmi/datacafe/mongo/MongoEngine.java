@@ -32,7 +32,9 @@ public class MongoEngine extends DataSourceEngine {
      */
     public static MongoCursor<?> initializeEntry(String database, String collection, String constraint, Class clazz) {
         MongoCollection entries = JongoConnector.initCollection(database, collection);
-
+        if (logger.isDebugEnabled()) {
+            logger.debug("Successfully initialized entry.. " + constraint);
+        }
          return entries.find(constraint).as(clazz);
     }
 
@@ -47,6 +49,9 @@ public class MongoEngine extends DataSourceEngine {
      */
     public static Object findEntry(String database, String collection, String constraint, Class clazz) {
         MongoCollection patients = JongoConnector.initCollection(database, collection);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Successfully found entry.. " + constraint);
+        }
 
         return patients.findOne(constraint).as(clazz);
     }
