@@ -98,22 +98,23 @@ public class HiveConnector implements WarehouseConnector {
     public void createFile(String fileName, List<String> lines) {
 
         Charset utf8 = StandardCharsets.UTF_8;
-
+        String file = fileName + DatacafeConstants.FILE_EXTENSION;
         try {
+
             if (DatacafeConstants.IS_APPEND) {
-                Files.write(Paths.get(DatacafeConstants.CONF_FOLDER + File.separator + fileName +
-                                DatacafeConstants.FILE_EXTENSION), lines, utf8, StandardOpenOption.CREATE,
+                Files.write(Paths.get(file), lines, utf8, StandardOpenOption.CREATE,
                         StandardOpenOption.APPEND
                 );
             } else {
-                Files.write(Paths.get(DatacafeConstants.CONF_FOLDER + File.separator + fileName +
-                                DatacafeConstants.FILE_EXTENSION), lines, utf8, StandardOpenOption.CREATE,
+                Files.write(Paths.get(file), lines, utf8, StandardOpenOption.CREATE,
                         StandardOpenOption.TRUNCATE_EXISTING);
             }
             logger.info("Successfully written the output to the file, " + fileName);
         } catch (IOException e) {
             logger.error("Error in creating the warehouse file", e);
         }
+        if (DatacafeConstants.IS_REMOTE_HIVE_SERVER) {
+            FileRemoteManager.copyFile(file);
+        }
     }
-
 }

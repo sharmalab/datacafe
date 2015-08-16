@@ -7,6 +7,8 @@
  */
 package edu.emory.bmi.datacafe.constants;
 
+import java.io.File;
+
 /**
  * The common constants of Datacafe
  */
@@ -20,4 +22,8 @@ public class DatacafeConstants {
     public static final String FILE_EXTENSION = ".csv";
 
     public static final int NUMBER_OF_COMPOSING_DATA_SOURCES = 2;
+
+    public static final boolean IS_REMOTE_HIVE_SERVER = true;
+
+    public static final String PRIVATE_KEY = HDFSConstants.CLIENT_ORIGIN_DIR + File.separator + "pradeeban.pem";
 }
