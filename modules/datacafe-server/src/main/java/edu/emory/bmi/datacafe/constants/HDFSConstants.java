@@ -35,9 +35,6 @@ public class HDFSConstants {
     public static final String CLIENT_ORIGIN_DIR = "/home/ubuntu/datacafe/";
     public static final String CLIENT_CSV_DIR = CLIENT_ORIGIN_DIR + "conf/";
 
-//    public static final String CLIENT_ORIGIN_DIR = "/home/pradeeban/datacafe/"; //todo
-
-
     public static final int HIVE_SFTP_PORT = 22;
 
 
