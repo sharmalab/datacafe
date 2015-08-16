@@ -1,4 +1,4 @@
-# datacafe
+# DataCafe - Data Federation and Integration
 A Dynamic Data Warehousing System
 
 Apache Drill can be used to query Hadoop and HDFS in a very efficient way. The steps are as below. Refer to the linked pages for each step.
