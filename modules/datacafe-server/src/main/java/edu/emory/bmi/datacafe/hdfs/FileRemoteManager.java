@@ -23,11 +23,6 @@ import java.io.FileNotFoundException;
  */
 public class FileRemoteManager {
     private static Logger logger = LogManager.getLogger(FileRemoteManager.class.getName());
-//
-//
-//    public static void main(String[] args) {
-//        copyFile("clinical.csv");
-//    }
 
     /**
      * Copies the file to the remote location

@@ -15,7 +15,7 @@ public class MongoConstants {
 //    public static final String CLIENT_HOST = "localhost";
 
     /*AWS deployment*/
-    public static final String CLIENT_HOST = "ec2-54-211-84-65.compute-1.amazonaws.com";
+    public static final String CLIENT_HOST = "ec2-54-161-152-13.compute-1.amazonaws.com";
     public static final int CLIENT_PORT = 27017;
 
     public static final String DATABASE_KEY_ENTRY = "database";

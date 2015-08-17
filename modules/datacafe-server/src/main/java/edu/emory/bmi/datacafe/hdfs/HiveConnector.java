@@ -51,34 +51,6 @@ public class HiveConnector implements WarehouseConnector {
     }
 
 
-    /**
-     * Writes to Hive
-     * @param csvFileName, file to be written to Hive
-     * @param hiveTable, the table name in Hive
-     * @param query, query to execute
-     * @throws SQLException, if execution failed.
-     */
-    public void writeToHive(String csvFileName, String hiveTable, String query)  throws SQLException {
-        try {
-            Class.forName(HDFSConstants.DRIVER_NAME);
-        } catch (ClassNotFoundException e) {
-            logger.error("Exception in finding the driver", e);
-        }
-
-        Connection con = DriverManager.getConnection(HDFSConstants.HIVE_CONNECTION_URI, HDFSConstants.HIVE_USER_NAME,
-                HDFSConstants.HIVE_PASSWORD);
-        Statement stmt = con.createStatement();
-
-        stmt.execute("drop table if exists " + hiveTable);
-
-        stmt.execute("create table " + hiveTable+ query);
-
-        String csvFilePath = HDFSConstants.HIVE_CSV_DIR + csvFileName;
-
-        String sql = "load data local inpath '" + csvFilePath + "' into table " + hiveTable;
-        stmt.execute(sql);
-    }
-
     @Override
     public void writeToWarehouse(String[] datasourcesNames, List<String>[] texts, String[] queries) {
         for (int i = 0; i < DatacafeConstants.NUMBER_OF_COMPOSING_DATA_SOURCES; i++) {
@@ -109,12 +81,43 @@ public class HiveConnector implements WarehouseConnector {
                 Files.write(Paths.get(file), lines, utf8, StandardOpenOption.CREATE,
                         StandardOpenOption.TRUNCATE_EXISTING);
             }
-            logger.info("Successfully written the output to the file, " + fileName);
+            logger.info("Successfully written the output to the file, " + file);
         } catch (IOException e) {
-            logger.error("Error in creating the warehouse file", e);
+            logger.error("Error in creating the warehouse file: " + file, e);
         }
         if (DatacafeConstants.IS_REMOTE_HIVE_SERVER) {
             FileRemoteManager.copyFile(file);
+//            HadoopConnector.writeToHDFS(fileName);
         }
     }
+
+    /**
+     * Writes to Hive
+     * @param csvFileName, file to be written to Hive
+     * @param hiveTable, the table name in Hive
+     * @param query, query to execute
+     * @throws SQLException, if execution failed.
+     */
+    public void writeToHive(String csvFileName, String hiveTable, String query)  throws SQLException {
+        try {
+            Class.forName(HDFSConstants.DRIVER_NAME);
+        } catch (ClassNotFoundException e) {
+            logger.error("Exception in finding the driver", e);
+        }
+
+        Connection con = DriverManager.getConnection(HDFSConstants.HIVE_CONNECTION_URI, HDFSConstants.HIVE_USER_NAME,
+                HDFSConstants.HIVE_PASSWORD);
+        Statement stmt = con.createStatement();
+
+        stmt.execute("drop table if exists " + hiveTable);
+
+        stmt.execute("create table " + hiveTable+ query);
+
+        String csvFilePath = HDFSConstants.HIVE_CSV_DIR + csvFileName;
+
+        String sql = "load data local inpath '" + csvFilePath + "' into table " + hiveTable;
+        stmt.execute(sql);
+    }
+
+
 }

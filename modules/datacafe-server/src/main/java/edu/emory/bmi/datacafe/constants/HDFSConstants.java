@@ -18,7 +18,10 @@ public class HDFSConstants {
     public static final String HIVE_PORT = "10000";
 
 //    Master
-    public static final String HIVE_SERVER = "ec2-54-82-17-142.compute-1.amazonaws.com";
+//    public static final String HIVE_SERVER = "ec2-54-82-17-142.compute-1.amazonaws.com";
+
+    // Unified.
+    public static final String HIVE_SERVER = "ec2-23-22-140-139.compute-1.amazonaws.com";
 
 //    Core-1
 //    public static final String HIVE_SERVER_CORE_1 = "ec2-54-90-78-166.compute-1.amazonaws.com";
@@ -50,4 +53,10 @@ public class HDFSConstants {
 
     public static String HIVE_PASSWORD = "";
 
+    /*local*/
+//    public static final String HADOOP_HOME = "/home/pradeeban/programs/hadoop-2.7.0"; // /etc/hadoop/conf
+//    public static final String HADOOP_CONF = HADOOP_HOME + File.separator + "etc" + File.separator + "hadoop";
+
+    public static final String HADOOP_CONF = "/etc/hadoop/conf";
+    public static final String HDFS_PATH = "/user/hive/warehouse/1/";
 }
