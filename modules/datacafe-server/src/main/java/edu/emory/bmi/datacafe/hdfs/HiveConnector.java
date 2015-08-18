@@ -14,7 +14,6 @@ import edu.emory.bmi.datacafe.core.WarehouseConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -87,7 +86,6 @@ public class HiveConnector implements WarehouseConnector {
         }
         if (DatacafeConstants.IS_REMOTE_HIVE_SERVER) {
             FileRemoteManager.copyFile(file);
-//            HadoopConnector.writeToHDFS(fileName);
         }
     }
 

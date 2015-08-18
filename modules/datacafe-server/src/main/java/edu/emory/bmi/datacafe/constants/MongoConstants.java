@@ -11,11 +11,10 @@ package edu.emory.bmi.datacafe.constants;
  * Constants for Mongo Integration
  */
 public class MongoConstants {
-    /*local*/
-//    public static final String CLIENT_HOST = "localhost";
 
     /*AWS deployment*/
-    public static final String CLIENT_HOST = "ec2-54-161-152-13.compute-1.amazonaws.com";
+    public static final String CLIENT_HOST =  DatacafeConstants.IS_REMOTE_MONGO_SERVER ?
+            "ec2-54-161-152-13.compute-1.amazonaws.com" : "localhost";
     public static final int CLIENT_PORT = 27017;
 
     public static final String DATABASE_KEY_ENTRY = "database";

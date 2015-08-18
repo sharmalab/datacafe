@@ -14,7 +14,6 @@ import java.io.File;
  */
 public class DatacafeConstants {
 
-    public static final String CONF_FOLDER = "conf";
     public static final String DELIMITER = ",";
     public static final boolean IS_APPEND = false;
 
@@ -24,6 +23,7 @@ public class DatacafeConstants {
     public static final int NUMBER_OF_COMPOSING_DATA_SOURCES = 2;
 
     public static final boolean IS_REMOTE_HIVE_SERVER = true;
+    public static final boolean IS_REMOTE_MONGO_SERVER = true;
 
     public static final String PRIVATE_KEY = HDFSConstants.CLIENT_ORIGIN_DIR + File.separator + "pradeeban.pem";
 }

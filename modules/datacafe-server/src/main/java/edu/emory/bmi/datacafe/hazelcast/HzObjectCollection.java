@@ -7,9 +7,6 @@
  */
 package edu.emory.bmi.datacafe.hazelcast;
 
-import com.hazelcast.core.IMap;
-import com.hazelcast.core.IdGenerator;
-
 /**
  * Access to the hazelcast distributed objects.
  */

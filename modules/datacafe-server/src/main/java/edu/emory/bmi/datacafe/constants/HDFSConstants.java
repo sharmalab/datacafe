@@ -34,7 +34,6 @@ public class HDFSConstants {
 
 
     public static final String SFTP_USER = "ec2-user";
-    public static final String SFTP_PASS = "";
 
 
     /*local*/
