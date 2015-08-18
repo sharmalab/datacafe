@@ -20,8 +20,12 @@ public class HDFSConstants {
 //    Master
 //    public static final String HIVE_SERVER = "ec2-54-82-17-142.compute-1.amazonaws.com";
 
-    // Unified.
-    public static final String HIVE_SERVER = "ec2-23-22-140-139.compute-1.amazonaws.com";
+    // Unified - HDFS/Drill/DataCafe
+    public static final String HIVE_SERVER = "localhost";
+//    public static final String HIVE_SERVER = "ec2-23-22-140-139.compute-1.amazonaws.com";
+
+    // Unified - HDFS
+//    public static final String HIVE_SERVER = "ec2-23-22-140-139.compute-1.amazonaws.com";
 
 //    Core-1
 //    public static final String HIVE_SERVER_CORE_1 = "ec2-54-90-78-166.compute-1.amazonaws.com";
@@ -32,7 +36,7 @@ public class HDFSConstants {
     public static final String HIVE_CONNECTION_URI = "jdbc:hive2://" + HIVE_SERVER + ":" + HIVE_PORT + "/default";
 
 
-    public static final String HIVE_CSV_DIR = "/home/ec2-user/datacafe/";
+    public static final String HIVE_CSV_DIR = DatacafeConstants.IS_REMOTE_HIVE_SERVER ? "/home/ec2-user/datacafe/conf/": "datacafe/";
 
 
     public static final String CLIENT_ORIGIN_DIR = "/home/ubuntu/datacafe/";
@@ -58,5 +62,5 @@ public class HDFSConstants {
 //    public static final String HADOOP_CONF = HADOOP_HOME + File.separator + "etc" + File.separator + "hadoop";
 
     public static final String HADOOP_CONF = "/etc/hadoop/conf";
-    public static final String HDFS_PATH = "/user/hive/warehouse/1/";
+    public static final String HDFS_PATH = "/user/hive/warehouse/";
 }

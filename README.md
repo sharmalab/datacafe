@@ -39,7 +39,7 @@ db.clinicalData.find()
 
 There may be some errors encountered when executing Hadoop with Java 8 with the default configurations. Further, formatting the file system will fix any error from Hadoop.
 
-  $ $HADOOP_HOME/bin/hdfs namenode -format
+ $ $HADOOP_HOME/bin/hdfs namenode -format
 
 
 
@@ -117,12 +117,25 @@ $ java -classpath lib/datacafe-server-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi
 12. SCP to remote instance
 $ ssh -i "pradeeban.pem" ubuntu@ec2-54-157-222-55.compute-1.amazonaws.com:/home/ubuntu/
 
+
 Copy All
+--------
+Copy to Hive/HDFS + Drill + Java 7 instance
+$ scp -r -i "pradeeban.pem" . ec2-user@ec2-54-145-26-70.compute-1.amazonaws.com:/home/ec2-user/datacafe
+
+
+Copy to Java 7 (only) instance
 $ scp -r -i "pradeeban.pem" . ubuntu@ec2-54-157-222-55.compute-1.amazonaws.com:/home/ubuntu/datacafe
 
 
 Copy only the datacafe jar
+-------------------------- 
+To Hive/HDFS + Drill + Java 7 instance
+$ scp -i "pradeeban.pem" lib/datacafe-server-1.0-SNAPSHOT.jar ec2-user@ec2-54-145-26-70.compute-1.amazonaws.com:/home/ec2-user/datacafe/lib
+
+To Java 7 (only) instance
 $ scp -i "pradeeban.pem" lib/datacafe-server-1.0-SNAPSHOT.jar ubuntu@ec2-54-157-222-55.compute-1.amazonaws.com:/home/ubuntu/datacafe/lib
+
 
 
 
