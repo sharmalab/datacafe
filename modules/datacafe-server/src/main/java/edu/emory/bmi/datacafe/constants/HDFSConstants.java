@@ -7,8 +7,6 @@
  */
 package edu.emory.bmi.datacafe.constants;
 
-import java.io.File;
-
 /**
  * Constants for Hadoop/Hive Integration.
  */
@@ -17,27 +15,15 @@ public class HDFSConstants {
     public static final String HIVE_USER_NAME = "hadoop";
     public static final String HIVE_PORT = "10000";
 
-//    Master
+//    Hive Server - HDFS Master - Drill Instance
     public static final String HIVE_SERVER = DatacafeConstants.IS_REMOTE_HIVE_SERVER ?
         "ec2-54-158-108-220.compute-1.amazonaws.com" : "localhost";
-
-//    public static final String HIVE_SERVER = "ec2-23-22-140-139.compute-1.amazonaws.com";
-
-    // Unified - HDFS
-//    public static final String HIVE_SERVER = "ec2-23-22-140-139.compute-1.amazonaws.com";
-
-//    Core-1
-//    public static final String HIVE_SERVER_CORE_1 = "ec2-54-90-78-166.compute-1.amazonaws.com";
-
-//    Core-2
-//    public static final String HIVE_SERVER_CORE_2 = "ec2-54-83-77-50.compute-1.amazonaws.com";
 
     public static final String HIVE_CONNECTION_URI = "jdbc:hive2://" + HIVE_SERVER + ":" + HIVE_PORT + "/default";
 
 
     public static final String HIVE_TARGET_DIR = "../hadoop/datacafe/";
 
-//    public static final String HIVE_CSV_DIR = "datacafe/";
     public static final String HIVE_CSV_DIR = DatacafeConstants.IS_REMOTE_HIVE_SERVER ? "/home/hadoop/datacafe/": "datacafe/";
 
 
@@ -52,7 +38,6 @@ public class HDFSConstants {
 
 
     /*local*/
-    //    public static String HIVE_CONNECTION_URI = "jdbc:hive2://localhost:10000/default";
     //    public static String HIVE_USER_NAME = "pradeeban";
     //    public static final String HIVE_CSV_DIR = "gsoc2015/conf/";
 

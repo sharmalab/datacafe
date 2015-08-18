@@ -118,22 +118,12 @@ $ java -classpath lib/datacafe-server-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi
 $ ssh -i "pradeeban.pem" ubuntu@ec2-54-157-222-55.compute-1.amazonaws.com:/home/ubuntu/
 
 
-Copy All
---------
-Copy to Hive/HDFS + Drill + Java 7 instance
-$ scp -r -i "pradeeban.pem" . ec2-user@ec2-54-145-26-70.compute-1.amazonaws.com:/home/ec2-user/datacafe
-
-
-Copy to Java 7 (only) instance
+13. Copy All to the EC2 Instance
 $ scp -r -i "pradeeban.pem" . ubuntu@ec2-54-157-222-55.compute-1.amazonaws.com:/home/ubuntu/datacafe
 
 
-Copy only the datacafe jar
--------------------------- 
-To Hive/HDFS + Drill + Java 7 instance
-$ scp -i "pradeeban.pem" lib/datacafe-server-1.0-SNAPSHOT.jar ec2-user@ec2-54-145-26-70.compute-1.amazonaws.com:/home/ec2-user/datacafe/lib
+14. Copy only the datacafe jar
 
-To Java 7 (only) instance
 $ scp -i "pradeeban.pem" lib/datacafe-server-1.0-SNAPSHOT.jar ubuntu@ec2-54-157-222-55.compute-1.amazonaws.com:/home/ubuntu/datacafe/lib
 
 
