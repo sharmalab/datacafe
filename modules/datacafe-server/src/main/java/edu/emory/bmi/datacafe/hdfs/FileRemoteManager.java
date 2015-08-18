@@ -44,13 +44,11 @@ public class FileRemoteManager {
             channel.connect();
 
             channelSftp = (ChannelSftp) channel;
-            channelSftp.cd(HDFSConstants.HIVE_CSV_DIR);
-            if (logger.isDebugEnabled()) {
-                logger.debug("********************** Changed the directory...");
-            }
+            channelSftp.cd(HDFSConstants.HIVE_TARGET_DIR);
 
             File f = new File(HDFSConstants.CLIENT_CSV_DIR + fileName);
             channelSftp.put(new FileInputStream(f), f.getName());
+            logger.info("File, " + fileName + " copied successfully to the remote location..");
 
         } catch (JSchException e) {
             logger.error("JSchException when attempting to copy the file to remote location", e);
