@@ -140,7 +140,7 @@ $ mvn clean install
 $ java -classpath lib/datacafe-server-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi.datacafe.impl.main.Initiator
 
 
-12. SCP to remote instance
+12. SSH to remote instance
 
 $ ssh -i "pradeeban.pem" ubuntu@ec2-54-157-222-55.compute-1.amazonaws.com:/home/ubuntu/
 
