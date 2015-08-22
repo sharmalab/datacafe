@@ -173,8 +173,12 @@ Currently, 5 EC2 nodes in total.
 
 
 
+Further Extension Points and Future Work
+========================================
 
-
+Evaluation of
+>> Apache Accumulo https://accumulo.apache.org/
+>> Tyk https://tyk.io/
 
 
 
