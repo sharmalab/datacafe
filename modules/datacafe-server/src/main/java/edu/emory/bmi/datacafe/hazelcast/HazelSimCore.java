@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.FileNotFoundException;
 
 /**
- * The singleton base class integrating hazelcast into cloudsim, with its configurations
+ * The singleton base class integrating hazelcast into Data Cafe, with its configurations
  */
 public class HazelSimCore {
     private static HazelSimCore hazelSimCore = null;

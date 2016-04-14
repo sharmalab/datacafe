@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A singleton that integrates Hazelcast into Cloud2Sim and initiates Hazelcast.
+ * A singleton that integrates Hazelcast into Data Cafe and initiates Hazelcast.
  */
 public class HazelSim {
     private static HazelSim hazelSim = null;
