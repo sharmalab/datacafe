@@ -28,7 +28,7 @@ public class Initiator {
 
         Class<Patient> clazz = Patient.class;
         Class<Slice> clazz1 = Slice.class;
-        executorEngine.initiate();
+        executorEngine.initializeDatasourceEngine();
         executorEngine.constructWarehouse(clazz, clazz1);
     }
 

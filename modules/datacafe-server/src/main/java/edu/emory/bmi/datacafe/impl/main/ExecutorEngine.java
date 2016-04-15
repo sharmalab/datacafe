@@ -35,7 +35,10 @@ public class ExecutorEngine {
         dataSourceList = dataSources;
     }
 
-    public void initiate() {
+    /**
+     * Initiate the data lake creation workflow
+     */
+    public void initializeDatasourceEngine() {
         MongoEngine dataSourceEngine = new MongoEngine();
         int numOfDataSources = dataSourceList.size();
         datasourceNames = new String[numOfDataSources];
