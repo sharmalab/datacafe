@@ -210,6 +210,10 @@ SELECT `slices.csv`.sliceID, `slices.csv`.slideBarCode, `patients.csv`.patientID
 FROM hdfs.root.`slices.csv`, hdfs.root.`patients.csv`
 WHERE CAST(`patients.csv`.patientID AS VARCHAR) = CAST(`slices.csv`.patientID AS VARCHAR)
 
+** or **
+SELECT `slices.csv`.columns[0], `slices.csv`.columns[2], `patients.csv`.columns[0], `patients.csv`.columns[1], `patients.csv`.columns[2] 
+FROM hdfs.root.`slices.csv`, hdfs.root.`patients.csv`
+WHERE CAST(`patients.csv`.columns[0] AS VARCHAR) = CAST(`slices.csv`.columns[1] AS VARCHAR) AND `patients.csv`.columns[1]='MALE'
 
 
 
