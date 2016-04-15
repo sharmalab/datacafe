@@ -21,35 +21,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An InitiatorEngine implementation for testing the Mongo data integration
+ * An ExecutorEngine implementation for testing the Mongo data integration
  */
-public class InitiatorEngine {
-    private static Logger logger = LogManager.getLogger(InitiatorEngine.class.getName());
+public class ExecutorEngine {
+    private static Logger logger = LogManager.getLogger(ExecutorEngine.class.getName());
     private static List<DataSource> dataSourceList;
 
     private static List<Patient> patientList = new ArrayList<>();
     private static List<Slice> sliceList = new ArrayList<>();
+    private String[] datasourceNames;
 
-    public InitiatorEngine(List<DataSource> dataSources) {
+    public ExecutorEngine(List<DataSource> dataSources) {
         dataSourceList = dataSources;
     }
 
-    public void initiate(Class<Patient> clazz, Class<Slice> clazz1) {
+    public void initiate() {
         MongoEngine dataSourceEngine = new MongoEngine();
         int numOfDataSources = dataSourceList.size();
-        String[] datasourceNames = new String[numOfDataSources];
+        datasourceNames = new String[numOfDataSources];
         for (int i = 0; i < dataSourceList.size(); i++) {
             dataSourceEngine.addDataSource(dataSourceList.get(i));
             datasourceNames[i] = dataSourceList.get(i).getFullName();
         }
+    }
 
+    public void constructWarehouse(Class<Patient> clazz, Class<Slice> clazz1) {
         // Get the IDs
-        MongoCursor<Patient> patientCursors = (MongoCursor<Patient>) MongoEngine.initializeEntry("clinical", "clinicalData",
+        MongoCursor<Patient> patientCursors = (MongoCursor<Patient>) MongoEngine.initializeEntry(
+                dataSourceList.get(0).getDatabase(), dataSourceList.get(0).getCollection(),
                 "{Age_at_Initial_Diagnosis: {$gt: 70}}, {_id:1}", clazz);
 
 
-        MongoCursor<Slice> sliceCursors = (MongoCursor<Slice>) MongoEngine.initializeEntry("pathology",
-                "pathologyData",
+        MongoCursor<Slice> sliceCursors = (MongoCursor<Slice>) MongoEngine.initializeEntry(
+                dataSourceList.get(1).getDatabase(), dataSourceList.get(1).getCollection(),
                 "{Tumor_Nuclei_Percentage: {$gt: 65}}, {_id:1}", clazz1);
 
         for (Patient patient : patientCursors) {

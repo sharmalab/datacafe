@@ -36,9 +36,11 @@ public class HadoopConnector {
         config.addResource(new Path(HDFSConstants.HADOOP_CONF + File.separator + "hdfs-site.xml"));
 
         FileSystem fs = FileSystem.get(config);
+        String outputFileName = fileName +  DatacafeConstants.FILE_EXTENSION;
 
         fs.copyFromLocalFile(new Path(HDFSConstants.CLIENT_ORIGIN_DIR + fileName),
-                new Path(HDFSConstants.HDFS_PATH + fileName + DatacafeConstants.FILE_EXTENSION));
+                new Path(HDFSConstants.HDFS_PATH + outputFileName));
+        logger.info("Successfully written " + outputFileName + " to the Hadoop HDFS");
     }
 
     /**
@@ -47,7 +49,6 @@ public class HadoopConnector {
     public static void writeToHDFS(String fileName) {
         try {
             HadoopConnector.copyToHDFS(fileName);
-            logger.info("Successfully written to the Hadoop HDFS");
         } catch (IOException e) {
             logger.error("Failed to write to Hadoop HDFS", e);
         }

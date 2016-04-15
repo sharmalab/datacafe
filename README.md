@@ -238,7 +238,7 @@ SELECT firstname,lastname FROM hive.`customers`
 
 $ mvn clean install
 
-$ java -classpath lib/datacafe-server-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi.datacafe.impl.main.InitiatorEngine
+$ java -classpath lib/datacafe-server-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi.datacafe.impl.main.ExecutorEngine
 
 
 12. SSH to remote instance

@@ -24,11 +24,12 @@ public class Initiator {
         dataSourceList.add(new DataSource("clinical", "clinicalData"));
         dataSourceList.add(new DataSource("pathology", "pathologyData"));
 
-        InitiatorEngine initiatorEngine = new InitiatorEngine(dataSourceList);
+        ExecutorEngine executorEngine = new ExecutorEngine(dataSourceList);
 
         Class<Patient> clazz = Patient.class;
         Class<Slice> clazz1 = Slice.class;
-        initiatorEngine.initiate (clazz, clazz1);
+        executorEngine.initiate();
+        executorEngine.constructWarehouse(clazz, clazz1);
     }
 
 }
