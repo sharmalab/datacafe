@@ -13,7 +13,7 @@ Refer to the linked pages for detailed instructions on each of these steps.
 
 ## Execute Hadoop
 
-* Start Hadoop NameNode daemon and DataNode daemon -
+* Start Hadoop NameNode daemon and DataNode daemon 
 
  $HADOOP_HOME/sbin/start-dfs.sh
 
@@ -26,7 +26,7 @@ Refer to the linked pages for detailed instructions on each of these steps.
 
 ## Configure Drill
 
-* Launch Drill in Embedded mode -
+* Launch Drill in Embedded mode 
 
  $DRILL_HOME/bin/drill-embedded 
 
