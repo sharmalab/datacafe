@@ -3,98 +3,98 @@ A Dynamic Data Warehousing System
 
 Apache Drill can be used to query Hadoop and HDFS in a very efficient way. The steps are as below. Refer to the linked pages for each step.
 
-1. Configuring Mongo in EC2.
+ Configuring Mongo in EC2.
 
 Connecting to the remote EC2/Mongo Instance
 
-$ ssh -i "pradeeban.pem" ubuntu@ec2-54-166-90-207.compute-1.amazonaws.com
+ $ ssh -i "pradeeban.pem" ubuntu@ec2-54-166-90-207.compute-1.amazonaws.com
 
 Copy files to the remote instance.
 
-$ scp -i "pradeeban.pem" /home/pradeeban/gsoc2015/conf/clinical.csv ubuntu@ec2-54-157-62-174.compute-1.amazonaws.com:/home/ubuntu
+ $ scp -i "pradeeban.pem" /home/pradeeban/gsoc2015/conf/clinical.csv ubuntu@ec2-54-157-62-174.compute-1.amazonaws.com:/home/ubuntu
 
-$ scp -i "pradeeban.pem" /home/pradeeban/gsoc2015/conf/pathology.csv ubuntu@ec2-54-157-62-174.compute-1.amazonaws.com:/home/ubuntu
+ $ scp -i "pradeeban.pem" /home/pradeeban/gsoc2015/conf/pathology.csv ubuntu@ec2-54-157-62-174.compute-1.amazonaws.com:/home/ubuntu
 
 
 * Importing the collections from the csv files
 
-mongoimport --db pathology --collection pathologyData --type csv --headerline --file pathology.csv
+ mongoimport --db pathology --collection pathologyData --type csv --headerline --file pathology.csv
 
-mongoimport --db clinical --collection clinicalData --type csv --headerline --file clinical.csv
+ mongoimport --db clinical --collection clinicalData --type csv --headerline --file clinical.csv
 
 
 * Executing mongo commands.
 
-$ mongo
+ $ mongo
 
-> use pathology
+ > use pathology
 
-> db.pathologyData.find()
+ > db.pathologyData.find()
 
 
-> use clinical
+ > use clinical
 
-> db.clinicalData.find()
+ > db.clinicalData.find()
 
 
 2. Configure Hadoop 
 
-/hadoop-2.7.2/etc/hadoop/hdfs-site.xml
+ /hadoop-2.7.2/etc/hadoop/hdfs-site.xml
 * To ensure that the name node configuration persists even after a reboot.
 
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+ <?xml version="1.0" encoding="UTF-8"?>
+ <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 
-<!-- Put site-specific property overrides in this file. -->
-<configuration>
-<property>
-  <name>dfs.name.dir</name>
-  <value>file:///home/pradeeban/programs/hadoop-2.7.2/dfs/name</value>
-</property>
-<property>
-  <name>dfs.data.dir</name>
-  <value>file:///home/pradeeban/programs/hadoop-2.7.2/dfs/data</value>
-</property>
-<property>
-    <name>dfs.replication</name>
-    <value>1</value>
-</property>
+ <!-- Put site-specific property overrides in this file. -->
+ <configuration>
+ <property>
+   <name>dfs.name.dir</name>
+   <value>file:///home/pradeeban/programs/hadoop-2.7.2/dfs/name</value>
+ </property>
+ <property>
+   <name>dfs.data.dir</name>
+   <value>file:///home/pradeeban/programs/hadoop-2.7.2/dfs/data</value>
+ </property>
+ <property>
+     <name>dfs.replication</name>
+     <value>1</value>
+ </property>
 
-</configuration>
+ </configuration>
 
 
 
 /hadoop-2.7.2/etc/hadoop/core-site.xml
 
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+ <?xml version="1.0" encoding="UTF-8"?>
+ <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 
 
-<!-- Put site-specific property overrides in this file. -->
-<configuration>
-    <property>
-        <name>fs.defaultFS</name>
-        <value>hdfs://localhost:9000</value>
-    </property>
-</configuration>
+ <!-- Put site-specific property overrides in this file. -->
+ <configuration>
+     <property>
+         <name>fs.defaultFS</name>
+         <value>hdfs://localhost:9000</value>
+     </property>
+ </configuration>
 
 
 
 
- $ $HADOOP_HOME/bin/hdfs namenode -format
+  $HADOOP_HOME/bin/hdfs namenode -format
 
 
 
 3. Start Hadoop NameNode daemon and DataNode daemon -
 
-$ $HADOOP_HOME/sbin/start-dfs.sh
+ $HADOOP_HOME/sbin/start-dfs.sh
 
 * Create a directory in hdfs for Data Cafe
-bin/hdfs dfs -mkdir datacafe
+ bin/hdfs dfs -mkdir datacafe
 
 Once you are done with the experiments, you may stop the daemons with
 
-$ $HADOOP_HOME/sbin/stop-dfs.sh
+ $HADOOP_HOME/sbin/stop-dfs.sh
 
 
 4. Browse the web interface for the name node - http://localhost:50070/
@@ -103,13 +103,13 @@ $ $HADOOP_HOME/sbin/stop-dfs.sh
 5. Configure Drill
 
 * To ensure that the name node configuration persists even after a reboot.
-/apache-drill-1.6.0/conf/drill-override.conf
+ /apache-drill-1.6.0/conf/drill-override.conf
 
-drill.exec: {
-    cluster-id: "drillbits1",
-    zk.connect: "localhost:2181",
-    sys.store.provider.local.path="/home/pradeeban/programs/apache-drill-1.6.0/storage"
-}
+ drill.exec: {
+     cluster-id: "drillbits1",
+     zk.connect: "localhost:2181",
+     sys.store.provider.local.path="/home/pradeeban/programs/apache-drill-1.6.0/storage"
+ }
 
 * Launch Drill in Embedded mode -
 
@@ -118,7 +118,7 @@ drill.exec: {
 
 * Launch Drill during EMR instance bootstrap action
 
-s3://maprtech-emr/scripts/mapr_drill_bootstrap.sh
+ s3://maprtech-emr/scripts/mapr_drill_bootstrap.sh
 
 
 6. Browse the web interface for Drill - http://localhost:8047/
@@ -130,29 +130,29 @@ Hive configuration can be found in the relevant documentation.
 
 
 9.  Configure and enable storage plugin for HDFS in Drill
-{
-  "type": "file",
-  "enabled": true,
-  "connection": "hdfs://localhost:9000",
-  "config": null,
-  "workspaces": {
-    "root": {
-      "location": "/user/hdfs",
-      "writable": true,
-      "defaultInputFormat": null
-    }
-  },
-  "formats": {
-    "csv": {
-      "type": "text",
-      "extensions": [
-        "csv"
-      ],
-      "extractHeader": true,
-      "delimiter": ","
-    }
-  }
-}
+ {
+   "type": "file",
+   "enabled": true,
+   "connection": "hdfs://localhost:9000",
+   "config": null,
+   "workspaces": {
+     "root": {
+       "location": "/user/hdfs",
+       "writable": true,
+       "defaultInputFormat": null
+     }
+   },
+   "formats": {
+     "csv": {
+       "type": "text",
+       "extensions": [
+         "csv"
+       ],
+       "extractHeader": true,
+       "delimiter": ","
+     }
+   }
+ }
 
 
 
@@ -160,21 +160,21 @@ Hive configuration can be found in the relevant documentation.
 
 10. 
 
-SELECT * FROM hdfs.root.`patients.csv` WHERE Gender='MALE'
-** or **
-SELECT * FROM hdfs.`/user/pradeeban/patients.csv` WHERE Gender='MALE'
-** or **
-SELECT * FROM hdfs.root.`patients.csv` WHERE columns[1]='MALE'
+ SELECT * FROM hdfs.root.`patients.csv` WHERE Gender='MALE'
+ ** or **
+ SELECT * FROM hdfs.`/user/pradeeban/patients.csv` WHERE Gender='MALE'
+ ** or **
+ SELECT * FROM hdfs.root.`patients.csv` WHERE columns[1]='MALE'
 
-** or **
-SELECT `slices.csv`.sliceID, `slices.csv`.slideBarCode, `patients.csv`.patientID, `patients.csv`.gender, `patients.csv`.laterality 
-FROM hdfs.root.`slices.csv`, hdfs.root.`patients.csv`
-WHERE CAST(`patients.csv`.patientID AS VARCHAR) = CAST(`slices.csv`.patientID AS VARCHAR)
+ ** or **
+ SELECT `slices.csv`.sliceID, `slices.csv`.slideBarCode, `patients.csv`.patientID, `patients.csv`.gender, `patients.csv`.laterality 
+ FROM hdfs.root.`slices.csv`, hdfs.root.`patients.csv`
+ WHERE CAST(`patients.csv`.patientID AS VARCHAR) = CAST(`slices.csv`.patientID AS VARCHAR)
 
-** or **
-SELECT `pathology_pathologyData.csv`.columns[0], `pathology_pathologyData.csv`.columns[2], `clinical_clinicalData.csv`.columns[0], `clinical_clinicalData.csv`.columns[1], `clinical_clinicalData.csv`.columns[2] 
-FROM hdfs.root.`pathology_pathologyData.csv`, hdfs.root.`clinical_clinicalData.csv`
-WHERE CAST(`clinical_clinicalData.csv`.columns[0] AS VARCHAR) = CAST(`pathology_pathologyData.csv`.columns[1] AS VARCHAR) AND `clinical_clinicalData.csv`.columns[1]='MALE'
+ ** or **
+ SELECT `pathology_pathologyData.csv`.columns[0], `pathology_pathologyData.csv`.columns[2], `clinical_clinicalData.csv`.columns[0], `clinical_clinicalData.csv`.columns[1], `clinical_clinicalData.csv`.columns[2] 
+ FROM hdfs.root.`pathology_pathologyData.csv`, hdfs.root.`clinical_clinicalData.csv`
+ WHERE CAST(`clinical_clinicalData.csv`.columns[0] AS VARCHAR) = CAST(`pathology_pathologyData.csv`.columns[1] AS VARCHAR) AND `clinical_clinicalData.csv`.columns[1]='MALE'
 
 
 
@@ -184,24 +184,24 @@ WHERE CAST(`clinical_clinicalData.csv`.columns[0] AS VARCHAR) = CAST(`pathology_
 
 11. Executing DataCafe
 
-$ mvn clean install
+ $ mvn clean install
 
-$ java -classpath lib/datacafe-server-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi.datacafe.impl.main.ExecutorEngine
+ $ java -classpath lib/datacafe-server-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi.datacafe.impl.main.ExecutorEngine
 
 
 12. SSH to remote instance
 
-$ ssh -i "pradeeban.pem" ubuntu@ec2-54-157-222-55.compute-1.amazonaws.com:/home/ubuntu/
+ $ ssh -i "pradeeban.pem" ubuntu@ec2-54-157-222-55.compute-1.amazonaws.com:/home/ubuntu/
 
 
 13. Copy All to the EC2 Instance
 
-$ scp -r -i "pradeeban.pem" . ubuntu@ec2-54-157-222-55.compute-1.amazonaws.com:/home/ubuntu/datacafe
+ $ scp -r -i "pradeeban.pem" . ubuntu@ec2-54-157-222-55.compute-1.amazonaws.com:/home/ubuntu/datacafe
 
 
 14. Copy only the datacafe jar
 
-$ scp -i "pradeeban.pem" lib/datacafe-server-1.0-SNAPSHOT.jar ubuntu@ec2-54-157-222-55.compute-1.amazonaws.com:/home/ubuntu/datacafe/lib
+ $ scp -i "pradeeban.pem" lib/datacafe-server-1.0-SNAPSHOT.jar ubuntu@ec2-54-157-222-55.compute-1.amazonaws.com:/home/ubuntu/datacafe/lib
 
 
 Current AWS Deployment:
