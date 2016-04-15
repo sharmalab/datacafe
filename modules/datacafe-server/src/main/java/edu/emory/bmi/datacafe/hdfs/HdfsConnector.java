@@ -14,7 +14,7 @@ import edu.emory.bmi.datacafe.core.WarehouseConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -25,27 +25,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Connecting to Hive through Datacafe.
+ * Connecting to HDFS through Datacafe.
  */
-public class HiveConnector implements WarehouseConnector {
-    private static Logger logger = LogManager.getLogger(HiveConnector.class.getName());
+public class HdfsConnector implements WarehouseConnector {
+    private static Logger logger = LogManager.getLogger(HdfsConnector.class.getName());
 
     /**
      * Writes the data sources to Hive
+     *
      * @param datasourceNames names of the data sources
-     * @param params parameters of the data sources as a 2-d array - an array for each of the data source
-     * @param queries queries for each of the data source.
-     * @param writables array of lists for each data sources to be written to the data warehouse.
+     * @param params          parameters of the data sources as a 2-d array - an array for each of the data source
+     * @param queries         queries for each of the data source.
+     * @param writables       array of lists for each data sources to be written to the data warehouse.
      */
     public static void writeDataSourcesToWarehouse(String[] datasourceNames, String[][] params,
-                                                   String[] queries, List<?>[] writables){
+                                                   String[] queries, List<?>[] writables) {
         List<String>[] texts = new ArrayList[writables.length];
 
         for (int i = 0; i < writables.length; i++) {
             texts[i] = CoreDataObject.getWritableString(params[i], writables[i]);
         }
 
-        WarehouseConnector warehouseConnector = new HiveConnector();
+        WarehouseConnector warehouseConnector = new HdfsConnector();
         warehouseConnector.writeToWarehouse(datasourceNames, texts, queries);
     }
 
@@ -55,13 +56,9 @@ public class HiveConnector implements WarehouseConnector {
         for (int i = 0; i < DatacafeConstants.NUMBER_OF_COMPOSING_DATA_SOURCES; i++) {
             createFile(datasourcesNames[i], texts[i]);
 
-            try {
-                writeToHive(datasourcesNames[i] + DatacafeConstants.FILE_EXTENSION,
-                        datasourcesNames[i], queries[i]);
-                logger.info("Successfully written the data to the warehouse: " + datasourcesNames[i]);
-            } catch (SQLException e) {
-                logger.error("SQL Exception in writing to Hive Table: " + datasourcesNames[i], e);
-            }
+            HadoopConnector.writeToHDFS(datasourcesNames[i]);
+            logger.info("Successfully written the data to the warehouse: " + datasourcesNames[i]);
+
         }
     }
 
@@ -69,7 +66,7 @@ public class HiveConnector implements WarehouseConnector {
     public void createFile(String fileName, List<String> lines) {
 
         Charset utf8 = StandardCharsets.UTF_8;
-        String file = fileName + DatacafeConstants.FILE_EXTENSION;
+        String file = fileName;
         try {
 
             if (DatacafeConstants.IS_APPEND) {
@@ -84,7 +81,7 @@ public class HiveConnector implements WarehouseConnector {
         } catch (IOException e) {
             logger.error("Error in creating the warehouse file: " + file, e);
         }
-        if (DatacafeConstants.IS_REMOTE_HIVE_SERVER) {
+        if (DatacafeConstants.IS_REMOTE_SERVER) {
             FileRemoteManager.copyFile(file);
         }
     }
@@ -116,6 +113,4 @@ public class HiveConnector implements WarehouseConnector {
         String sql = "load data local inpath '" + csvFilePath + "' into table " + hiveTable;
         stmt.execute(sql);
     }
-
-
 }

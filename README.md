@@ -49,6 +49,8 @@ There may be some errors encountered when executing Hadoop with Java 8 with the 
 
 $ $HADOOP_HOME/sbin/start-dfs.sh
 
+* Create a directory in hdfs for Data Cafe
+bin/hdfs dfs -mkdir datacafe
 
 Once you are done with the experiments, you may stop the daemons with
 
@@ -80,11 +82,8 @@ $ $HADOOP_HOME/bin/hadoop fs -chmod g+w   /tmp
 
 $ $HADOOP_HOME/bin/hadoop fs -mkdir       /user/
 
-$ $HADOOP_HOME/bin/hadoop fs -mkdir       /user/hive
+$ $HADOOP_HOME/bin/hadoop fs -mkdir       /user/hdfs
 
-$ $HADOOP_HOME/bin/hadoop fs -mkdir       /user/hive/warehouse
-
-$ $HADOOP_HOME/bin/hadoop fs -chmod g+w   /user/hive/warehouse
 
 
 * Configure Hive Metastore with MySQL.
@@ -98,7 +97,36 @@ Start HiveServer2
 $ HIVE_HOME/bin/hiveserver2
 
 
-9.  Configure and enable Storage Plugin for Hive in Drill
+9.  Configure and enable storage plugin for HDFS in Drill
+{
+  "type": "file",
+  "enabled": true,
+  "connection": "hdfs://localhost:9000",
+  "config": null,
+  "workspaces": {
+    "root": {
+      "location": "/user/pradeeban",
+      "writable": true,
+      "defaultInputFormat": null
+    }
+  },
+  "formats": {
+    "csv": {
+      "type": "text",
+      "extensions": [
+        "csv"
+      ],
+      "extractHeader": true,
+      "delimiter": ","
+    }
+  }
+}
+
+
+
+
+** or **
+Configure and enable Storage Plugin for Hive in Drill
 
 {
 
@@ -117,7 +145,23 @@ $ HIVE_HOME/bin/hiveserver2
 }
 
 
-10. Query Hive from Drill.
+
+10. 
+
+SELECT * FROM hdfs.root.`patients.csv` WHERE Gender='MALE'
+** or **
+SELECT * FROM hdfs.`/user/pradeeban/patients.csv` WHERE Gender='MALE'
+
+** or **
+SELECT `slices.csv`.sliceID, `slices.csv`.slideBarCode, `patients.csv`.patientID, `patients.csv`.gender, `patients.csv`.laterality 
+FROM hdfs.root.`slices.csv`, hdfs.root.`patients.csv`
+WHERE CAST(`patients.csv`.patientID AS VARCHAR) = CAST(`slices.csv`.patientID AS VARCHAR)
+
+
+
+
+** or **
+Query Hive from Drill.
 
 SELECT firstname,lastname FROM hive.`customers` 
 

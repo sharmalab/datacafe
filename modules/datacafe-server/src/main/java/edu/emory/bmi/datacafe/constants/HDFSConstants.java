@@ -16,7 +16,7 @@ public class HDFSConstants {
     public static final String HIVE_PORT = "10000";
 
 //    Hive Server - HDFS Master - Drill Instance
-    public static final String HIVE_SERVER = DatacafeConstants.IS_REMOTE_HIVE_SERVER ?
+    public static final String HIVE_SERVER = DatacafeConstants.IS_REMOTE_SERVER ?
         "ec2-54-158-108-220.compute-1.amazonaws.com" : "localhost";
 
     public static final String HIVE_CONNECTION_URI = "jdbc:hive2://" + HIVE_SERVER + ":" + HIVE_PORT + "/default";
@@ -24,10 +24,10 @@ public class HDFSConstants {
 
     public static final String HIVE_TARGET_DIR = "../hadoop/datacafe/";
 
-    public static final String HIVE_CSV_DIR = DatacafeConstants.IS_REMOTE_HIVE_SERVER ? "/home/hadoop/datacafe/": "datacafe/";
+    public static final String HIVE_CSV_DIR = DatacafeConstants.IS_REMOTE_SERVER ? "/home/hadoop/datacafe/": "datacafe/";
 
 
-    public static final String CLIENT_ORIGIN_DIR = "/home/ubuntu/datacafe/";
+    public static final String CLIENT_ORIGIN_DIR = DatacafeConstants.IS_REMOTE_SERVER ? "/home/hadoop/datacafe/": "./";
     public static final String CLIENT_CSV_DIR = CLIENT_ORIGIN_DIR + "conf/";
 
     public static final int HIVE_SFTP_PORT = 22;
@@ -47,6 +47,6 @@ public class HDFSConstants {
 //    public static final String HADOOP_HOME = "/home/pradeeban/programs/hadoop-2.7.0"; // /etc/hadoop/conf
 //    public static final String HADOOP_CONF = HADOOP_HOME + File.separator + "etc" + File.separator + "hadoop";
 
-    public static final String HADOOP_CONF = "/etc/hadoop/conf";
-    public static final String HDFS_PATH = "/user/hive/warehouse/";
+    public static final String HADOOP_CONF = "/home/pradeeban/programs/hadoop-2.7.2/etc/hadoop";
+    public static final String HDFS_PATH = "/user/hdfs/";
 }

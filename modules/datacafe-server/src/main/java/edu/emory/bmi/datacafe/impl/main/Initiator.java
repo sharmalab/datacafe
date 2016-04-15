@@ -9,7 +9,7 @@ package edu.emory.bmi.datacafe.impl.main;
 
 import edu.emory.bmi.datacafe.mongo.MongoConnector;
 import edu.emory.bmi.datacafe.mongo.MongoEngine;
-import edu.emory.bmi.datacafe.hdfs.HiveConnector;
+import edu.emory.bmi.datacafe.hdfs.HdfsConnector;
 import edu.emory.bmi.datacafe.impl.data.Patient;
 import edu.emory.bmi.datacafe.impl.data.Slice;
 import org.apache.logging.log4j.LogManager;
@@ -68,6 +68,6 @@ public class Initiator {
         String[][] params = {{"patientID", "gender", "laterality"}, {"sliceID", "patientID", "slideBarCode"}};
         String[] queries = MongoConnector.constructQueries(params);
 
-        HiveConnector.writeDataSourcesToWarehouse(datasourceNames, params, queries, new List[]{patientList, sliceList});
+        HdfsConnector.writeDataSourcesToWarehouse(datasourceNames, params, queries, new List[]{patientList, sliceList});
     }
 }
