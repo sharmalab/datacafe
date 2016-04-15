@@ -8,6 +8,7 @@
 package edu.emory.bmi.datacafe.mongo;
 
 import edu.emory.bmi.datacafe.constants.MongoConstants;
+import edu.emory.bmi.datacafe.core.DataSource;
 import edu.emory.bmi.datacafe.core.DataSourceEngine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -56,10 +57,10 @@ public class MongoEngine extends DataSourceEngine {
         return patients.findOne(constraint).as(clazz);
     }
 
-    public String addDataSource(String database, String collection) {
+    public String addDataSource(DataSource dataSource) {
         Map<String, String> dsMap = new HashMap<>();
-        dsMap.put(MongoConstants.DATABASE_KEY_ENTRY, database);
-        dsMap.put(MongoConstants.COLLECTION_KEY_ENTRY, collection);
+        dsMap.put(MongoConstants.DATABASE_KEY_ENTRY, dataSource.getDatabase());
+        dsMap.put(MongoConstants.COLLECTION_KEY_ENTRY, dataSource.getCollection());
         return super.addDataSource(dsMap);
     }
 }
