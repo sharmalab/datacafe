@@ -11,6 +11,7 @@ Refer to the relevant files in documentation for detailed instructions on each o
 
 ## Configure Hadoop 
 
+
 ## Execute Hadoop
 
 * Start Hadoop NameNode daemon and DataNode daemon 
@@ -19,7 +20,7 @@ Refer to the relevant files in documentation for detailed instructions on each o
 
 * Browse the web interface for the name node - http://localhost:50070/
 
-* Once you are done with the execution, you may stop the daemons with
+* Once the execution is complete, you may stop the daemons with
 
  $HADOOP_HOME/sbin/stop-dfs.sh
 
@@ -31,12 +32,8 @@ Refer to the relevant files in documentation for detailed instructions on each o
  $DRILL_HOME/bin/drill-embedded 
 
 
-* Launch Drill during EMR instance bootstrap action
-
- s3://maprtech-emr/scripts/mapr_drill_bootstrap.sh
-
-
 * Browse the web interface of Drill - http://localhost:8047/
+
 
 ## Configure Hive
 
@@ -48,5 +45,3 @@ Optional.
  $ mvn clean install
 
  $ java -classpath lib/datacafe-server-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi.datacafe.impl.main.ExecutorEngine
-
-
