@@ -3,7 +3,7 @@
 A Dynamic Data Warehousing System
 
 Apache Drill can be used to query Hadoop and HDFS in a very efficient way. The steps are outlined below. 
-Refer to the linked pages for detailed instructions on each of these steps.
+Refer to the relevant files in documentation for detailed instructions on each of these steps.
 
 
 ## Configure the original data sources.
