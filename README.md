@@ -37,7 +37,7 @@ Copy files to the remote instance.
  > db.clinicalData.find()
 
 
-2. Configure Hadoop 
+* Configure Hadoop 
 
  /hadoop-2.7.2/etc/hadoop/hdfs-site.xml
 * To ensure that the name node configuration persists even after a reboot.
@@ -85,7 +85,7 @@ Copy files to the remote instance.
 
 
 
-3. Start Hadoop NameNode daemon and DataNode daemon -
+* Start Hadoop NameNode daemon and DataNode daemon -
 
  $HADOOP_HOME/sbin/start-dfs.sh
 
@@ -97,10 +97,10 @@ Once you are done with the experiments, you may stop the daemons with
  $HADOOP_HOME/sbin/stop-dfs.sh
 
 
-4. Browse the web interface for the name node - http://localhost:50070/
+* Browse the web interface for the name node - http://localhost:50070/
 
 
-5. Configure Drill
+* Configure Drill
 
 * To ensure that the name node configuration persists even after a reboot.
  /apache-drill-1.6.0/conf/drill-override.conf
@@ -121,7 +121,7 @@ Once you are done with the experiments, you may stop the daemons with
  s3://maprtech-emr/scripts/mapr_drill_bootstrap.sh
 
 
-6. Browse the web interface for Drill - http://localhost:8047/
+* Browse the web interface for Drill - http://localhost:8047/
 
 For Data Cafe storage in hdfs without hive.
  $HADOOP_HOME/bin/hadoop fs -mkdir       /user/hdfs
@@ -158,48 +158,25 @@ Hive configuration can be found in the relevant documentation.
 
 
 
-10. 
 
- SELECT * FROM hdfs.root.`patients.csv` WHERE Gender='MALE'
- ** or **
- SELECT * FROM hdfs.`/user/pradeeban/patients.csv` WHERE Gender='MALE'
- ** or **
- SELECT * FROM hdfs.root.`patients.csv` WHERE columns[1]='MALE'
-
- ** or **
- SELECT `slices.csv`.sliceID, `slices.csv`.slideBarCode, `patients.csv`.patientID, `patients.csv`.gender, `patients.csv`.laterality 
- FROM hdfs.root.`slices.csv`, hdfs.root.`patients.csv`
- WHERE CAST(`patients.csv`.patientID AS VARCHAR) = CAST(`slices.csv`.patientID AS VARCHAR)
-
- ** or **
- SELECT `pathology_pathologyData.csv`.columns[0], `pathology_pathologyData.csv`.columns[2], `clinical_clinicalData.csv`.columns[0], `clinical_clinicalData.csv`.columns[1], `clinical_clinicalData.csv`.columns[2] 
- FROM hdfs.root.`pathology_pathologyData.csv`, hdfs.root.`clinical_clinicalData.csv`
- WHERE CAST(`clinical_clinicalData.csv`.columns[0] AS VARCHAR) = CAST(`pathology_pathologyData.csv`.columns[1] AS VARCHAR) AND `clinical_clinicalData.csv`.columns[1]='MALE'
-
-
-
-
-
-
-
-11. Executing DataCafe
+* Executing DataCafe
 
  $ mvn clean install
 
  $ java -classpath lib/datacafe-server-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi.datacafe.impl.main.ExecutorEngine
 
 
-12. SSH to remote instance
+* SSH to remote instance
 
  $ ssh -i "pradeeban.pem" ubuntu@ec2-54-157-222-55.compute-1.amazonaws.com:/home/ubuntu/
 
 
-13. Copy All to the EC2 Instance
+* Copy All to the EC2 Instance
 
  $ scp -r -i "pradeeban.pem" . ubuntu@ec2-54-157-222-55.compute-1.amazonaws.com:/home/ubuntu/datacafe
 
 
-14. Copy only the datacafe jar
+* Copy only the datacafe jar
 
  $ scp -i "pradeeban.pem" lib/datacafe-server-1.0-SNAPSHOT.jar ubuntu@ec2-54-157-222-55.compute-1.amazonaws.com:/home/ubuntu/datacafe/lib
 

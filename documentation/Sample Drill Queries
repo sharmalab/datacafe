@@ -1,0 +1,28 @@
+ SELECT * FROM hdfs.root.`patients.csv` WHERE Gender='MALE'
+
+
+-------------------------------------------------------
+
+
+ SELECT * FROM hdfs.`/user/pradeeban/patients.csv` WHERE Gender='MALE'
+
+
+-------------------------------------------------------
+
+ SELECT * FROM hdfs.root.`patients.csv` WHERE columns[1]='MALE'
+
+
+-------------------------------------------------------
+
+
+ SELECT `slices.csv`.sliceID, `slices.csv`.slideBarCode, `patients.csv`.patientID, `patients.csv`.gender, `patients.csv`.laterality
+ FROM hdfs.root.`slices.csv`, hdfs.root.`patients.csv`
+ WHERE CAST(`patients.csv`.patientID AS VARCHAR) = CAST(`slices.csv`.patientID AS VARCHAR)
+
+
+-------------------------------------------------------
+
+
+ SELECT `pathology_pathologyData.csv`.columns[0], `pathology_pathologyData.csv`.columns[2], `clinical_clinicalData.csv`.columns[0], `clinical_clinicalData.csv`.columns[1], `clinical_clinicalData.csv`.columns[2]
+ FROM hdfs.root.`pathology_pathologyData.csv`, hdfs.root.`clinical_clinicalData.csv`
+ WHERE CAST(`clinical_clinicalData.csv`.columns[0] AS VARCHAR) = CAST(`pathology_pathologyData.csv`.columns[1] AS VARCHAR) AND `clinical_clinicalData.csv`.columns[1]='MALE'
