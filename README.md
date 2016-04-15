@@ -1,4 +1,4 @@
-# DataCafe - Data Federation and Integration
+# Data Café — A Platform For Creating Biomedical Data Lakes
 
 A Dynamic Data Warehousing System
 
