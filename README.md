@@ -39,7 +39,47 @@ $ mongo
 
 2. Configure Hadoop 
 
-There may be some errors encountered when executing Hadoop with Java 8 with the default configurations. Further, formatting the file system will fix any error from Hadoop.
+/hadoop-2.7.2/etc/hadoop/hdfs-site.xml
+* To ensure that the name node configuration persists even after a reboot.
+
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+<configuration>
+<property>
+  <name>dfs.name.dir</name>
+  <value>file:///home/pradeeban/programs/hadoop-2.7.2/dfs/name</value>
+</property>
+<property>
+  <name>dfs.data.dir</name>
+  <value>file:///home/pradeeban/programs/hadoop-2.7.2/dfs/data</value>
+</property>
+<property>
+    <name>dfs.replication</name>
+    <value>1</value>
+</property>
+
+</configuration>
+
+
+
+/hadoop-2.7.2/etc/hadoop/core-site.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+
+<!-- Put site-specific property overrides in this file. -->
+<configuration>
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://localhost:9000</value>
+    </property>
+</configuration>
+
+
+
 
  $ $HADOOP_HOME/bin/hdfs namenode -format
 
@@ -62,6 +102,15 @@ $ $HADOOP_HOME/sbin/stop-dfs.sh
 
 5. Configure Drill
 
+* To ensure that the name node configuration persists even after a reboot.
+/apache-drill-1.6.0/conf/drill-override.conf
+
+drill.exec: {
+    cluster-id: "drillbits1",
+    zk.connect: "localhost:2181",
+    sys.store.provider.local.path="/home/pradeeban/programs/apache-drill-1.6.0/storage"
+}
+
 * Launch Drill in Embedded mode -
 
 $ $DRILL_HOME/bin/drill-embedded 
@@ -82,6 +131,10 @@ $ $HADOOP_HOME/bin/hadoop fs -chmod g+w   /tmp
 
 $ $HADOOP_HOME/bin/hadoop fs -mkdir       /user/
 
+$ $HADOOP_HOME/bin/hadoop fs -mkdir       /user/hive
+
+
+For Data Cafe storage in hdfs without hive.
 $ $HADOOP_HOME/bin/hadoop fs -mkdir       /user/hdfs
 
 
@@ -105,7 +158,7 @@ $ HIVE_HOME/bin/hiveserver2
   "config": null,
   "workspaces": {
     "root": {
-      "location": "/user/pradeeban",
+      "location": "/user/hdfs",
       "writable": true,
       "defaultInputFormat": null
     }
@@ -121,8 +174,6 @@ $ HIVE_HOME/bin/hiveserver2
     }
   }
 }
-
-
 
 
 ** or **
@@ -151,6 +202,8 @@ Configure and enable Storage Plugin for Hive in Drill
 SELECT * FROM hdfs.root.`patients.csv` WHERE Gender='MALE'
 ** or **
 SELECT * FROM hdfs.`/user/pradeeban/patients.csv` WHERE Gender='MALE'
+** or **
+SELECT * FROM hdfs.root.`patients.csv` WHERE columns[1]='MALE'
 
 ** or **
 SELECT `slices.csv`.sliceID, `slices.csv`.slideBarCode, `patients.csv`.patientID, `patients.csv`.gender, `patients.csv`.laterality 

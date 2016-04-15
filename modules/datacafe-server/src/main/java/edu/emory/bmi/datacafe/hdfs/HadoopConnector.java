@@ -38,7 +38,7 @@ public class HadoopConnector {
         FileSystem fs = FileSystem.get(config);
 
         fs.copyFromLocalFile(new Path(HDFSConstants.CLIENT_ORIGIN_DIR + fileName),
-                new Path(HDFSConstants.HDFS_PATH + fileName));
+                new Path(HDFSConstants.HDFS_PATH + fileName + DatacafeConstants.FILE_EXTENSION));
     }
 
     /**
