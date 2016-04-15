@@ -1,4 +1,4 @@
-# Data Café — A Platform For Creating Biomedical Data Lakes
+# Data Café — <br/> A Platform For Creating Biomedical Data Lakes
 
 A Dynamic Data Warehousing System
 
