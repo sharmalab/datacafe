@@ -36,7 +36,7 @@ Refer to the linked pages for detailed instructions on each of these steps.
  s3://maprtech-emr/scripts/mapr_drill_bootstrap.sh
 
 
-* Browse the web interface for Drill - http://localhost:8047/
+* Browse the web interface of Drill - http://localhost:8047/
 
 ## Configure Hive
 
