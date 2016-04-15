@@ -113,7 +113,7 @@ drill.exec: {
 
 * Launch Drill in Embedded mode -
 
-$ $DRILL_HOME/bin/drill-embedded 
+ $DRILL_HOME/bin/drill-embedded 
 
 
 * Launch Drill during EMR instance bootstrap action
@@ -123,31 +123,10 @@ s3://maprtech-emr/scripts/mapr_drill_bootstrap.sh
 
 6. Browse the web interface for Drill - http://localhost:8047/
 
-7. Configure Hive
-
-$ $HADOOP_HOME/bin/hadoop fs -mkdir       /tmp
-
-$ $HADOOP_HOME/bin/hadoop fs -chmod g+w   /tmp
-
-$ $HADOOP_HOME/bin/hadoop fs -mkdir       /user/
-
-$ $HADOOP_HOME/bin/hadoop fs -mkdir       /user/hive
-
-
 For Data Cafe storage in hdfs without hive.
-$ $HADOOP_HOME/bin/hadoop fs -mkdir       /user/hdfs
+ $HADOOP_HOME/bin/hadoop fs -mkdir       /user/hdfs
 
-
-
-* Configure Hive Metastore with MySQL.
-
-8. Run Hive Metastore and Hive
-
-$ $HIVE_HOME/bin/hive --service metastore &
-
-Start HiveServer2
-
-$ HIVE_HOME/bin/hiveserver2
+Hive configuration can be found in the relevant documentation.
 
 
 9.  Configure and enable storage plugin for HDFS in Drill
@@ -176,24 +155,6 @@ $ HIVE_HOME/bin/hiveserver2
 }
 
 
-** or **
-Configure and enable Storage Plugin for Hive in Drill
-
-{
-
-  "type": "hive",
-
-  "enabled": true,
-
-  "configProps": {
-
-    "hive.metastore.uris": "thrift://localhost:9083",
-
-    "hive.metastore.sasl.enabled": "false"
-
-  }
-
-}
 
 
 
@@ -217,20 +178,7 @@ WHERE CAST(`clinical_clinicalData.csv`.columns[0] AS VARCHAR) = CAST(`pathology_
 
 
 
-** or **
-Query Hive from Drill.
 
-SELECT firstname,lastname FROM hive.`customers` 
-
- SELECT * FROM hive.`patients`
-
- SELECT * FROM hive.`slices`
-
- SELECT slices.sliceID, slices.slideBarCode, patients.patientID, patients.gender, patients.laterality
-
- FROM hive.`patients`, hive.`slices`
-
- WHERE patients.patientID = slices.patientID
 
 
 
@@ -269,116 +217,3 @@ Current AWS Deployment:
 Task instances can be introduced without code changes as well).
 
 Currently, 5 EC2 nodes in total.
-
-
-
-
-
-Further Extension Points and Future Work
-========================================
-
-Evaluation of
-
->> Apache Accumulo https://accumulo.apache.org/
-
->> Tyk https://tyk.io/
-
-
-
-
-
-API Guide
-=========
-
-API for Datacafe
-
-Public facing interface of DataCafe.
-
-CreateDatacafe/
-
-> Create/Add data source
-
->> Choose data provider
-
-
-Project > *(High level folder)
-
-Create
-
-Insert
-
->> Add the query methods.
-
-Delete
-
-DescribeRelationships
-
-1. Connection between data sources
-
-2. API of each data source <-- Query Parameter and return parameters
-
-2.2 How to limit the query to give IDs / all data.
-
-
-Query : 
-
-CreateWarehouse (_in_drill)/ 
-
-<User write APIs - store as statements>
-
->> Names of the data sources, <key, value> pairs.
-
-
-Warehouse of following DS.
-
-
-
-TODO:
-
-2.1 Add/remove data sources from data cafe.
-
-* Connect the ID <-- ID Intersection.
-
-2. API of each data sources. 
-
-<-- REST/Mongo/ODBC ..
-
-
-Bindaas Model::
-
-Projects > Providers > APIs
-
-Projects: (keys to keep bundles together)
-
-Group of providers together as a project.
-
-Provider/
-
-Providers: 1:1 relationship with dataProvider (providers as plugins)
-
-Plugins for Mongo, Mysql, postgres, http (REST API for another REST API)
-
-MongoPlugin >>> 
-
-user name, password, database, collection
-
-
-<< Meta-data >> Datacafe.
-
-IQueryHandler Interface
-
-(-) submit or delete
-
-RequestContext - who is making the request -- for secury
-
-1 - 2 3 5 << Query Interface
-
-Bindaas Data Providers
-
-Datacafe (including the individual types of data sources >> adds types of data sources. Connect data sources.) and individual data warehouses
-
-Create a project
-
-> Create a data source.
-
-Create data warehouse
