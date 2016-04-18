@@ -12,6 +12,8 @@ package edu.emory.bmi.datacafe.constants;
  */
 public class MongoConstants {
 
+    public static final String ID_ATTRIBUTE = "_id";
+
     /*AWS deployment*/
     public static final String CLIENT_HOST =  DatacafeConstants.IS_REMOTE_MONGO_SERVER ?
             "ec2-54-161-152-13.compute-1.amazonaws.com" : "localhost";

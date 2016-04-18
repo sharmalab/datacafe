@@ -7,6 +7,7 @@
  */
 package edu.emory.bmi.datacafe.impl.data;
 
+import edu.emory.bmi.datacafe.core.DataSourceBean;
 import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
@@ -23,7 +24,7 @@ import org.jongo.marshall.jackson.oid.MongoObjectId;
  * "Section_Location" : "TOP" , "Tumor_Cells_Percentage" : 50 , "Necrosis_Percentage" : 0 ,
  * "Stromal_Cells_Percentage" : 40 , "Normal_Cells_Percentage" : 10 , "Tumor_Nuclei_Percentage" : 85}
  */
-public class Slice {
+public class Slice implements DataSourceBean {
     @MongoId // auto
     @MongoObjectId
     private String _id;

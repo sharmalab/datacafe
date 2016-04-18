@@ -7,12 +7,11 @@
  */
 package edu.emory.bmi.datacafe.impl.data;
 
+import edu.emory.bmi.datacafe.core.DataSourceBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
-
-import java.lang.reflect.Field;
 
 /**
  * Class to represent a Patient from the clinical data.
@@ -24,7 +23,7 @@ import java.lang.reflect.Field;
  * "Karnofsky_Score" : "[Not Available]" , "Patient_Barcode" : "TCGA-WY-A85E" , "Cancer_Type" : "LGG" ,
  * "_id" : "2272DFF7-A509-496F-B500-467C1BCE2F79"}
  */
-public class Patient {
+public class Patient implements DataSourceBean {
     private static Logger logger = LogManager.getLogger(Patient.class.getName());
 
     @MongoId // auto
