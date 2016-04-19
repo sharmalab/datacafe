@@ -52,4 +52,4 @@ Optional.
 Please cite the below, if you use Data Cafe in your research.
 
 "Kathiravelu, P., Kazerouni, A., & Sharma, A. (2016). Data Café — A Platform For Creating Biomedical Data
- Lakes. In AMIA 2016 Joint Summits on Translational Science. Mar. 2016. 2 pages."
+ Lakes. In AMIA 2016 Joint Summits on Translational Science. Mar. 2016."
