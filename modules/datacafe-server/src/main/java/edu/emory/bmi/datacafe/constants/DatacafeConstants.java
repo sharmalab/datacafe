@@ -31,11 +31,11 @@ public final class DatacafeConstants {
     public static final String DELIMITER = ",";
 
     /**
-     * Should subsequent reads of the initial original databases be appended to the single file.
-     * Append, if true. Truncate and replace, if false.
+     * File write modes
      */
-    public static final boolean IS_APPEND = false;
-
+    public static final String APPEND = "append";
+    public static final String CREATE = "create";
+    public static final String REPLACE = "replace";
 
     public static final String DATACAFE_PROPERTIES_FILE = "conf/datacafe.properties";
 

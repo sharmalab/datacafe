@@ -16,7 +16,7 @@
 package edu.emory.bmi.datacafe.constants;
 
 /**
- * Constants for Hadoop/Hive Integration.
+ * Constants for HDFS Integration.
  */
 public final class HDFSConstants {
 
@@ -30,7 +30,6 @@ public final class HDFSConstants {
     public static final String HIVE_USER_NAME = "hadoop";
     public static final String HIVE_PORT = "10000";
 
-//    Hive Server - HDFS Master - Drill Instance
     public static final String HIVE_SERVER = DatacafeConstants.IS_REMOTE_SERVER ?
         "ec2-54-158-108-220.compute-1.amazonaws.com" : "localhost";
 
@@ -50,17 +49,8 @@ public final class HDFSConstants {
 
     public static final String SFTP_USER = "ec2-user";
 
-
-    /*local*/
-    //    public static String HIVE_USER_NAME = "pradeeban";
-    //    public static final String HIVE_CSV_DIR = "gsoc2015/conf/";
-
-
     public static String HIVE_PASSWORD = "";
 
-    /*local*/
-//    public static final String HADOOP_HOME = "/home/pradeeban/programs/hadoop-2.7.0"; // /etc/hadoop/conf
-//    public static final String HADOOP_CONF = HADOOP_HOME + File.separator + "etc" + File.separator + "hadoop";
 
     public static final String HADOOP_CONF = "/home/pradeeban/programs/hadoop-2.7.2/etc/hadoop";
     public static final String HDFS_PATH = "/user/hdfs/";

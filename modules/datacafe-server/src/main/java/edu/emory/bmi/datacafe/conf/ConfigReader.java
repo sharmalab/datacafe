@@ -32,6 +32,7 @@ public class ConfigReader {
     private static Logger logger = LogManager.getLogger(ConfigReader.class.getName());
     private static String dataServerHost;
     private static int dataServerPort;
+    private static String fileWriteMode;
 
     protected static Properties prop;
 
@@ -70,6 +71,7 @@ public class ConfigReader {
             if (temp!= null) {
                 dataServerPort = Integer.parseInt(temp);
             }
+            fileWriteMode = prop.getProperty("fileWriteMode");
         }
     }
 
@@ -79,5 +81,9 @@ public class ConfigReader {
 
     public static String getDataServerHost() {
         return dataServerHost;
+    }
+
+    public static String getFileWriteMode() {
+        return fileWriteMode;
     }
 }

@@ -15,6 +15,7 @@
  */
 package edu.emory.bmi.datacafe.hdfs;
 
+import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.DatacafeConstants;
 import edu.emory.bmi.datacafe.constants.HDFSConstants;
 import edu.emory.bmi.datacafe.core.CoreDataObject;
@@ -73,13 +74,19 @@ public class HdfsConnector implements WarehouseConnector {
         Charset utf8 = StandardCharsets.UTF_8;
         try {
 
-            if (DatacafeConstants.IS_APPEND) {
+            if (ConfigReader.getFileWriteMode().equalsIgnoreCase(DatacafeConstants.APPEND)) {
                 Files.write(Paths.get(fileName), lines, utf8, StandardOpenOption.CREATE,
-                        StandardOpenOption.APPEND
-                );
-            } else {
+                        StandardOpenOption.APPEND);
+            } else if (ConfigReader.getFileWriteMode().equalsIgnoreCase(DatacafeConstants.REPLACE)) {
                 Files.write(Paths.get(fileName), lines, utf8, StandardOpenOption.CREATE,
                         StandardOpenOption.TRUNCATE_EXISTING);
+            } else if (ConfigReader.getFileWriteMode().equalsIgnoreCase(DatacafeConstants.CREATE)) {
+                Files.write(Paths.get(fileName), lines, utf8, StandardOpenOption.CREATE,
+                        StandardOpenOption.CREATE_NEW);
+            } else {
+                Files.write(Paths.get(fileName), lines, utf8, StandardOpenOption.CREATE,
+                        StandardOpenOption.CREATE_NEW);
+                logger.info("No valid file write mode found. Default action: create new chosen");
             }
             logger.info("Successfully written the output to the file, " + fileName);
         } catch (IOException e) {
