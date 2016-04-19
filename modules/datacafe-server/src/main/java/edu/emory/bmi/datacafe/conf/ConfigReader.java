@@ -36,6 +36,8 @@ public class ConfigReader {
     private static boolean isRemoteDSServer;
     private static String hadoopConf;
     private static String hdfsPath;
+    private static String hiveServer = "";
+    private static int hivePort;
 
     protected static Properties prop;
 
@@ -83,6 +85,13 @@ public class ConfigReader {
 
             hadoopConf = prop.getProperty("hadoopConf");
             hdfsPath = prop.getProperty("hdfsPath");
+
+            hiveServer = prop.getProperty("hiveServer");
+
+            if (!(hiveServer.equals("") ||  (hiveServer.equals(null))) ){
+                String hivePortStr = prop.getProperty("hivePort");
+                hivePort = Integer.parseInt(hivePortStr);
+            }
         }
     }
 
@@ -108,5 +117,13 @@ public class ConfigReader {
 
     public static String getHdfsPath() {
         return hdfsPath;
+    }
+
+    public static String getHiveServer() {
+        return hiveServer;
+    }
+
+    public static int getHivePort() {
+        return hivePort;
     }
 }

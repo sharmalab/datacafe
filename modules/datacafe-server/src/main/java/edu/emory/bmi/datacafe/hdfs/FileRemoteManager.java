@@ -17,6 +17,7 @@ package edu.emory.bmi.datacafe.hdfs;
 
 import com.jcraft.jsch.*;
 
+import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.DatacafeConstants;
 import edu.emory.bmi.datacafe.constants.HDFSConstants;
 import org.apache.logging.log4j.*;
@@ -43,7 +44,8 @@ public class FileRemoteManager {
         ChannelSftp channelSftp = null;
         try {
             jSch.addIdentity(DatacafeConstants.PRIVATE_KEY);
-            session = jSch.getSession(HDFSConstants.SFTP_USER, HDFSConstants.HIVE_SERVER, HDFSConstants.HIVE_SFTP_PORT);
+            session = jSch.getSession(HDFSConstants.SFTP_USER, ConfigReader.getHiveServer(),
+                    HDFSConstants.HIVE_SFTP_PORT);
             java.util.Properties config = new java.util.Properties();
             config.put("StrictHostKeyChecking", "no");
             session.setConfig(config);
