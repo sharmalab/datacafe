@@ -1,0 +1,22 @@
+**
+**  NOTICE file corresponding to the section 4 (d) of the Apache License,
+**  Version 2.0, in this case for the Data Cafe distribution.
+**
+
+The end-user documentation included with a redistribution, if any,
+must include the following acknowledgement:
+
+ "This product includes software developed by Pradeeban Kathiravelu and
+  others at Emory University School of Medicine.
+
+  Kathiravelu, P., Kazerouni, A., & Sharma, A. (2016). Data Café — A Platform For Creating Biomedical Data
+  Lakes. In AMIA 2016 Joint Summits on Translational Science. Mar. 2016."
+
+Alternately, this acknowledgement may appear in the software itself,
+if and wherever such third-party acknowledgements normally appear.
+
+If you have used Data Cafe in your research, please cite as below:
+"Kathiravelu, P., Kazerouni, A., & Sharma, A. (2016). Data Café — A Platform For Creating Biomedical Data
+ Lakes. In AMIA 2016 Joint Summits on Translational Science. Mar. 2016. 2 pages."
+
+Copyright (c) 2015-2016 Pradeeban Kathiravelu and others.  All rights reserved.
