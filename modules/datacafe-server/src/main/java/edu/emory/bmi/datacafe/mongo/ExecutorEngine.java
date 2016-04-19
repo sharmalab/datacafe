@@ -64,9 +64,7 @@ public class ExecutorEngine extends AbstractExecutorEngine {
         dataSourceBeans = new List[mongoCursorMap.size()];
     }
 
-    public void createList(DataSourceWrapper<? extends DataSourceBean> dataSourceWrapper, QueryConstructor queryConstructor) {
-        Class clazz = dataSourceWrapper.getType();
-
+    public void createList(Class clazz, DataSourceWrapper<? extends DataSourceBean> dataSourceWrapper, QueryConstructor queryConstructor) {
         List retrievedDataList = new ArrayList<>();
 
 

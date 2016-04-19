@@ -57,10 +57,10 @@ public class Initiator {
                 dataSourceMap.get(Slice.class).getCollection(), attributes[1]);
 
         DataSourceWrapper<Patient> patientDataSourceWrapper = new DataSourceWrapper<Patient>();
-        executorEngine.createList(patientDataSourceWrapper, patientQueryConstructor);
+        executorEngine.createList(Patient.class, patientDataSourceWrapper, patientQueryConstructor);
 
         DataSourceWrapper<Slice> sliceDataSourceWrapper = new DataSourceWrapper<Slice>();
-        executorEngine.createList(sliceDataSourceWrapper, sliceQueryConstructor);
+        executorEngine.createList(Slice.class, sliceDataSourceWrapper, sliceQueryConstructor);
 
         executorEngine.constructDataLake(attributes);
     }
