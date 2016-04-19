@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.impl.main;
+package edu.emory.bmi.datacafe.impl.clinical1.main;
 
 import edu.emory.bmi.datacafe.core.DataSource;
 import edu.emory.bmi.datacafe.mongo.ExecutorEngine;
 import edu.emory.bmi.datacafe.core.DataSourceBean;
-import edu.emory.bmi.datacafe.impl.data.Patient;
-import edu.emory.bmi.datacafe.impl.data.Slice;
+import edu.emory.bmi.datacafe.impl.clinical1.data.Patient;
+import edu.emory.bmi.datacafe.impl.clinical1.data.Slice;
 import edu.emory.bmi.datacafe.mongo.QueryConstructor;
 
 import java.util.HashMap;

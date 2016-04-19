@@ -12,6 +12,7 @@
 
   <modules>
     <module>datacafe-server</module>
+    <module>datacafe-samples</module>
   </modules>
 
   <build>

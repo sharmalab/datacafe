@@ -40,11 +40,20 @@ Refer to the relevant files in documentation for detailed instructions on each o
 Optional.
 
 
-## Executing Data Cafe
+## Building Data Cafe
 
  $ mvn clean install
 
- $ java -classpath lib/datacafe-server-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi.datacafe.impl.main.Initiator
+
+## Executing Data Cafe
+
+You may execute Data Cafe by writing a client to it.
+
+Samples are provided in the datacafe-samples module.
+
+For example, to execute the clinical-1 sample,
+
+ $ java -classpath lib/datacafe-server-1.0-SNAPSHOT.jar:lib/*:conf/ main.java.edu.emory.bmi.datacafe.impl.clinical1.main.Initiator
 
 
 ## Using Data Cafe in your research

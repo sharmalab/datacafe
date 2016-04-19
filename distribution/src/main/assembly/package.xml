@@ -10,6 +10,8 @@
 			<includes>
 				<include>${project.groupId}:datacafe-server:jar</include>
 				<include>${project.groupId}:datacafe-server:jar:sources</include>
+				<include>${project.groupId}:datacafe-samples:jar</include>
+				<include>${project.groupId}:datacafe-samples:jar:sources</include>
 			</includes>
 		</dependencySet>
 		<dependencySet>
@@ -22,6 +24,7 @@
 			</unpackOptions>
 			<includes>
 				<include>${project.groupId}:datacafe-server:jar:sources</include>
+				<include>${project.groupId}:datacafe-samples:jar:sources</include>
 			</includes>
 		</dependencySet>
 		<dependencySet>
