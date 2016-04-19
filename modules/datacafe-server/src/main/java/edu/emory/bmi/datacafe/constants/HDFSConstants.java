@@ -30,18 +30,17 @@ public final class HDFSConstants {
     public static final String HIVE_USER_NAME = "hadoop";
     public static final String HIVE_PORT = "10000";
 
-    public static final String HIVE_SERVER = DatacafeConstants.IS_REMOTE_SERVER ?
-        "ec2-54-158-108-220.compute-1.amazonaws.com" : "localhost";
+    public static final String HIVE_SERVER = "localhost";
 
+    // Do not remove the constant.
     public static final String HIVE_CONNECTION_URI = "jdbc:hive2://" + HIVE_SERVER + ":" + HIVE_PORT + "/default";
 
 
     public static final String HIVE_TARGET_DIR = "../hadoop/datacafe/";
 
-    public static final String HIVE_CSV_DIR = DatacafeConstants.IS_REMOTE_SERVER ? "/home/hadoop/datacafe/": "datacafe/";
+    public static final String HIVE_CSV_DIR = "datacafe/";
+    public static final String CLIENT_ORIGIN_DIR = "./";
 
-
-    public static final String CLIENT_ORIGIN_DIR = DatacafeConstants.IS_REMOTE_SERVER ? "/home/hadoop/datacafe/": "./";
     public static final String CLIENT_CSV_DIR = CLIENT_ORIGIN_DIR + "conf/";
 
     public static final int HIVE_SFTP_PORT = 22;

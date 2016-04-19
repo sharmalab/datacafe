@@ -92,7 +92,7 @@ public class HdfsConnector implements WarehouseConnector {
         } catch (IOException e) {
             logger.error("Error in creating the warehouse file: " + fileName, e);
         }
-        if (DatacafeConstants.IS_REMOTE_SERVER) {
+        if (ConfigReader.isRemoteDSServer()) {
             FileRemoteManager.copyFile(fileName);
         }
     }

@@ -41,7 +41,5 @@ public final class DatacafeConstants {
 
     public static final String FILE_EXTENSION = ".csv";
 
-    public static final boolean IS_REMOTE_SERVER = false;
-
     public static final String PRIVATE_KEY = HDFSConstants.CLIENT_ORIGIN_DIR + File.separator + "pradeeban.pem";
 }
