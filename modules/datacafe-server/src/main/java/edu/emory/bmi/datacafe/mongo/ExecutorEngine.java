@@ -11,7 +11,6 @@ import edu.emory.bmi.datacafe.constants.MongoConstants;
 import edu.emory.bmi.datacafe.core.AbstractExecutorEngine;
 import edu.emory.bmi.datacafe.core.DataSource;
 import edu.emory.bmi.datacafe.core.DataSourceBean;
-import edu.emory.bmi.datacafe.core.DataSourceWrapper;
 import edu.emory.bmi.datacafe.hdfs.HdfsConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -66,10 +65,9 @@ public class ExecutorEngine extends AbstractExecutorEngine {
     /**
      * Called once per each of the data sources
      * @param clazz the class param
-     * @param dataSourceWrapper data source wrapper
      * @param queryConstructor query constructor
      */
-    public void createList(Class clazz, DataSourceWrapper<? extends DataSourceBean> dataSourceWrapper, QueryConstructor queryConstructor) {
+    public void createList(Class clazz, QueryConstructor queryConstructor) {
         List retrievedDataList = new ArrayList<>();
 
         for (Object obj_ : mongoCursorMap.get(clazz)) {

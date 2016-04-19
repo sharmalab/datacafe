@@ -7,9 +7,7 @@
  */
 package edu.emory.bmi.datacafe.impl.main;
 
-import edu.emory.bmi.datacafe.constants.MongoConstants;
 import edu.emory.bmi.datacafe.core.DataSource;
-import edu.emory.bmi.datacafe.core.DataSourceWrapper;
 import edu.emory.bmi.datacafe.mongo.ExecutorEngine;
 import edu.emory.bmi.datacafe.core.DataSourceBean;
 import edu.emory.bmi.datacafe.impl.data.Patient;
@@ -56,11 +54,8 @@ public class Initiator {
         QueryConstructor sliceQueryConstructor = new QueryConstructor(dataSourceMap.get(Slice.class).getDatabase(),
                 dataSourceMap.get(Slice.class).getCollection(), attributes[1]);
 
-        DataSourceWrapper<Patient> patientDataSourceWrapper = new DataSourceWrapper<Patient>();
-        executorEngine.createList(Patient.class, patientDataSourceWrapper, patientQueryConstructor);
-
-        DataSourceWrapper<Slice> sliceDataSourceWrapper = new DataSourceWrapper<Slice>();
-        executorEngine.createList(Slice.class, sliceDataSourceWrapper, sliceQueryConstructor);
+        executorEngine.createList(Patient.class, patientQueryConstructor);
+        executorEngine.createList(Slice.class, sliceQueryConstructor);
 
         executorEngine.constructDataLake(attributes);
     }
