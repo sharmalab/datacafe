@@ -15,6 +15,7 @@
  */
 package edu.emory.bmi.datacafe.hdfs;
 
+import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.DatacafeConstants;
 import edu.emory.bmi.datacafe.constants.HDFSConstants;
 import org.apache.hadoop.conf.Configuration;
@@ -40,14 +41,14 @@ public class HadoopConnector {
      */
     private static void copyToHDFS(String fileName) throws IOException {
         Configuration config = new Configuration();
-        config.addResource(new Path(HDFSConstants.HADOOP_CONF + File.separator + "core-site.xml"));
-        config.addResource(new Path(HDFSConstants.HADOOP_CONF + File.separator + "hdfs-site.xml"));
+        config.addResource(new Path(ConfigReader.getHadoopConf()+ File.separator + HDFSConstants.CORE_SITE_XML));
+        config.addResource(new Path(ConfigReader.getHadoopConf() + File.separator + HDFSConstants.HDFS_SITE_XML));
 
         FileSystem fs = FileSystem.get(config);
         String outputFileName = fileName +  DatacafeConstants.FILE_EXTENSION;
 
         fs.copyFromLocalFile(new Path(HDFSConstants.CLIENT_ORIGIN_DIR + fileName),
-                new Path(HDFSConstants.HDFS_PATH + outputFileName));
+                new Path(ConfigReader.getHdfsPath() + outputFileName));
         logger.info("Successfully written " + outputFileName + " to the Hadoop HDFS");
     }
 

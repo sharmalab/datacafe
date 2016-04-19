@@ -26,6 +26,13 @@ public final class HDFSConstants {
     private HDFSConstants() {
     }
 
+    /**
+     * Hadoop configuration files.
+     */
+    public static final String CORE_SITE_XML = "core-site.xml";
+    public static final String HDFS_SITE_XML = "hdfs-site.xml";
+
+
     public static final String DRIVER_NAME = "org.apache.hive.jdbc.HiveDriver";
     public static final String HIVE_USER_NAME = "hadoop";
     public static final String HIVE_PORT = "10000";
@@ -50,7 +57,4 @@ public final class HDFSConstants {
 
     public static String HIVE_PASSWORD = "";
 
-
-    public static final String HADOOP_CONF = "/home/pradeeban/programs/hadoop-2.7.2/etc/hadoop";
-    public static final String HDFS_PATH = "/user/hdfs/";
 }

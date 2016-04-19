@@ -34,6 +34,8 @@ public class ConfigReader {
     private static int dataServerPort;
     private static String fileWriteMode;
     private static boolean isRemoteDSServer;
+    private static String hadoopConf;
+    private static String hdfsPath;
 
     protected static Properties prop;
 
@@ -73,11 +75,14 @@ public class ConfigReader {
                 dataServerPort = Integer.parseInt(temp);
             }
             fileWriteMode = prop.getProperty("fileWriteMode");
-            String remoteStr = prop.getProperty("isRemote");
 
+            String remoteStr = prop.getProperty("isRemote");
             if (remoteStr!=null) {
                 isRemoteDSServer = Boolean.parseBoolean(remoteStr);
             }
+
+            hadoopConf = prop.getProperty("hadoopConf");
+            hdfsPath = prop.getProperty("hdfsPath");
         }
     }
 
@@ -95,5 +100,13 @@ public class ConfigReader {
 
     public static boolean isRemoteDSServer() {
         return isRemoteDSServer;
+    }
+
+    public static String getHadoopConf() {
+        return hadoopConf;
+    }
+
+    public static String getHdfsPath() {
+        return hdfsPath;
     }
 }

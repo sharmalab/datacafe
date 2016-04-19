@@ -73,7 +73,6 @@ public class HdfsConnector implements WarehouseConnector {
 
         Charset utf8 = StandardCharsets.UTF_8;
         try {
-
             if (ConfigReader.getFileWriteMode().equalsIgnoreCase(DatacafeConstants.APPEND)) {
                 Files.write(Paths.get(fileName), lines, utf8, StandardOpenOption.CREATE,
                         StandardOpenOption.APPEND);
