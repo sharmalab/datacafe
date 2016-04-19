@@ -42,7 +42,11 @@ Optional.
 
 ## Building Data Cafe
 
+Data Cafe can be built using Apache Maven 3.x.
+
  $ mvn clean install
+
+Built and tested with Apahe Maven 3.1.1 and Oracle Java 1.8.0.
 
 
 ## Executing Data Cafe
