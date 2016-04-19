@@ -15,7 +15,7 @@
  */
 package edu.emory.bmi.datacafe.interfaces;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * Makes a warehouse from the merger.

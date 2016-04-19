@@ -16,7 +16,6 @@
 package edu.emory.bmi.datacafe.core;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
-import edu.emory.bmi.datacafe.constants.DatacafeConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

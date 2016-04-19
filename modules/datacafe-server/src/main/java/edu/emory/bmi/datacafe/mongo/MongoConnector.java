@@ -15,10 +15,12 @@
  */
 package edu.emory.bmi.datacafe.mongo;
 
-import com.mongodb.*;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.MongoClient;
+import com.mongodb.ServerAddress;
 import edu.emory.bmi.datacafe.conf.ConfigReader;
-import edu.emory.bmi.datacafe.constants.DatacafeConstants;
-import edu.emory.bmi.datacafe.constants.MongoConstants;
 import edu.emory.bmi.datacafe.interfaces.DataSourceConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

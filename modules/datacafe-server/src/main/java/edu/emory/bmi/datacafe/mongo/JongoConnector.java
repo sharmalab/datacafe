@@ -19,7 +19,6 @@ import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import edu.emory.bmi.datacafe.conf.ConfigReader;
-import edu.emory.bmi.datacafe.constants.MongoConstants;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 
