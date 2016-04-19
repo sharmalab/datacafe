@@ -20,7 +20,13 @@ import java.io.File;
 /**
  * The common constants of Datacafe
  */
-public class DatacafeConstants {
+public final class DatacafeConstants {
+
+    /**
+     * Suppress instantiation.
+     */
+    private DatacafeConstants() {
+    }
 
     public static final String DELIMITER = ",";
     public static final boolean IS_APPEND = false;

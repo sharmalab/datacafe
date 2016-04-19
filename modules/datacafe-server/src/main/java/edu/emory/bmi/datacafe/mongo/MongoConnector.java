@@ -16,6 +16,7 @@
 package edu.emory.bmi.datacafe.mongo;
 
 import com.mongodb.*;
+import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.DatacafeConstants;
 import edu.emory.bmi.datacafe.constants.MongoConstants;
 import edu.emory.bmi.datacafe.interfaces.DataSourceConnector;
@@ -31,7 +32,7 @@ public class MongoConnector implements DataSourceConnector {
 
 
     private static final MongoClient mongoClient = new MongoClient(new ServerAddress(
-            MongoConstants.CLIENT_HOST, MongoConstants.CLIENT_PORT));
+            MongoConstants.CLIENT_HOST, ConfigReader.getDataServerPort()));
 
     public static String[] constructQueries(String[][] params) {
         String[] queries = new String[params.length];

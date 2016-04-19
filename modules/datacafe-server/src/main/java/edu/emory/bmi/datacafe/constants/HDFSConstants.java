@@ -18,7 +18,14 @@ package edu.emory.bmi.datacafe.constants;
 /**
  * Constants for Hadoop/Hive Integration.
  */
-public class HDFSConstants {
+public final class HDFSConstants {
+
+    /**
+     * Suppress instantiation.
+     */
+    private HDFSConstants() {
+    }
+
     public static final String DRIVER_NAME = "org.apache.hive.jdbc.HiveDriver";
     public static final String HIVE_USER_NAME = "hadoop";
     public static final String HIVE_PORT = "10000";

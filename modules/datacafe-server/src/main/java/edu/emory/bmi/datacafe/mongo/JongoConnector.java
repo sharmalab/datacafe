@@ -18,6 +18,7 @@ package edu.emory.bmi.datacafe.mongo;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
+import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.MongoConstants;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
@@ -35,7 +36,7 @@ public class JongoConnector {
      */
     public static MongoCollection initialize(String database, String collection) {
         DB db = new MongoClient(new ServerAddress(
-                MongoConstants.CLIENT_HOST, MongoConstants.CLIENT_PORT)).getDB(database);
+                MongoConstants.CLIENT_HOST, ConfigReader.getDataServerPort())).getDB(database);
         Jongo jongo = new Jongo(db);
         return jongo.getCollection(collection);
     }

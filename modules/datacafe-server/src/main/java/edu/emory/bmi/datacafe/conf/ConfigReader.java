@@ -30,6 +30,7 @@ import java.util.Properties;
 public class ConfigReader {
 
     private static Logger logger = LogManager.getLogger(ConfigReader.class.getName());
+    private static int dataServerPort;
 
     protected static Properties prop;
 
@@ -63,6 +64,14 @@ public class ConfigReader {
         boolean loaded = loadProperties();
 
         if (loaded) {
+            String temp = prop.getProperty("dataServerPort");
+            if (temp!= null) {
+                dataServerPort = Integer.parseInt(temp);
+            }
         }
+    }
+
+    public static int getDataServerPort() {
+        return dataServerPort;
     }
 }

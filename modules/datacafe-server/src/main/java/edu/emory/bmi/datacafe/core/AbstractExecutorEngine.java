@@ -15,6 +15,7 @@
  */
 package edu.emory.bmi.datacafe.core;
 
+import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.interfaces.DataSourceBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,6 +35,7 @@ public abstract class AbstractExecutorEngine {
      * Initiate the data lake creation workflow
      */
     protected AbstractExecutorEngine(Map<Class<? extends DataSourceBean>, DataSource> dataSources) {
+        ConfigReader.readConfig();
         dataSourceMap = dataSources;
         datasourceNames = new HashMap<>();
         if (logger.isDebugEnabled()) {
