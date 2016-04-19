@@ -45,7 +45,7 @@ public class FileRemoteManager {
         try {
             jSch.addIdentity(DatacafeConstants.PRIVATE_KEY);
             session = jSch.getSession(HDFSConstants.SFTP_USER, ConfigReader.getHiveServer(),
-                    HDFSConstants.HIVE_SFTP_PORT);
+                    HDFSConstants.SFTP_PORT);
             java.util.Properties config = new java.util.Properties();
             config.put("StrictHostKeyChecking", "no");
             session.setConfig(config);
@@ -54,7 +54,7 @@ public class FileRemoteManager {
             channel.connect();
 
             channelSftp = (ChannelSftp) channel;
-            channelSftp.cd(HDFSConstants.HIVE_TARGET_DIR);
+            channelSftp.cd(HDFSConstants.REMOTE_TARGET_DIR);
 
             File f = new File(HDFSConstants.CLIENT_CSV_DIR + fileName);
             channelSftp.put(new FileInputStream(f), f.getName());

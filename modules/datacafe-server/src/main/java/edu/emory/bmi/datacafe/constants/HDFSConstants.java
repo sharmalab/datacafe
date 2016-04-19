@@ -45,20 +45,19 @@ public final class HDFSConstants {
     public static final String DRIVER_NAME = "org.apache.hive.jdbc.HiveDriver";
 
 
+    /**
+     * Remote destination for the file copy.
+     */
+    public static final String REMOTE_TARGET_DIR = "../hadoop/datacafe/";
 
-
-    public static final String HIVE_TARGET_DIR = "../hadoop/datacafe/";
-
-    public static final String HIVE_CSV_DIR = "datacafe/";
     public static final String CLIENT_ORIGIN_DIR = "./";
 
     public static final String CLIENT_CSV_DIR = CLIENT_ORIGIN_DIR + "conf/";
 
-    public static final int HIVE_SFTP_PORT = 22;
-
-
+    public static final int SFTP_PORT = 22;
     public static final String SFTP_USER = "ec2-user";
 
+    public static final String HIVE_CSV_DIR = "datacafe/";
     public static String HIVE_PASSWORD = "";
 
 }
