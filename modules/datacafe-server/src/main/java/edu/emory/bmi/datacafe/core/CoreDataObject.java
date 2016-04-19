@@ -15,6 +15,7 @@
  */
 package edu.emory.bmi.datacafe.core;
 
+import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.DatacafeConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -99,7 +100,7 @@ public class CoreDataObject {
             String currentVal = getStringFromGetter(object, param[i]);
             line += currentVal;
             if (i < param.length-1) {
-                line += DatacafeConstants.DELIMITER;
+                line += ConfigReader.getDelimiter();
             }
         }
         return line;

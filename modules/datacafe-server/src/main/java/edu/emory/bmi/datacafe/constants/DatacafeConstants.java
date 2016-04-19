@@ -15,6 +15,8 @@
  */
 package edu.emory.bmi.datacafe.constants;
 
+import edu.emory.bmi.datacafe.conf.ConfigReader;
+
 import java.io.File;
 
 /**
@@ -28,8 +30,6 @@ public final class DatacafeConstants {
     private DatacafeConstants() {
     }
 
-    public static final String DELIMITER = ",";
-
     /**
      * File write modes
      */
@@ -39,7 +39,6 @@ public final class DatacafeConstants {
 
     public static final String DATACAFE_PROPERTIES_FILE = "conf/datacafe.properties";
 
-    public static final String FILE_EXTENSION = ".csv";
-
-    public static final String PRIVATE_KEY = HDFSConstants.CLIENT_ORIGIN_DIR + File.separator + "pradeeban.pem";
+    public static final String PRIVATE_KEY = HDFSConstants.CLIENT_ORIGIN_DIR + File.separator +
+            ConfigReader.getPrivateKey();
 }

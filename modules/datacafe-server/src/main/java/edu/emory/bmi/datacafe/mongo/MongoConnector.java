@@ -47,11 +47,11 @@ public class MongoConnector implements DataSourceConnector {
         for (int i = 0; i < params.length; i++) {
             out += params[i] + " " + "string";
             if (i < params.length - 1) {
-                out += DatacafeConstants.DELIMITER;
+                out += ConfigReader.getDelimiter();
             }
         }
         return " (" + out + ") row format delimited fields " +
-                "terminated by '" + DatacafeConstants.DELIMITER + "' stored as textfile";
+                "terminated by '" + ConfigReader.getDelimiter() + "' stored as textfile";
     }
 
     /**

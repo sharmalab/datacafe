@@ -34,12 +34,29 @@ public class ConfigReader {
     private static int dataServerPort;
     private static String fileWriteMode;
     private static boolean isRemoteDSServer;
+
+    /**
+     * Hadoop HDFS Configurations.
+     */
     private static String hadoopConf;
     private static String hdfsPath;
+
+    /**
+     * Hive Configurations.
+     */
     private static String hiveServer = "";
     private static int hivePort;
+
+    /**
+     * SFTP Configurations.
+     */
     private static int sftpPort;
     private static String sftpUser;
+
+    private static String fileExtension;
+    private static String delimiter;
+    private static String privateKey;
+
 
     protected static Properties prop;
 
@@ -98,10 +115,14 @@ public class ConfigReader {
 
             hiveServer = prop.getProperty("hiveServer");
 
-            if (!(hiveServer.equals("") || (hiveServer.equals(null)))) {
+            if (!(hiveServer.equals("") || (hiveServer!=null))) {
                 String hivePortStr = prop.getProperty("hivePort");
                 hivePort = Integer.parseInt(hivePortStr);
             }
+
+            fileExtension = prop.getProperty("fileExtension");
+            delimiter = prop.getProperty("delimiter");
+            privateKey = prop.getProperty("privateKey");
         }
     }
 
@@ -143,5 +164,17 @@ public class ConfigReader {
 
     public static String getSftpUser() {
         return sftpUser;
+    }
+
+    public static String getFileExtension() {
+        return fileExtension;
+    }
+
+    public static String getDelimiter() {
+        return delimiter;
+    }
+
+    public static String getPrivateKey() {
+        return privateKey;
     }
 }

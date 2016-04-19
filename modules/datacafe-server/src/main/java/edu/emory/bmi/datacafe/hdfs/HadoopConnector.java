@@ -45,7 +45,7 @@ public class HadoopConnector {
         config.addResource(new Path(ConfigReader.getHadoopConf() + File.separator + HDFSConstants.HDFS_SITE_XML));
 
         FileSystem fs = FileSystem.get(config);
-        String outputFileName = fileName +  DatacafeConstants.FILE_EXTENSION;
+        String outputFileName = fileName +   ConfigReader.getFileExtension();
 
         fs.copyFromLocalFile(new Path(HDFSConstants.CLIENT_ORIGIN_DIR + fileName),
                 new Path(ConfigReader.getHdfsPath() + outputFileName));
