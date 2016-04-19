@@ -44,8 +44,12 @@ public class ConfigReader {
     /**
      * Hive Configurations.
      */
-    private static String hiveServer = "";
+    private static String hiveServer;
     private static int hivePort;
+    private static String hiveUserName;
+    private static String hivePassword = "";
+    private static String hiveCSVDir;
+    private static String hiveDriver;
 
     /**
      * SFTP Configurations.
@@ -68,7 +72,7 @@ public class ConfigReader {
             prop.load(input);
             return true;
         } catch (IOException ex) {
-            ex.printStackTrace();
+            logger.error("Error in loading the properties file.. ", ex);
             return false;
         } finally {
             if (input != null) {
@@ -115,9 +119,16 @@ public class ConfigReader {
 
             hiveServer = prop.getProperty("hiveServer");
 
-            if (!(hiveServer.equals("") || (hiveServer!=null))) {
+            if (!(hiveServer.equals("") || (hiveServer == null))) {
                 String hivePortStr = prop.getProperty("hivePort");
                 hivePort = Integer.parseInt(hivePortStr);
+                hiveUserName = prop.getProperty("hiveUserName");
+                String tempPass = prop.getProperty("hivePassword");
+                if (tempPass!=null) {
+                    hivePassword = tempPass;
+                }
+                hiveCSVDir = prop.getProperty("hiveCSVDir");
+                hiveDriver = prop.getProperty("hiveDriver");
             }
 
             fileExtension = prop.getProperty("fileExtension");
@@ -176,5 +187,21 @@ public class ConfigReader {
 
     public static String getPrivateKey() {
         return privateKey;
+    }
+
+    public static String getHiveUserName() {
+        return hiveUserName;
+    }
+
+    public static String getHivePassword() {
+        return hivePassword;
+    }
+
+    public static String getHiveCSVDir() {
+        return hiveCSVDir;
+    }
+
+    public static String getHiveDriver() {
+        return hiveDriver;
     }
 }

@@ -15,6 +15,7 @@
  */
 package edu.emory.bmi.datacafe.hdfs;
 
+import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.HDFSConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,20 +41,20 @@ public class HiveConnector {
      */
     public void writeToHive(String csvFileName, String hiveTable, String query)  throws SQLException {
         try {
-            Class.forName(HDFSConstants.DRIVER_NAME);
+            Class.forName(ConfigReader.getHiveDriver());
         } catch (ClassNotFoundException e) {
             logger.error("Exception in finding the driver", e);
         }
 
-        Connection con = DriverManager.getConnection(HDFSConstants.HIVE_CONNECTION_URI, HDFSConstants.HIVE_USER_NAME,
-                HDFSConstants.HIVE_PASSWORD);
+        Connection con = DriverManager.getConnection(HDFSConstants.HIVE_CONNECTION_URI, ConfigReader.getHiveUserName(),
+                ConfigReader.getHivePassword());
         Statement stmt = con.createStatement();
 
         stmt.execute("drop table if exists " + hiveTable);
 
         stmt.execute("create table " + hiveTable+ query);
 
-        String csvFilePath = HDFSConstants.HIVE_CSV_DIR + csvFileName;
+        String csvFilePath = ConfigReader.getHiveCSVDir() + csvFileName;
 
         String sql = "load data local inpath '" + csvFilePath + "' into table " + hiveTable;
         stmt.execute(sql);

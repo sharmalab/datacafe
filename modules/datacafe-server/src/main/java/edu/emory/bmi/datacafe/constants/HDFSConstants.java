@@ -40,11 +40,6 @@ public final class HDFSConstants {
     public static final String HIVE_CONNECTION_URI = "jdbc:hive2://" + ConfigReader.getHiveServer() + ":" +
             ConfigReader.getHivePort() + "/default";
 
-    public static final String HIVE_USER_NAME = "hadoop";
-
-    public static final String DRIVER_NAME = "org.apache.hive.jdbc.HiveDriver";
-
-
     /**
      * Remote destination for the file copy.
      */
@@ -53,8 +48,5 @@ public final class HDFSConstants {
     public static final String CLIENT_ORIGIN_DIR = "./";
 
     public static final String CLIENT_CSV_DIR = CLIENT_ORIGIN_DIR + "conf/";
-
-    public static final String HIVE_CSV_DIR = "datacafe/";
-    public static String HIVE_PASSWORD = "";
 
 }
