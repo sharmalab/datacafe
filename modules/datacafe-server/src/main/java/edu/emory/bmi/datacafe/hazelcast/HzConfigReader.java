@@ -16,10 +16,16 @@
 package edu.emory.bmi.datacafe.hazelcast;
 
 
+import edu.emory.bmi.datacafe.conf.ConfigReader;
+
 /**
  * The class that reads the Hazelcast properties from the properties file.
  */
 public class HzConfigReader extends ConfigReader {
+    private static int simultaneousInstances = 1;
+    private static int noOfExecutions = 1;
+    private static int mapReduceSize;
+
     private static String hazelcastXml;
     private static String mainClusterName;
     private static String subClusterName;
@@ -30,6 +36,16 @@ public class HzConfigReader extends ConfigReader {
 
     public static void readConfig(String iMainCluster) {
         ConfigReader.readConfig();
+        String temp = prop.getProperty("mapReduceSize");
+        if (temp!= null) {
+            // map-reduce executions
+            mapReduceSize = Integer.parseInt(temp);
+        }
+        if (temp != null) {
+            simultaneousInstances = Integer.parseInt(prop.getProperty("simultaneousInstances"));
+            noOfExecutions = Integer.parseInt(prop.getProperty("noOfExecutions"));
+        }
+
         hazelcastXml = prop.getProperty("hazelcastXml");
         mainClusterName = prop.getProperty(iMainCluster);
         subClusterName = prop.getProperty("subCluster");
@@ -45,5 +61,17 @@ public class HzConfigReader extends ConfigReader {
 
     public static String getSubClusterName() {
         return subClusterName;
+    }
+
+    public static int getSimultaneousInstances() {
+        return simultaneousInstances;
+    }
+
+    public static int getNoOfExecutions() {
+        return noOfExecutions;
+    }
+
+    public static int getMapReduceSize() {
+        return mapReduceSize;
     }
 }

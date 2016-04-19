@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.hazelcast;
+package edu.emory.bmi.datacafe.conf;
 
 import edu.emory.bmi.datacafe.constants.DatacafeConstants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,17 +25,11 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * The class that reads the simulation properties from the properties file.
+ * The class that reads the Data Cafe properties from the properties file.
  */
 public class ConfigReader {
 
-    private static boolean isVerbose; //true
-
-    private static int simultaneousInstances = 1;
-    private static int noOfExecutions = 1;
-    private static int mapReduceSize;
-    private static String loadFolder;
-    private static int filesRead;
+    private static Logger logger = LogManager.getLogger(ConfigReader.class.getName());
 
     protected static Properties prop;
 
@@ -58,47 +54,15 @@ public class ConfigReader {
         }
     }
 
+    /**
+     * Initiating Data Cafe from the configuration file.
+     */
     public static void readConfig() {
+        logger.info("Initiating Data Cafe from the configurations file..");
+
         boolean loaded = loadProperties();
 
         if (loaded) {
-            String temp = prop.getProperty("mapReduceSize");
-            if (temp!= null) {
-                // map-reduce simulations
-                mapReduceSize = Integer.parseInt(temp);
-            }
-            isVerbose = Boolean.parseBoolean(prop.getProperty("isVerbose"));
-            loadFolder = prop.getProperty("loadFolder");
-            temp = prop.getProperty("filesRead");
-            filesRead = (temp == null) ? 0 : Integer.parseInt(temp);
-            if (temp != null) {
-                simultaneousInstances = Integer.parseInt(prop.getProperty("simultaneousInstances"));
-                noOfExecutions = Integer.parseInt(prop.getProperty("noOfExecutions"));
-            }
         }
-    }
-
-    public static int getSimultaneousInstances() {
-        return simultaneousInstances;
-    }
-
-    public static int getNoOfExecutions() {
-        return noOfExecutions;
-    }
-
-    public static boolean getIsVerbose() {
-        return isVerbose;
-    }
-
-    public static int getMapReduceSize() {
-        return mapReduceSize;
-    }
-
-    public static String getLoadFolder() {
-        return loadFolder;
-    }
-
-    public static int getFilesRead() {
-        return filesRead;
     }
 }
