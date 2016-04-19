@@ -26,9 +26,8 @@ public class ExecutorEngine extends AbstractExecutorEngine {
     private static Logger logger = LogManager.getLogger(ExecutorEngine.class.getName());
     private static Map<Class<? extends DataSourceBean>, MongoCursor> mongoCursorMap;
 
-    private static Map<Class<? extends DataSourceBean>, QueryConstructor> queryConstructorMap;
-
     private static List[] dataSourceBeans;
+    private static int autoInc = 0;
 
     public ExecutorEngine(Map<Class<? extends DataSourceBean>, DataSource> dataSources) {
         super(dataSources);
@@ -64,9 +63,14 @@ public class ExecutorEngine extends AbstractExecutorEngine {
         dataSourceBeans = new List[mongoCursorMap.size()];
     }
 
+    /**
+     * Called once per each of the data sources
+     * @param clazz the class param
+     * @param dataSourceWrapper data source wrapper
+     * @param queryConstructor query constructor
+     */
     public void createList(Class clazz, DataSourceWrapper<? extends DataSourceBean> dataSourceWrapper, QueryConstructor queryConstructor) {
         List retrievedDataList = new ArrayList<>();
-
 
         for (Object obj_ : mongoCursorMap.get(clazz)) {
             DataSourceBean minimalObj = (DataSourceBean) obj_;
@@ -76,8 +80,7 @@ public class ExecutorEngine extends AbstractExecutorEngine {
             );
             retrievedDataList.add(tempObject);
         }
-        int i = dataSourceWrapper.getAndIncrement();
-        dataSourceBeans[i] = retrievedDataList;
+        dataSourceBeans[autoInc++] = retrievedDataList;
     }
 
 
@@ -85,12 +88,21 @@ public class ExecutorEngine extends AbstractExecutorEngine {
      * Construct the data lake
      */
     public void constructDataLake(String[][] interestedAttributes) {
-        queryConstructorMap = new HashMap<>();
-
         String[] queries = MongoConnector.constructQueries(interestedAttributes);
 
         Collection<String> values = datasourceNames.values();
         String[] tempDataSourceNames = values.toArray(new String[values.size()]);
+
+        if (logger.isDebugEnabled()) {
+            for (int i = 0; i < tempDataSourceNames.length; i++) {
+                logger.debug(i + ": " + tempDataSourceNames[i]);
+                logger.debug(queries[i]);
+                dataSourceBeans[i].get(i);
+                for (int j = 0; j < interestedAttributes[i].length; j++) {
+                    logger.debug(interestedAttributes[i][j]);
+                }
+            }
+        }
 
         HdfsConnector.writeDataSourcesToWarehouse(tempDataSourceNames, interestedAttributes, queries, dataSourceBeans);
     }
