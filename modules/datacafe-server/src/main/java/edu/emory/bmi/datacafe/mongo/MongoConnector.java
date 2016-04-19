@@ -32,7 +32,7 @@ public class MongoConnector implements DataSourceConnector {
 
 
     private static final MongoClient mongoClient = new MongoClient(new ServerAddress(
-            MongoConstants.CLIENT_HOST, ConfigReader.getDataServerPort()));
+            ConfigReader.getDataServerHost(), ConfigReader.getDataServerPort()));
 
     public static String[] constructQueries(String[][] params) {
         String[] queries = new String[params.length];

@@ -36,7 +36,7 @@ public class JongoConnector {
      */
     public static MongoCollection initialize(String database, String collection) {
         DB db = new MongoClient(new ServerAddress(
-                MongoConstants.CLIENT_HOST, ConfigReader.getDataServerPort())).getDB(database);
+                ConfigReader.getDataServerHost(), ConfigReader.getDataServerPort())).getDB(database);
         Jongo jongo = new Jongo(db);
         return jongo.getCollection(collection);
     }
