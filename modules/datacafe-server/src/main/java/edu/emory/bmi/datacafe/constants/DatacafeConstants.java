@@ -15,23 +15,30 @@
  */
 package edu.emory.bmi.datacafe.constants;
 
+import edu.emory.bmi.datacafe.conf.ConfigReader;
+
 import java.io.File;
 
 /**
  * The common constants of Datacafe
  */
-public class DatacafeConstants {
+public final class DatacafeConstants {
 
-    public static final String DELIMITER = ",";
-    public static final boolean IS_APPEND = false;
+    /**
+     * Suppress instantiation.
+     */
+    private DatacafeConstants() {
+    }
+
+    /**
+     * File write modes
+     */
+    public static final String APPEND = "append";
+    public static final String CREATE = "create";
+    public static final String REPLACE = "replace";
 
     public static final String DATACAFE_PROPERTIES_FILE = "conf/datacafe.properties";
-    public static final String FILE_EXTENSION = ".csv";
 
-    public static final int NUMBER_OF_COMPOSING_DATA_SOURCES = 2;
-
-    public static final boolean IS_REMOTE_SERVER = false;
-    public static final boolean IS_REMOTE_MONGO_SERVER = false;
-
-    public static final String PRIVATE_KEY = HDFSConstants.CLIENT_ORIGIN_DIR + File.separator + "pradeeban.pem";
+    public static final String PRIVATE_KEY = ConfigReader.getClientOriginDir() + File.separator +
+            ConfigReader.getPrivateKey();
 }

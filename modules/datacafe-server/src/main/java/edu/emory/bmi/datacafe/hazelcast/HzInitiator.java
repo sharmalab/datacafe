@@ -19,7 +19,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * An empty hazelcast instance
+ * Initiating an empty hazelcast instance
  */
 public class HzInitiator {
     private static Logger logger = LogManager.getLogger(HzInitiator.class.getName());

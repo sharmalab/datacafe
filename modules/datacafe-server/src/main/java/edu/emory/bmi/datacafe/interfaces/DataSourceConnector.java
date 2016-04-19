@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.core;
+package edu.emory.bmi.datacafe.interfaces;
 
 import com.mongodb.DB;
 import com.mongodb.DBCollection;

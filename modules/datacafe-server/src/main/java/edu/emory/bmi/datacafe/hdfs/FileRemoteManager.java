@@ -15,11 +15,15 @@
  */
 package edu.emory.bmi.datacafe.hdfs;
 
-import com.jcraft.jsch.*;
-
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
+import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.DatacafeConstants;
-import edu.emory.bmi.datacafe.constants.HDFSConstants;
-import org.apache.logging.log4j.*;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
@@ -43,7 +47,8 @@ public class FileRemoteManager {
         ChannelSftp channelSftp = null;
         try {
             jSch.addIdentity(DatacafeConstants.PRIVATE_KEY);
-            session = jSch.getSession(HDFSConstants.SFTP_USER, HDFSConstants.HIVE_SERVER, HDFSConstants.HIVE_SFTP_PORT);
+            session = jSch.getSession(ConfigReader.getSftpUser(), ConfigReader.getHiveServer(),
+                    ConfigReader.getSftpPort());
             java.util.Properties config = new java.util.Properties();
             config.put("StrictHostKeyChecking", "no");
             session.setConfig(config);
@@ -52,9 +57,9 @@ public class FileRemoteManager {
             channel.connect();
 
             channelSftp = (ChannelSftp) channel;
-            channelSftp.cd(HDFSConstants.HIVE_TARGET_DIR);
+            channelSftp.cd(ConfigReader.getRemoteTargetDir());
 
-            File f = new File(HDFSConstants.CLIENT_CSV_DIR + fileName);
+            File f = new File(ConfigReader.getClientCSVDir() + fileName);
             channelSftp.put(new FileInputStream(f), f.getName());
             logger.info("File, " + fileName + " copied successfully to the remote location..");
 

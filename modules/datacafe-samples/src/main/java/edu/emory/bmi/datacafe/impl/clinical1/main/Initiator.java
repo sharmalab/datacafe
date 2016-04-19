@@ -17,7 +17,7 @@ package edu.emory.bmi.datacafe.impl.clinical1.main;
 
 import edu.emory.bmi.datacafe.core.DataSource;
 import edu.emory.bmi.datacafe.mongo.ExecutorEngine;
-import edu.emory.bmi.datacafe.core.DataSourceBean;
+import edu.emory.bmi.datacafe.interfaces.DataSourceBean;
 import edu.emory.bmi.datacafe.impl.clinical1.data.Patient;
 import edu.emory.bmi.datacafe.impl.clinical1.data.Slice;
 import edu.emory.bmi.datacafe.mongo.QueryConstructor;

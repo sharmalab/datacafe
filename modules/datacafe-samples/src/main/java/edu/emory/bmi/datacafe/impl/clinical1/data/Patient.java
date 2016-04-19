@@ -15,7 +15,7 @@
  */
 package edu.emory.bmi.datacafe.impl.clinical1.data;
 
-import edu.emory.bmi.datacafe.core.DataSourceBean;
+import edu.emory.bmi.datacafe.interfaces.DataSourceBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jongo.marshall.jackson.oid.MongoId;

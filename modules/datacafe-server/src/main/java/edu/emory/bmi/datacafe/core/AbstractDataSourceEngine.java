@@ -22,11 +22,11 @@ import java.util.UUID;
 /**
  * Core initialization engine of DataCafe.
  */
-public abstract class DataSourceEngine {
+public abstract class AbstractDataSourceEngine {
 
     private static Map<String, Map<String, String>> dataSourcesMap = null;
 
-    public DataSourceEngine() {
+    public AbstractDataSourceEngine() {
         if (dataSourcesMap == null) {
             dataSourcesMap = new HashMap<>();
         }

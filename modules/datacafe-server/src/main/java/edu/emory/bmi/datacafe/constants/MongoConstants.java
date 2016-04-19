@@ -18,14 +18,15 @@ package edu.emory.bmi.datacafe.constants;
 /**
  * Constants for Mongo Integration
  */
-public class MongoConstants {
+public final class MongoConstants {
+
+    /**
+     * Suppress instantiation.
+     */
+    private MongoConstants() {
+    }
 
     public static final String ID_ATTRIBUTE = "_id";
-
-    /*AWS deployment*/
-    public static final String CLIENT_HOST =  DatacafeConstants.IS_REMOTE_MONGO_SERVER ?
-            "ec2-54-161-152-13.compute-1.amazonaws.com" : "localhost";
-    public static final int CLIENT_PORT = 27017;
 
     public static final String DATABASE_KEY_ENTRY = "database";
     public static final String COLLECTION_KEY_ENTRY = "collection";
