@@ -44,8 +44,8 @@ public class FileRemoteManager {
         ChannelSftp channelSftp = null;
         try {
             jSch.addIdentity(DatacafeConstants.PRIVATE_KEY);
-            session = jSch.getSession(HDFSConstants.SFTP_USER, ConfigReader.getHiveServer(),
-                    HDFSConstants.SFTP_PORT);
+            session = jSch.getSession(ConfigReader.getSftpUser(), ConfigReader.getHiveServer(),
+                    ConfigReader.getSftpPort());
             java.util.Properties config = new java.util.Properties();
             config.put("StrictHostKeyChecking", "no");
             session.setConfig(config);

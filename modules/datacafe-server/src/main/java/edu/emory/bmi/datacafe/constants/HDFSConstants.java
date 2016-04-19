@@ -54,9 +54,6 @@ public final class HDFSConstants {
 
     public static final String CLIENT_CSV_DIR = CLIENT_ORIGIN_DIR + "conf/";
 
-    public static final int SFTP_PORT = 22;
-    public static final String SFTP_USER = "ec2-user";
-
     public static final String HIVE_CSV_DIR = "datacafe/";
     public static String HIVE_PASSWORD = "";
 

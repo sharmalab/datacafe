@@ -38,6 +38,8 @@ public class ConfigReader {
     private static String hdfsPath;
     private static String hiveServer = "";
     private static int hivePort;
+    private static int sftpPort;
+    private static String sftpUser;
 
     protected static Properties prop;
 
@@ -73,14 +75,22 @@ public class ConfigReader {
         if (loaded) {
             dataServerHost = prop.getProperty("dataServerHost");
             String temp = prop.getProperty("dataServerPort");
-            if (temp!= null) {
+            if (temp != null) {
                 dataServerPort = Integer.parseInt(temp);
             }
             fileWriteMode = prop.getProperty("fileWriteMode");
 
             String remoteStr = prop.getProperty("isRemote");
-            if (remoteStr!=null) {
+            if (remoteStr != null) {
                 isRemoteDSServer = Boolean.parseBoolean(remoteStr);
+            }
+
+            if (isRemoteDSServer) {
+                String sftpPortStr = prop.getProperty("sftpPort");
+                if (sftpPortStr != null) {
+                    sftpPort = Integer.parseInt(sftpPortStr);
+                }
+                sftpUser = prop.getProperty("sftpUser");
             }
 
             hadoopConf = prop.getProperty("hadoopConf");
@@ -88,7 +98,7 @@ public class ConfigReader {
 
             hiveServer = prop.getProperty("hiveServer");
 
-            if (!(hiveServer.equals("") ||  (hiveServer.equals(null))) ){
+            if (!(hiveServer.equals("") || (hiveServer.equals(null)))) {
                 String hivePortStr = prop.getProperty("hivePort");
                 hivePort = Integer.parseInt(hivePortStr);
             }
@@ -125,5 +135,13 @@ public class ConfigReader {
 
     public static int getHivePort() {
         return hivePort;
+    }
+
+    public static int getSftpPort() {
+        return sftpPort;
+    }
+
+    public static String getSftpUser() {
+        return sftpUser;
     }
 }
