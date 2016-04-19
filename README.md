@@ -40,8 +40,16 @@ Refer to the relevant files in documentation for detailed instructions on each o
 Optional.
 
 
-## Executing DataCafe
+## Executing Data Cafe
 
  $ mvn clean install
 
  $ java -classpath lib/datacafe-server-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi.datacafe.impl.main.Initiator
+
+
+## Using Data Cafe in your research
+
+Please cite the below, if you use Data Cafe in your research.
+
+"Kathiravelu, P., Kazerouni, A., & Sharma, A. (2016). Data Café — A Platform For Creating Biomedical Data
+ Lakes. In AMIA 2016 Joint Summits on Translational Science. Mar. 2016. 2 pages."
