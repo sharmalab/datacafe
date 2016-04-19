@@ -61,7 +61,7 @@ public class HdfsConnector implements WarehouseConnector {
 
     @Override
     public void writeToWarehouse(String[] datasourcesNames, List<String>[] texts, String[] queries) {
-        for (int i = 0; i < DatacafeConstants.NUMBER_OF_COMPOSING_DATA_SOURCES; i++) {
+        for (int i = 0; i < datasourcesNames.length; i++) {
             createFile(datasourcesNames[i], texts[i]);
             HadoopConnector.writeToHDFS(datasourcesNames[i]);
         }

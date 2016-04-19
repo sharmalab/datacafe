@@ -29,15 +29,19 @@ public final class DatacafeConstants {
     }
 
     public static final String DELIMITER = ",";
+
+    /**
+     * Should subsequent reads of the initial original databases be appended to the single file.
+     * Append, if true. Truncate and replace, if false.
+     */
     public static final boolean IS_APPEND = false;
 
+
     public static final String DATACAFE_PROPERTIES_FILE = "conf/datacafe.properties";
+
     public static final String FILE_EXTENSION = ".csv";
 
-    public static final int NUMBER_OF_COMPOSING_DATA_SOURCES = 2;
-
     public static final boolean IS_REMOTE_SERVER = false;
-    public static final boolean IS_REMOTE_MONGO_SERVER = false;
 
     public static final String PRIVATE_KEY = HDFSConstants.CLIENT_ORIGIN_DIR + File.separator + "pradeeban.pem";
 }
