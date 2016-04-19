@@ -57,7 +57,7 @@ Samples are provided in the datacafe-samples module.
 
 For example, to execute the clinical-1 sample,
 
- $ java -classpath lib/datacafe-server-1.0-SNAPSHOT.jar:lib/*:conf/ main.java.edu.emory.bmi.datacafe.impl.clinical1.main.Initiator
+ $ java -classpath lib/datacafe-samples-1.0-SNAPSHOT.jar:lib/*:conf/ main.java.edu.emory.bmi.datacafe.impl.clinical1.main.Initiator
 
 
 ## Using Data Cafe in your research
