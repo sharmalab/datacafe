@@ -19,7 +19,6 @@ import com.jcraft.jsch.*;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.DatacafeConstants;
-import edu.emory.bmi.datacafe.constants.HDFSConstants;
 import org.apache.logging.log4j.*;
 import org.apache.logging.log4j.Logger;
 
@@ -54,9 +53,9 @@ public class FileRemoteManager {
             channel.connect();
 
             channelSftp = (ChannelSftp) channel;
-            channelSftp.cd(HDFSConstants.REMOTE_TARGET_DIR);
+            channelSftp.cd(ConfigReader.getRemoteTargetDir());
 
-            File f = new File(HDFSConstants.CLIENT_CSV_DIR + fileName);
+            File f = new File(ConfigReader.getClientCSVDir() + fileName);
             channelSftp.put(new FileInputStream(f), f.getName());
             logger.info("File, " + fileName + " copied successfully to the remote location..");
 

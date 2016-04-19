@@ -47,7 +47,7 @@ public class HadoopConnector {
         FileSystem fs = FileSystem.get(config);
         String outputFileName = fileName +   ConfigReader.getFileExtension();
 
-        fs.copyFromLocalFile(new Path(HDFSConstants.CLIENT_ORIGIN_DIR + fileName),
+        fs.copyFromLocalFile(new Path(ConfigReader.getClientOriginDir() + fileName),
                 new Path(ConfigReader.getHdfsPath() + outputFileName));
         logger.info("Successfully written " + outputFileName + " to the Hadoop HDFS");
     }

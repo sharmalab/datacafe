@@ -57,10 +57,18 @@ public class ConfigReader {
     private static int sftpPort;
     private static String sftpUser;
 
+    private static String remoteTargetDir;
+
     private static String fileExtension;
     private static String delimiter;
     private static String privateKey;
 
+
+    /**
+     * Origin Directories.
+     */
+    private static String clientOriginDir;
+    private static String clientCSVDir;
 
     protected static Properties prop;
 
@@ -106,12 +114,19 @@ public class ConfigReader {
                 isRemoteDSServer = Boolean.parseBoolean(remoteStr);
             }
 
+            clientOriginDir = prop.getProperty("clientOriginDir");
+
             if (isRemoteDSServer) {
                 String sftpPortStr = prop.getProperty("sftpPort");
                 if (sftpPortStr != null) {
                     sftpPort = Integer.parseInt(sftpPortStr);
                 }
                 sftpUser = prop.getProperty("sftpUser");
+                remoteTargetDir = prop.getProperty("remoteTargetDir");
+                clientCSVDir = prop.getProperty("clientCSVDir");
+                if (clientCSVDir == null) {
+                    clientCSVDir = clientOriginDir + "conf/";
+                }
             }
 
             hadoopConf = prop.getProperty("hadoopConf");
@@ -203,5 +218,17 @@ public class ConfigReader {
 
     public static String getHiveDriver() {
         return hiveDriver;
+    }
+
+    public static String getRemoteTargetDir() {
+        return remoteTargetDir;
+    }
+
+    public static String getClientOriginDir() {
+        return clientOriginDir;
+    }
+
+    public static String getClientCSVDir() {
+        return clientCSVDir;
     }
 }

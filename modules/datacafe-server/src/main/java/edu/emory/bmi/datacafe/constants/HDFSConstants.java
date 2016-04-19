@@ -40,13 +40,4 @@ public final class HDFSConstants {
     public static final String HIVE_CONNECTION_URI = "jdbc:hive2://" + ConfigReader.getHiveServer() + ":" +
             ConfigReader.getHivePort() + "/default";
 
-    /**
-     * Remote destination for the file copy.
-     */
-    public static final String REMOTE_TARGET_DIR = "../hadoop/datacafe/";
-
-    public static final String CLIENT_ORIGIN_DIR = "./";
-
-    public static final String CLIENT_CSV_DIR = CLIENT_ORIGIN_DIR + "conf/";
-
 }

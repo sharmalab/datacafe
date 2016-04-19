@@ -39,6 +39,6 @@ public final class DatacafeConstants {
 
     public static final String DATACAFE_PROPERTIES_FILE = "conf/datacafe.properties";
 
-    public static final String PRIVATE_KEY = HDFSConstants.CLIENT_ORIGIN_DIR + File.separator +
+    public static final String PRIVATE_KEY = ConfigReader.getClientOriginDir() + File.separator +
             ConfigReader.getPrivateKey();
 }
