@@ -35,6 +35,11 @@ Refer to the relevant files in documentation for detailed instructions on each o
 * Browse the web interface of Drill - http://localhost:8047/
 
 
+Make sure to set extractHeader element appropriately in the Drill storage according to your data sources.
+
+       "extractHeader": true,
+
+
 ## Configure Hive
 
 Optional.
