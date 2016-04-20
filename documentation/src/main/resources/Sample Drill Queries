@@ -58,15 +58,10 @@ WHERE CAST(`PATIENTS_DATA_TABLE.csv`.SUBJECT_ID AS VARCHAR) = CAST(`ADMISSIONS_D
 
 ------------------------------------------------------------------------------
 
-  SELECT t2.state, t2.county, SUM(CAST(t1.est AS INT)) `total establishments`
-    FROM dfs.`/path/to/cbp13co.csvh` t1
-    JOIN dfs.`/path/to/county-fips.csvh` t2
-      ON t1.fipstate = t2.state_fips
-     AND t1.fipscty = t2.county_fips
-GROUP BY t2.state, t2.county
-ORDER BY `total establishments`
-    DESC LIMIT 10;
-
+SELECT t1.SUBJECT_ID, t1.DOB, t2.DEATHTIME
+FROM hdfs.root.`input/PATIENTS_DATA_TABLE.csv` t1
+JOIN hdfs.root.`input/ADMISSIONS_DATA_TABLE.csv` t2
+ON t1.SUBJECT_ID = t2.SUBJECT_ID
 
 --------------------------------------------
 
