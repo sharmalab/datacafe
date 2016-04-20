@@ -70,11 +70,10 @@ public class HadoopConnector {
 
     public static void main(String[] args) {
         ConfigReader.readConfig();
-        String dir = "input";
         try {
-            copyToHDFS(dir, true);
+            copyToHDFS(ConfigReader.getInputBulkDir(), true);
         } catch (IOException e) {
-            logger.error("Exception in copying the directory" + dir, e);
+            logger.error("Exception in copying the directory" + ConfigReader.getInputBulkDir(), e);
         }
     }
 }

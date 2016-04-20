@@ -70,6 +70,8 @@ public class ConfigReader {
     private static String clientOriginDir;
     private static String clientCSVDir;
 
+    private static String inputBulkDir;
+
     protected static Properties prop;
 
     private static boolean loadProperties() {
@@ -149,6 +151,7 @@ public class ConfigReader {
             fileExtension = prop.getProperty("fileExtension");
             delimiter = prop.getProperty("delimiter");
             privateKey = prop.getProperty("privateKey");
+            inputBulkDir = prop.getProperty("inputBulkDir");
         }
     }
 
@@ -230,5 +233,9 @@ public class ConfigReader {
 
     public static String getClientCSVDir() {
         return clientCSVDir;
+    }
+
+    public static String getInputBulkDir() {
+        return inputBulkDir;
     }
 }
