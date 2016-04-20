@@ -58,10 +58,20 @@ WHERE CAST(`PATIENTS_DATA_TABLE.csv`.SUBJECT_ID AS VARCHAR) = CAST(`ADMISSIONS_D
 
 ------------------------------------------------------------------------------
 
+Joining Patients and Admissions:
+
 SELECT t1.SUBJECT_ID, t1.DOB, t2.DEATHTIME
 FROM hdfs.root.`input/PATIENTS_DATA_TABLE.csv` t1
 JOIN hdfs.root.`input/ADMISSIONS_DATA_TABLE.csv` t2
 ON t1.SUBJECT_ID = t2.SUBJECT_ID
+
+--------------------------------------------
+
+Joining Patients, Admissions, and Callout:
+
+SELECT t1.SUBJECT_ID, t1.DOB, t2.DEATHTIME, t3.CALLOUT_OUTCOME
+FROM hdfs.root.`input/PATIENTS_DATA_TABLE.csv` t1, hdfs.root.`input/ADMISSIONS_DATA_TABLE.csv` t2, hdfs.root.`input/CALLOUT_DATA_TABLE.csv` t3
+WHERE t1.SUBJECT_ID = t2.SUBJECT_ID AND t1.SUBJECT_ID = t3.SUBJECT_ID
 
 --------------------------------------------
 
