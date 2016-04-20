@@ -38,13 +38,19 @@ public class HadoopConnector {
      * Copies the local data warehouse file to HDFS.
      * @throws IOException
      */
-    private static void copyToHDFS(String fileName) throws IOException {
+    private static void copyToHDFS(String fileName, boolean isDirectory) throws IOException {
+        String outputFileName;
         Configuration config = new Configuration();
         config.addResource(new Path(ConfigReader.getHadoopConf()+ File.separator + HDFSConstants.CORE_SITE_XML));
         config.addResource(new Path(ConfigReader.getHadoopConf() + File.separator + HDFSConstants.HDFS_SITE_XML));
 
         FileSystem fs = FileSystem.get(config);
-        String outputFileName = fileName +   ConfigReader.getFileExtension();
+
+        if (!isDirectory) {
+            outputFileName = fileName + ConfigReader.getFileExtension();
+        } else {
+            outputFileName = fileName;
+        }
 
         fs.copyFromLocalFile(new Path(ConfigReader.getClientOriginDir() + fileName),
                 new Path(ConfigReader.getHdfsPath() + outputFileName));
@@ -56,9 +62,19 @@ public class HadoopConnector {
      */
     public static void writeToHDFS(String fileName) {
         try {
-            HadoopConnector.copyToHDFS(fileName);
+            HadoopConnector.copyToHDFS(fileName, false);
         } catch (IOException e) {
             logger.error("Failed to write to Hadoop HDFS", e);
+        }
+    }
+
+    public static void main(String[] args) {
+        ConfigReader.readConfig();
+        String dir = "input";
+        try {
+            copyToHDFS(dir, true);
+        } catch (IOException e) {
+            logger.error("Exception in copying the directory" + dir, e);
         }
     }
 }
