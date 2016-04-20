@@ -68,7 +68,7 @@ public class HadoopConnector {
     private static void delete(String folder) throws IOException {
         FileSystem fs = getFileSystem();
         fs.delete(new Path(ConfigReader.getHdfsPath() + folder), true);
-        logger.info("Successfully deleted the contents of the HDFS folder: ", folder);
+        logger.info("Successfully deleted the contents of the HDFS folder: " + folder);
     }
 
     /**
