@@ -67,11 +67,11 @@ ON t1.SUBJECT_ID = t2.SUBJECT_ID
 
 --------------------------------------------
 
-Joining Patients, Admissions, and Callout:
+Joining Patients, Admissions, Callout, and ICU Stays:
 
-SELECT t1.SUBJECT_ID, t1.DOB, t2.DEATHTIME, t3.CALLOUT_OUTCOME
-FROM hdfs.root.`input/PATIENTS_DATA_TABLE.csv` t1, hdfs.root.`input/ADMISSIONS_DATA_TABLE.csv` t2, hdfs.root.`input/CALLOUT_DATA_TABLE.csv` t3
-WHERE t1.SUBJECT_ID = t2.SUBJECT_ID AND t1.SUBJECT_ID = t3.SUBJECT_ID
+SELECT t1.SUBJECT_ID, t1.DOB, t2.DEATHTIME, t3.CALLOUT_OUTCOME, t4.LOS, t4.FIRST_WARDID
+FROM hdfs.root.`input/PATIENTS_DATA_TABLE.csv` t1, hdfs.root.`input/ADMISSIONS_DATA_TABLE.csv` t2, hdfs.root.`input/CALLOUT_DATA_TABLE.csv` t3, hdfs.root.`input/ICUSTAYS_DATA_TABLE.csv` t4
+WHERE t1.SUBJECT_ID = t2.SUBJECT_ID AND t1.SUBJECT_ID = t3.SUBJECT_ID AND t1.SUBJECT_ID = t4.SUBJECT_ID
 
 --------------------------------------------
 
