@@ -164,11 +164,6 @@
             Change it to match the version of your Hive server installation..-->
             <version>1.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.jcraft</groupId>
-            <artifactId>jsch</artifactId>
-            <version>0.1.53</version>
-        </dependency>
     </dependencies>
   </dependencyManagement>    
 </project>
