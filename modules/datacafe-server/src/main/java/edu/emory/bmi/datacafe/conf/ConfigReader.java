@@ -32,7 +32,6 @@ public class ConfigReader {
     private static Logger logger = LogManager.getLogger(ConfigReader.class.getName());
     private static String dataServerHost;
     private static int dataServerPort;
-    private static String fileWriteMode;
     private static boolean isRemoteDSServer;
 
     /**
@@ -109,7 +108,6 @@ public class ConfigReader {
             if (temp != null) {
                 dataServerPort = Integer.parseInt(temp);
             }
-            fileWriteMode = prop.getProperty("fileWriteMode");
 
             String remoteStr = prop.getProperty("isRemote");
             if (remoteStr != null) {
@@ -161,10 +159,6 @@ public class ConfigReader {
 
     public static String getDataServerHost() {
         return dataServerHost;
-    }
-
-    public static String getFileWriteMode() {
-        return fileWriteMode;
     }
 
     public static boolean isRemoteDSServer() {

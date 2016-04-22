@@ -36,6 +36,7 @@ public class MongoConnector implements DataSourceConnector {
     private static final MongoClient mongoClient = new MongoClient(new ServerAddress(
             ConfigReader.getDataServerHost(), ConfigReader.getDataServerPort()));
 
+    @Deprecated
     public static String[] constructQueries(String[][] params) {
         String[] queries = new String[params.length];
         for (int i = 0; i < params.length; i++) {
@@ -44,6 +45,7 @@ public class MongoConnector implements DataSourceConnector {
         return queries;
     }
 
+    @Deprecated
     public static String constructQuery(String[] params) {
         String out = "";
         for (int i = 0; i < params.length; i++) {
@@ -73,6 +75,7 @@ public class MongoConnector implements DataSourceConnector {
      * @param queryEntries parts of the query
      * @return the query
      */
+    @Deprecated
     public String constructQueryFromParts(String... queryEntries) {
         String query = "";
         for (String queryEntry : queryEntries) {

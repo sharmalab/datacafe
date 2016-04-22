@@ -36,7 +36,7 @@ import java.util.List;
 /**
  * Connecting to HDFS through Datacafe.
  */
-public class HdfsConnector implements WarehouseConnector {
+public class HdfsConnector {
     private static Logger logger = LogManager.getLogger(HdfsConnector.class.getName());
 
     /**
@@ -44,24 +44,19 @@ public class HdfsConnector implements WarehouseConnector {
      *
      * @param datasourceNames names of the data sources
      * @param params          parameters of the data sources as a 2-d array - an array for each of the data source
-     * @param queries         queries for each of the data source.
      * @param writables       array of lists for each data sources to be written to the data warehouse.
      */
-    public static void writeDataSourcesToWarehouse(String[] datasourceNames, String[][] params,
-                                                   String[] queries, List<?>[] writables) {
+    public static void writeDataSourcesToWarehouse(String[] datasourceNames, String[][] params, List<?>[] writables) {
         List<String>[] texts = new ArrayList[writables.length];
 
         for (int i = 0; i < writables.length; i++) {
             texts[i] = CoreDataObject.getWritableString(params[i], writables[i]);
         }
 
-        WarehouseConnector warehouseConnector = new HdfsConnector();
-        warehouseConnector.writeToWarehouse(datasourceNames, texts);
+        writeToWarehouse(datasourceNames, texts);
     }
 
-
-    @Override
-    public void writeToWarehouse(String[] datasourcesNames, List<String>[] texts) {
+    public static void writeToWarehouse(String[] datasourcesNames, List<String>[] texts) {
         try {
             FileSystem hdfs = getFileSystem();
 
@@ -80,9 +75,6 @@ public class HdfsConnector implements WarehouseConnector {
                 writer.write(temp);
                 writer.close();
                 logger.info("Successfully written to the data lake: " + outputFile);
-
-
-
             }
         } catch (IOException e) {
             logger.error("Error while attempting to get the file system", e);

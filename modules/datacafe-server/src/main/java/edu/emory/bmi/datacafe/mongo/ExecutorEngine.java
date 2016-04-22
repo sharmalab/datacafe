@@ -98,15 +98,12 @@ public class ExecutorEngine extends AbstractExecutorEngine {
      * Construct the data lake
      */
     public void constructDataLake(String[][] interestedAttributes) {
-        String[] queries = MongoConnector.constructQueries(interestedAttributes);
-
         Collection<String> values = datasourceNames.values();
         String[] tempDataSourceNames = values.toArray(new String[values.size()]);
 
         if (logger.isDebugEnabled()) {
             for (int i = 0; i < tempDataSourceNames.length; i++) {
                 logger.debug(i + ": " + tempDataSourceNames[i]);
-                logger.debug(queries[i]);
                 dataSourceBeans[i].get(i);
                 for (int j = 0; j < interestedAttributes[i].length; j++) {
                     logger.debug(interestedAttributes[i][j]);
@@ -114,6 +111,6 @@ public class ExecutorEngine extends AbstractExecutorEngine {
             }
         }
 
-        HdfsConnector.writeDataSourcesToWarehouse(tempDataSourceNames, interestedAttributes, queries, dataSourceBeans);
+        HdfsConnector.writeDataSourcesToWarehouse(tempDataSourceNames, interestedAttributes, dataSourceBeans);
     }
 }
