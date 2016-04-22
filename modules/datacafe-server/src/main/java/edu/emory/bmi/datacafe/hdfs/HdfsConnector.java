@@ -18,7 +18,6 @@ package edu.emory.bmi.datacafe.hdfs;
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.HDFSConstants;
 import edu.emory.bmi.datacafe.core.CoreDataObject;
-import edu.emory.bmi.datacafe.interfaces.WarehouseConnector;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;

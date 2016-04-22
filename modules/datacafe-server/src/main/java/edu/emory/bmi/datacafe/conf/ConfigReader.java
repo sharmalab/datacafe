@@ -40,16 +40,6 @@ public class ConfigReader {
     private static String hadoopConf;
     private static String hdfsPath;
 
-    /**
-     * Hive Configurations.
-     */
-    private static String hiveServer;
-    private static int hivePort;
-    private static String hiveUserName;
-    private static String hivePassword = "";
-    private static String hiveCSVDir;
-    private static String hiveDriver;
-
 
     private static String remoteTargetDir;
 
@@ -122,20 +112,6 @@ public class ConfigReader {
             hadoopConf = prop.getProperty("hadoopConf");
             hdfsPath = prop.getProperty("hdfsPath");
 
-            hiveServer = prop.getProperty("hiveServer");
-
-            if (!(hiveServer.equals("") || (hiveServer == null))) {
-                String hivePortStr = prop.getProperty("hivePort");
-                hivePort = Integer.parseInt(hivePortStr);
-                hiveUserName = prop.getProperty("hiveUserName");
-                String tempPass = prop.getProperty("hivePassword");
-                if (tempPass!=null) {
-                    hivePassword = tempPass;
-                }
-                hiveCSVDir = prop.getProperty("hiveCSVDir");
-                hiveDriver = prop.getProperty("hiveDriver");
-            }
-
             fileExtension = prop.getProperty("fileExtension");
             delimiter = prop.getProperty("delimiter");
             privateKey = prop.getProperty("privateKey");
@@ -163,14 +139,6 @@ public class ConfigReader {
         return hdfsPath;
     }
 
-    public static String getHiveServer() {
-        return hiveServer;
-    }
-
-    public static int getHivePort() {
-        return hivePort;
-    }
-
     public static String getFileExtension() {
         return fileExtension;
     }
@@ -181,22 +149,6 @@ public class ConfigReader {
 
     public static String getPrivateKey() {
         return privateKey;
-    }
-
-    public static String getHiveUserName() {
-        return hiveUserName;
-    }
-
-    public static String getHivePassword() {
-        return hivePassword;
-    }
-
-    public static String getHiveCSVDir() {
-        return hiveCSVDir;
-    }
-
-    public static String getHiveDriver() {
-        return hiveDriver;
     }
 
     public static String getRemoteTargetDir() {

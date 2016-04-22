@@ -40,11 +40,6 @@ Make sure to set extractHeader element appropriately in the Drill storage accord
        "extractHeader": true,
 
 
-## Configure Hive
-
-Optional.
-
-
 ## Building Data Cafe
 
 Data Cafe can be built using Apache Maven 3.x.

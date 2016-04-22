@@ -15,8 +15,6 @@
  */
 package edu.emory.bmi.datacafe.constants;
 
-import edu.emory.bmi.datacafe.conf.ConfigReader;
-
 /**
  * Constants for HDFS Integration.
  */
@@ -33,11 +31,4 @@ public final class HDFSConstants {
      */
     public static final String CORE_SITE_XML = "core-site.xml";
     public static final String HDFS_SITE_XML = "hdfs-site.xml";
-
-    /**
-     * Hive connection uri.
-     */
-    public static final String HIVE_CONNECTION_URI = "jdbc:hive2://" + ConfigReader.getHiveServer() + ":" +
-            ConfigReader.getHivePort() + "/default";
-
 }

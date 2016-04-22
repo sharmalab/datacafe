@@ -15,10 +15,6 @@
  */
 package edu.emory.bmi.datacafe.constants;
 
-import edu.emory.bmi.datacafe.conf.ConfigReader;
-
-import java.io.File;
-
 /**
  * The common constants of Datacafe
  */
