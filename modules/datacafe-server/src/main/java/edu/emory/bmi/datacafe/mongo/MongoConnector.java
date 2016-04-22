@@ -21,40 +21,19 @@ import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import edu.emory.bmi.datacafe.conf.ConfigReader;
-import edu.emory.bmi.datacafe.interfaces.DataSourceConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
  * Connects to the Mongo database
  */
-public class MongoConnector implements DataSourceConnector {
+public class MongoConnector {
     private static Logger logger = LogManager.getLogger(MongoConnector.class.getName());
     private static MongoConnector mongoConnector = new MongoConnector();
 
 
     private static final MongoClient mongoClient = new MongoClient(new ServerAddress(
             ConfigReader.getDataServerHost(), ConfigReader.getDataServerPort()));
-
-    public static String[] constructQueries(String[][] params) {
-        String[] queries = new String[params.length];
-        for (int i = 0; i < params.length; i++) {
-            queries[i] = constructQuery(params[i]);
-        }
-        return queries;
-    }
-
-    public static String constructQuery(String[] params) {
-        String out = "";
-        for (int i = 0; i < params.length; i++) {
-            out += params[i] + " " + "string";
-            if (i < params.length - 1) {
-                out += ConfigReader.getDelimiter();
-            }
-        }
-        return " (" + out + ") row format delimited fields " +
-                "terminated by '" + ConfigReader.getDelimiter() + "' stored as textfile";
-    }
 
     /**
      * Gets cursor for a collection in a given database.
@@ -66,25 +45,6 @@ public class MongoConnector implements DataSourceConnector {
         DB db = mongoClient.getDB(database);
         DBCollection dbCollection = db.getCollection(collection);
         return dbCollection.find();
-    }
-
-    /**
-     * Return a long query by combining parts of the query through a string concatenation.
-     * @param queryEntries parts of the query
-     * @return the query
-     */
-    public String constructQueryFromParts(String... queryEntries) {
-        String query = "";
-        for (String queryEntry : queryEntries) {
-            query += queryEntry;
-        }
-        return query;
-    }
-
-    @Override
-    public String getJoinedResult(DB db1, DBCollection dbCollection1, DB db2, DBCollection dbCollection2,
-                                  String joinQuery) {
-        return null;
     }
 
     /**

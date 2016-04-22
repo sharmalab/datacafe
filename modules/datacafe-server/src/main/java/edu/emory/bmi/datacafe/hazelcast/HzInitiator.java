@@ -35,7 +35,7 @@ public class HzInitiator {
         logger.info("Initiating a Hazelcast instance.");
         HzConfigReader.readConfig();
         HazelSim.spawnInstance(HazelSimCore.getCfg());
-        int size = HzObjectCollection.getHzObjectCollection().getFirstInstance().getCluster().getMembers().size();
+        int size = HazelSim.getHazelSim().getFirstInstance().getCluster().getMembers().size();
         logger.info("Number of instances in this cluster: " + size);
     }
 
@@ -46,7 +46,7 @@ public class HzInitiator {
         logger.info("Initiating a Hazelcast instance with cluster name, " + clusterName);
         HzConfigReader.readConfig();
         HazelSim.spawnInstance(HazelSimCore.getCfg(clusterName));
-        int size = HzObjectCollection.getHzObjectCollection().getFirstInstance().getCluster().getMembers().size();
+        int size = HazelSim.getHazelSim().getFirstInstance().getCluster().getMembers().size();
         logger.info("Number of instances in the cluster: " + clusterName + " is, " + size);
     }
 }

@@ -15,10 +15,6 @@
  */
 package edu.emory.bmi.datacafe.constants;
 
-import edu.emory.bmi.datacafe.conf.ConfigReader;
-
-import java.io.File;
-
 /**
  * The common constants of Datacafe
  */
@@ -30,15 +26,5 @@ public final class DatacafeConstants {
     private DatacafeConstants() {
     }
 
-    /**
-     * File write modes
-     */
-    public static final String APPEND = "append";
-    public static final String CREATE = "create";
-    public static final String REPLACE = "replace";
-
     public static final String DATACAFE_PROPERTIES_FILE = "conf/datacafe.properties";
-
-    public static final String PRIVATE_KEY = ConfigReader.getClientOriginDir() + File.separator +
-            ConfigReader.getPrivateKey();
 }

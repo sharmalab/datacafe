@@ -32,7 +32,6 @@ public class ConfigReader {
     private static Logger logger = LogManager.getLogger(ConfigReader.class.getName());
     private static String dataServerHost;
     private static int dataServerPort;
-    private static String fileWriteMode;
     private static boolean isRemoteDSServer;
 
     /**
@@ -41,21 +40,6 @@ public class ConfigReader {
     private static String hadoopConf;
     private static String hdfsPath;
 
-    /**
-     * Hive Configurations.
-     */
-    private static String hiveServer;
-    private static int hivePort;
-    private static String hiveUserName;
-    private static String hivePassword = "";
-    private static String hiveCSVDir;
-    private static String hiveDriver;
-
-    /**
-     * SFTP Configurations.
-     */
-    private static int sftpPort;
-    private static String sftpUser;
 
     private static String remoteTargetDir;
 
@@ -69,6 +53,8 @@ public class ConfigReader {
      */
     private static String clientOriginDir;
     private static String clientCSVDir;
+
+    private static String inputBulkDir;
 
     protected static Properties prop;
 
@@ -107,7 +93,6 @@ public class ConfigReader {
             if (temp != null) {
                 dataServerPort = Integer.parseInt(temp);
             }
-            fileWriteMode = prop.getProperty("fileWriteMode");
 
             String remoteStr = prop.getProperty("isRemote");
             if (remoteStr != null) {
@@ -117,11 +102,6 @@ public class ConfigReader {
             clientOriginDir = prop.getProperty("clientOriginDir");
 
             if (isRemoteDSServer) {
-                String sftpPortStr = prop.getProperty("sftpPort");
-                if (sftpPortStr != null) {
-                    sftpPort = Integer.parseInt(sftpPortStr);
-                }
-                sftpUser = prop.getProperty("sftpUser");
                 remoteTargetDir = prop.getProperty("remoteTargetDir");
                 clientCSVDir = prop.getProperty("clientCSVDir");
                 if (clientCSVDir == null) {
@@ -132,23 +112,10 @@ public class ConfigReader {
             hadoopConf = prop.getProperty("hadoopConf");
             hdfsPath = prop.getProperty("hdfsPath");
 
-            hiveServer = prop.getProperty("hiveServer");
-
-            if (!(hiveServer.equals("") || (hiveServer == null))) {
-                String hivePortStr = prop.getProperty("hivePort");
-                hivePort = Integer.parseInt(hivePortStr);
-                hiveUserName = prop.getProperty("hiveUserName");
-                String tempPass = prop.getProperty("hivePassword");
-                if (tempPass!=null) {
-                    hivePassword = tempPass;
-                }
-                hiveCSVDir = prop.getProperty("hiveCSVDir");
-                hiveDriver = prop.getProperty("hiveDriver");
-            }
-
             fileExtension = prop.getProperty("fileExtension");
             delimiter = prop.getProperty("delimiter");
             privateKey = prop.getProperty("privateKey");
+            inputBulkDir = prop.getProperty("inputBulkDir");
         }
     }
 
@@ -158,10 +125,6 @@ public class ConfigReader {
 
     public static String getDataServerHost() {
         return dataServerHost;
-    }
-
-    public static String getFileWriteMode() {
-        return fileWriteMode;
     }
 
     public static boolean isRemoteDSServer() {
@@ -176,22 +139,6 @@ public class ConfigReader {
         return hdfsPath;
     }
 
-    public static String getHiveServer() {
-        return hiveServer;
-    }
-
-    public static int getHivePort() {
-        return hivePort;
-    }
-
-    public static int getSftpPort() {
-        return sftpPort;
-    }
-
-    public static String getSftpUser() {
-        return sftpUser;
-    }
-
     public static String getFileExtension() {
         return fileExtension;
     }
@@ -204,22 +151,6 @@ public class ConfigReader {
         return privateKey;
     }
 
-    public static String getHiveUserName() {
-        return hiveUserName;
-    }
-
-    public static String getHivePassword() {
-        return hivePassword;
-    }
-
-    public static String getHiveCSVDir() {
-        return hiveCSVDir;
-    }
-
-    public static String getHiveDriver() {
-        return hiveDriver;
-    }
-
     public static String getRemoteTargetDir() {
         return remoteTargetDir;
     }
@@ -230,5 +161,9 @@ public class ConfigReader {
 
     public static String getClientCSVDir() {
         return clientCSVDir;
+    }
+
+    public static String getInputBulkDir() {
+        return inputBulkDir;
     }
 }

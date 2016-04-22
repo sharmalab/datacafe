@@ -45,12 +45,4 @@ public class QueryConstructor extends AbstractQueryConstructor {
     public String getConstraints() {
         return constraints;
     }
-
-    public void setDatabase(String database) {
-        this.database = database;
-    }
-
-    public void setConstraints(String constraints) {
-        this.constraints = constraints;
-    }
 }

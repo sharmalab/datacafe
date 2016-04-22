@@ -20,7 +20,7 @@ Configure and enable storage plugin for HDFS in Drill through its web user inter
    "config": null,
    "workspaces": {
      "root": {
-       "location": "/user/hdfs",
+       "location": "/user/hdfs/",
        "writable": true,
        "defaultInputFormat": null
      }
