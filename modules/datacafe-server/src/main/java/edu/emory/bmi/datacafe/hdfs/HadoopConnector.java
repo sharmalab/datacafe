@@ -34,61 +34,43 @@ public class HadoopConnector {
     private static Logger logger = LogManager.getLogger(HadoopConnector.class.getName());
 
 
-    /**
-     * Copies the local data warehouse file to HDFS.
-     * @throws IOException
-     */
-    private static void copyToHDFS(String fileName, boolean isDirectory) throws IOException {
-        String outputFileName;
-        Configuration config = new Configuration();
-        config.addResource(new Path(ConfigReader.getHadoopConf()+ File.separator + HDFSConstants.CORE_SITE_XML));
-        config.addResource(new Path(ConfigReader.getHadoopConf() + File.separator + HDFSConstants.HDFS_SITE_XML));
+//    /**
+//     * Copies the local data warehouse file to HDFS.
+//     * @throws IOException
+//     */
+//    private static void copyToHDFS(String fileName, boolean isDirectory) throws IOException {
+//        String outputFileName;
+//        Configuration config = new Configuration();
+//        config.addResource(new Path(ConfigReader.getHadoopConf()+ File.separator + HDFSConstants.CORE_SITE_XML));
+//        config.addResource(new Path(ConfigReader.getHadoopConf() + File.separator + HDFSConstants.HDFS_SITE_XML));
+//
+//        FileSystem fs = FileSystem.get(config);
+//
+//        if (!isDirectory) {
+//            outputFileName = fileName + ConfigReader.getFileExtension();
+//        } else {
+//            outputFileName = fileName;
+//        }
+//
+//        fs.copyFromLocalFile(new Path(ConfigReader.getClientOriginDir() + fileName),
+//                new Path(ConfigReader.getHdfsPath() + outputFileName));
+//        logger.info("Successfully written " + outputFileName + " to the Hadoop HDFS");
+//    }
 
-        FileSystem fs = FileSystem.get(config);
 
-        if (!isDirectory) {
-            outputFileName = fileName + ConfigReader.getFileExtension();
-        } else {
-            outputFileName = fileName;
-        }
 
-        fs.copyFromLocalFile(new Path(ConfigReader.getClientOriginDir() + fileName),
-                new Path(ConfigReader.getHdfsPath() + outputFileName));
-        logger.info("Successfully written " + outputFileName + " to the Hadoop HDFS");
-    }
 
-    private static FileSystem getFileSystem() throws IOException {
-        Configuration config = new Configuration();
-        config.addResource(new Path(ConfigReader.getHadoopConf()+ File.separator + HDFSConstants.CORE_SITE_XML));
-        config.addResource(new Path(ConfigReader.getHadoopConf() + File.separator + HDFSConstants.HDFS_SITE_XML));
-
-        return FileSystem.get(config);
-    }
-
-    private static void delete(String folder) throws IOException {
-        FileSystem fs = getFileSystem();
-        fs.delete(new Path(ConfigReader.getHdfsPath() + folder), true);
-        logger.info("Successfully deleted the contents of the HDFS folder: " + folder);
-    }
 
     /**
      * Writes the file to HDFS
      */
-    public static void writeToHDFS(String fileName) {
-        try {
-            HadoopConnector.copyToHDFS(fileName, false);
-        } catch (IOException e) {
-            logger.error("Failed to write to Hadoop HDFS", e);
-        }
-    }
+//    public static void writeToHDFS(String fileName) {
+//        try {
+//            HadoopConnector.copyToHDFS(fileName, false);
+//        } catch (IOException e) {
+//            logger.error("Failed to write to Hadoop HDFS", e);
+//        }
+//    }
 
-    public static void main(String[] args) {
-        ConfigReader.readConfig();
-        try {
-            delete(ConfigReader.getInputBulkDir());
-            copyToHDFS(ConfigReader.getInputBulkDir(), true);
-        } catch (IOException e) {
-            logger.error("Exception in copying the directory: " + ConfigReader.getInputBulkDir(), e);
-        }
-    }
+
 }
