@@ -16,25 +16,27 @@
 package edu.emory.bmi.datacafe.hdfs;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
-import edu.emory.bmi.datacafe.constants.DatacafeConstants;
+import edu.emory.bmi.datacafe.constants.HDFSConstants;
 import edu.emory.bmi.datacafe.core.CoreDataObject;
 import edu.emory.bmi.datacafe.interfaces.WarehouseConnector;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Connecting to HDFS through Datacafe.
  */
-public class HdfsConnector implements WarehouseConnector {
+public class HdfsConnector {
     private static Logger logger = LogManager.getLogger(HdfsConnector.class.getName());
 
     /**
@@ -42,55 +44,69 @@ public class HdfsConnector implements WarehouseConnector {
      *
      * @param datasourceNames names of the data sources
      * @param params          parameters of the data sources as a 2-d array - an array for each of the data source
-     * @param queries         queries for each of the data source.
      * @param writables       array of lists for each data sources to be written to the data warehouse.
      */
-    public static void writeDataSourcesToWarehouse(String[] datasourceNames, String[][] params,
-                                                   String[] queries, List<?>[] writables) {
+    public static void writeDataSourcesToWarehouse(String[] datasourceNames, String[][] params, List<?>[] writables) {
         List<String>[] texts = new ArrayList[writables.length];
 
         for (int i = 0; i < writables.length; i++) {
             texts[i] = CoreDataObject.getWritableString(params[i], writables[i]);
         }
 
-        WarehouseConnector warehouseConnector = new HdfsConnector();
-        warehouseConnector.writeToWarehouse(datasourceNames, texts, queries);
+        writeToWarehouse(datasourceNames, texts);
     }
 
-
-    @Override
-    public void writeToWarehouse(String[] datasourcesNames, List<String>[] texts, String[] queries) {
-        for (int i = 0; i < datasourcesNames.length; i++) {
-            createFile(datasourcesNames[i], texts[i]);
-            HadoopConnector.writeToHDFS(datasourcesNames[i]);
-        }
-    }
-
-    @Override
-    public void createFile(String fileName, List<String> lines) {
-
-        Charset utf8 = StandardCharsets.UTF_8;
+    public static void writeToWarehouse(String[] datasourcesNames, List<String>[] texts) {
         try {
-            if (ConfigReader.getFileWriteMode().equalsIgnoreCase(DatacafeConstants.APPEND)) {
-                Files.write(Paths.get(fileName), lines, utf8, StandardOpenOption.CREATE,
-                        StandardOpenOption.APPEND);
-            } else if (ConfigReader.getFileWriteMode().equalsIgnoreCase(DatacafeConstants.REPLACE)) {
-                Files.write(Paths.get(fileName), lines, utf8, StandardOpenOption.CREATE,
-                        StandardOpenOption.TRUNCATE_EXISTING);
-            } else if (ConfigReader.getFileWriteMode().equalsIgnoreCase(DatacafeConstants.CREATE)) {
-                Files.write(Paths.get(fileName), lines, utf8, StandardOpenOption.CREATE,
-                        StandardOpenOption.CREATE_NEW);
-            } else {
-                Files.write(Paths.get(fileName), lines, utf8, StandardOpenOption.CREATE,
-                        StandardOpenOption.CREATE_NEW);
-                logger.info("No valid file write mode found. Default action: create new chosen");
+            FileSystem hdfs = getFileSystem();
+
+            for (int i = 0; i < datasourcesNames.length; i++) {
+                String temp = "";
+
+                String outputFile = ConfigReader.getHdfsPath() + datasourcesNames[i] +
+                        ConfigReader.getFileExtension();
+                OutputStream os = hdfs.create(new Path(outputFile));
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
+
+                for (int j = 0; j < texts[i].size(); j++) {
+                    temp += texts[i].get(j) + "\n";
+                }
+
+                writer.write(temp);
+                writer.close();
+                logger.info("Successfully written to the data lake: " + outputFile);
             }
-            logger.info("Successfully written the output to the file, " + fileName);
         } catch (IOException e) {
-            logger.error("Error in creating the warehouse file: " + fileName, e);
+            logger.error("Error while attempting to get the file system", e);
         }
-        if (ConfigReader.isRemoteDSServer()) {
-            FileRemoteManager.copyFile(fileName);
+    }
+
+    private static FileSystem getFileSystem() throws IOException {
+        Configuration config = new Configuration();
+        config.addResource(new Path(ConfigReader.getHadoopConf() + File.separator + HDFSConstants.CORE_SITE_XML));
+        config.addResource(new Path(ConfigReader.getHadoopConf() + File.separator + HDFSConstants.HDFS_SITE_XML));
+
+        return FileSystem.get(config);
+    }
+
+    /**
+     * Just to delete the entire content of an hdfs folder.
+     *
+     * @param folder the folder to be deleted
+     * @throws IOException if the deletion failed.
+     */
+    private static void delete(String folder) throws IOException {
+        FileSystem fs = getFileSystem();
+        fs.delete(new Path(ConfigReader.getHdfsPath() + folder), true);
+        logger.info("Successfully deleted the contents of the HDFS folder: " + folder);
+    }
+
+    public static void main(String[] args) {
+        ConfigReader.readConfig();
+        try {
+            delete(ConfigReader.getInputBulkDir());
+        } catch (IOException e) {
+            logger.error("Exception in deleting the contents of the directory: " + ConfigReader.getInputBulkDir(), e);
         }
     }
 }

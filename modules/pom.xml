@@ -90,9 +90,5 @@
           <groupId>org.apache.hive</groupId>
           <artifactId>hive-jdbc</artifactId>
       </dependency>
-      <dependency>
-          <groupId>com.jcraft</groupId>
-          <artifactId>jsch</artifactId>
-      </dependency>
   </dependencies>
 </project>

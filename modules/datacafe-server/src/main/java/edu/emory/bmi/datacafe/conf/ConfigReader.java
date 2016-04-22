@@ -32,7 +32,6 @@ public class ConfigReader {
     private static Logger logger = LogManager.getLogger(ConfigReader.class.getName());
     private static String dataServerHost;
     private static int dataServerPort;
-    private static String fileWriteMode;
     private static boolean isRemoteDSServer;
 
     /**
@@ -51,11 +50,6 @@ public class ConfigReader {
     private static String hiveCSVDir;
     private static String hiveDriver;
 
-    /**
-     * SFTP Configurations.
-     */
-    private static int sftpPort;
-    private static String sftpUser;
 
     private static String remoteTargetDir;
 
@@ -109,7 +103,6 @@ public class ConfigReader {
             if (temp != null) {
                 dataServerPort = Integer.parseInt(temp);
             }
-            fileWriteMode = prop.getProperty("fileWriteMode");
 
             String remoteStr = prop.getProperty("isRemote");
             if (remoteStr != null) {
@@ -119,11 +112,6 @@ public class ConfigReader {
             clientOriginDir = prop.getProperty("clientOriginDir");
 
             if (isRemoteDSServer) {
-                String sftpPortStr = prop.getProperty("sftpPort");
-                if (sftpPortStr != null) {
-                    sftpPort = Integer.parseInt(sftpPortStr);
-                }
-                sftpUser = prop.getProperty("sftpUser");
                 remoteTargetDir = prop.getProperty("remoteTargetDir");
                 clientCSVDir = prop.getProperty("clientCSVDir");
                 if (clientCSVDir == null) {
@@ -163,10 +151,6 @@ public class ConfigReader {
         return dataServerHost;
     }
 
-    public static String getFileWriteMode() {
-        return fileWriteMode;
-    }
-
     public static boolean isRemoteDSServer() {
         return isRemoteDSServer;
     }
@@ -185,14 +169,6 @@ public class ConfigReader {
 
     public static int getHivePort() {
         return hivePort;
-    }
-
-    public static int getSftpPort() {
-        return sftpPort;
-    }
-
-    public static String getSftpUser() {
-        return sftpUser;
     }
 
     public static String getFileExtension() {
