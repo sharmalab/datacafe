@@ -9,7 +9,7 @@
 
 -------------------------------------------------------
 
- SELECT * FROM hdfs.root.`patients.csv` WHERE columns[1]='MALE'
+ SELECT * FROM hdfs.root.`clinical_clinicalData.csv` WHERE columns[1]='MALE'
 
 
 -------------------------------------------------------

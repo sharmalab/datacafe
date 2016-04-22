@@ -16,7 +16,6 @@
 package edu.emory.bmi.datacafe.hdfs;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
-import edu.emory.bmi.datacafe.constants.DatacafeConstants;
 import edu.emory.bmi.datacafe.constants.HDFSConstants;
 import edu.emory.bmi.datacafe.core.CoreDataObject;
 import edu.emory.bmi.datacafe.interfaces.WarehouseConnector;
@@ -31,11 +30,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,35 +56,33 @@ public class HdfsConnector implements WarehouseConnector {
         }
 
         WarehouseConnector warehouseConnector = new HdfsConnector();
-        warehouseConnector.writeToWarehouse(datasourceNames, texts, queries);
+        warehouseConnector.writeToWarehouse(datasourceNames, texts);
     }
 
 
     @Override
-    public void writeToWarehouse(String[] datasourcesNames, List<String>[] texts, String[] queries) {
+    public void writeToWarehouse(String[] datasourcesNames, List<String>[] texts) {
         try {
             FileSystem hdfs = getFileSystem();
-            OutputStream os[] = new OutputStream[datasourcesNames.length];
-            BufferedWriter writer[] = new BufferedWriter[datasourcesNames.length];
-
 
             for (int i = 0; i < datasourcesNames.length; i++) {
+                String temp = "";
+
                 String outputFile = ConfigReader.getHdfsPath() + datasourcesNames[i] +
                         ConfigReader.getFileExtension();
-                os[i] = hdfs.create(new Path(outputFile));
-                writer[i] = new BufferedWriter(new OutputStreamWriter(os[i]));
-                String temp = "";
+                OutputStream os = hdfs.create(new Path(outputFile));
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
+
                 for (int j = 0; j < texts[i].size(); j++) {
                     temp += texts[i].get(j) + "\n";
                 }
-//                logger.info(temp);
-                writer[i].write(temp);
-//                writer[i].write("TEST\n");
-                logger.info("Successfully written:" + temp + " ... to the data source: " + outputFile);
+
+                writer.write(temp);
+                writer.close();
+                logger.info("Successfully written to the data lake: " + outputFile);
 
 
-//            createFile(datasourcesNames[i], texts[i]);
-//            HadoopConnector.writeToHDFS(datasourcesNames[i]);
+
             }
         } catch (IOException e) {
             logger.error("Error while attempting to get the file system", e);
@@ -107,6 +99,7 @@ public class HdfsConnector implements WarehouseConnector {
 
     /**
      * Just to delete the entire content of an hdfs folder.
+     *
      * @param folder the folder to be deleted
      * @throws IOException if the deletion failed.
      */

@@ -27,7 +27,6 @@ public interface WarehouseConnector {
      *
      * @param datasourcesNames the identifiers of the data sources
      * @param texts            the data to be written, in text format.
-     * @param queries,         queries for the data.
      */
-    public abstract void writeToWarehouse(String[] datasourcesNames, List<String>[] texts, String[] queries);
+    public abstract void writeToWarehouse(String[] datasourcesNames, List<String>[] texts);
 }
