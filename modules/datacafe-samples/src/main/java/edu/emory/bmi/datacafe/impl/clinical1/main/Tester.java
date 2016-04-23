@@ -20,19 +20,25 @@ import edu.emory.bmi.datacafe.core.CoreExecutorEngine;
 import edu.emory.bmi.datacafe.mongo.MongoConnector;
 import org.bson.Document;
 
+import java.util.List;
+
 public class Tester {
     public static void main(String[] args) {
         CoreExecutorEngine.init();
-        String database = "clinical";
-        String collection = "clinicalData";
-
-//        String[][] interestedAttributes = {{"Race", "Gender", "Laterality"};, {"sliceID", "patientID", "slideBarCode"}};
-
-        String[] interestedAttributes = {"Race", "Gender", "Laterality"};
+        String database1 = "clinical";
+        String collection1 = "clinicalData";
 
 
-        FindIterable<Document> iterable = MongoConnector.getCollection(database, collection, interestedAttributes);
-        MongoConnector.printMongoCollection(iterable);
+        Document document1 = new Document("Age_at_Initial_Diagnosis", new Document("$gt", 60)).append("Laterality", "Left");
+        FindIterable<Document> iterable1 = MongoConnector.getCollection(database1, collection1, document1);
+        MongoConnector.printMongoCollection(iterable1);
+
+        String database2 = "pathology";
+        String collection2 = "pathologyData";
+
+
+        Document document2 = new Document("Tumor_Nuclei_Percentage", new Document("$gt", 65));
+        List ids = MongoConnector.getID(database2, collection2, document2);
     }
 }
 

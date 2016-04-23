@@ -27,9 +27,12 @@ import edu.emory.bmi.datacafe.conf.ConfigReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
+import org.jongo.bson.Bson;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Connects to the Mongo database
@@ -68,25 +71,60 @@ public class MongoConnector {
         });
     }
 
+
     /**
-     * Get a collection with a selected set of attributes
-     * @param database the data base
-     * @param collection the collection in the data base
-     * @param attributes the interested attributes
-     * @return an iterable document.
+     * Gets the list of IDs
+     *
+     * @param iterable the collection iterable
      */
-    public static FindIterable<Document> getCollection(String database, String collection, String... attributes) {
-        MongoDatabase db = mongoClient.getDatabase(database);
-
-//        AggregateIterable<Document> iterable = db.getCollection("restaurants").aggregate()
-//        );
-        return db.getCollection(collection).find(new Document("Gender", "MALE"));
-
-
-
+    public static List getID(FindIterable<Document> iterable) {
+        List idList = new ArrayList();
+        iterable.forEach(new Block<Document>() {
+            @Override
+            public void apply(final Document document) {
+                idList.add(document.get("_id"));
+            }
+        });
+        for (Object anIdList : idList) {
+            logger.info(anIdList);
+        }
+        return idList;
     }
 
+    /**
+     * Get a collection with a selected set of attributes
+     *
+     * @param database   the data base
+     * @param collection the collection in the data base
+     * @param document   the interested attributes
+     * @return an iterable document.
+     */
+    public static FindIterable<Document> getCollection(String database, String collection, Document document) {
+        MongoDatabase db = mongoClient.getDatabase(database);
 
+        return db.getCollection(collection).find(document);
+    }
+
+    /**
+     * Gets the list of IDs
+     *
+     * @param database   the data base
+     * @param collection the collection in the data base
+     */
+    public static List getID(String database, String collection) {
+        return getID(getCollection(database, collection));
+    }
+
+    /**
+     * Gets the list of IDs
+     *
+     * @param database   the data base
+     * @param collection the collection in the data base
+     * @param document   the interested attributes
+     */
+    public static List getID(String database, String collection, Document document) {
+        return getID(getCollection(database, collection, document));
+    }
 
     /**
      * Gets cursor for a collection in a given database.
