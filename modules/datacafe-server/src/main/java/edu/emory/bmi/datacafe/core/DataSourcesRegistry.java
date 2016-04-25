@@ -15,44 +15,31 @@
  */
 package edu.emory.bmi.datacafe.core;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
  * A minimalistic representation of a data source
  */
-public class DataSource {
-    private String database;
-    private String collection;
-    private String fullName;
+public class DataSourcesRegistry {
+    private static List<String> fullNames;
 
-    public String getDatabase() {
-        return database;
+    public static void init() {
+        fullNames = new ArrayList<>();
     }
 
-    public void setDatabase(String database) {
-        this.database = database;
+    public static void addDataSource(String database, String collection) {
+        fullNames.add(constructFullDataSourceName(database, collection));
     }
 
-    public String getCollection() {
-        return collection;
-    }
+    public static String[] getFullNamesAsArray() {
+        String[] fullNameArray = new String[fullNames.size()];
 
-    public void setCollection(String collection) {
-        this.collection = collection;
-    }
-
-    public DataSource(String database, String collection) {
-        this.database = database;
-        this.collection = collection;
-        this.fullName = constructFullDataSourceName(database, collection);
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+        for (int i = 0; i < fullNames.size(); i++) {
+            fullNameArray[i] = fullNames.get(i);
+        }
+        return fullNameArray;
     }
 
     /**
@@ -61,7 +48,7 @@ public class DataSource {
      * @param data data elements
      * @return fullName
      */
-    protected String constructFullDataSourceName(String... data) {
+    protected static String constructFullDataSourceName(String... data) {
         String fullName = "";
         if (data.length > 0) {
             for (String element : data) {

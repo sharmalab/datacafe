@@ -16,7 +16,7 @@
 package edu.emory.bmi.datacafe.constants;
 
 /**
- * The common constants of Datacafe
+ * The common constants of Data Cafe
  */
 public final class DatacafeConstants {
 

@@ -17,7 +17,6 @@ package edu.emory.bmi.datacafe.hdfs;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.HDFSConstants;
-import edu.emory.bmi.datacafe.core.CoreDataObject;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -29,7 +28,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,22 +37,11 @@ public class HdfsConnector {
     private static Logger logger = LogManager.getLogger(HdfsConnector.class.getName());
 
     /**
-     * Writes the data sources to Hive
+     * Writes the data sources to HDFS
      *
-     * @param datasourceNames names of the data sources
-     * @param params          parameters of the data sources as a 2-d array - an array for each of the data source
-     * @param writables       array of lists for each data sources to be written to the data warehouse.
+     * @param datasourcesNames names of the data sources
+     * @param texts       array of lists for each data sources to be written to the data warehouse.
      */
-    public static void writeDataSourcesToWarehouse(String[] datasourceNames, String[][] params, List<?>[] writables) {
-        List<String>[] texts = new ArrayList[writables.length];
-
-        for (int i = 0; i < writables.length; i++) {
-            texts[i] = CoreDataObject.getWritableString(params[i], writables[i]);
-        }
-
-        writeToWarehouse(datasourceNames, texts);
-    }
-
     public static void writeToWarehouse(String[] datasourcesNames, List<String>[] texts) {
         try {
             FileSystem hdfs = getFileSystem();

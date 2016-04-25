@@ -13,20 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.interfaces;
+package edu.emory.bmi.datacafe.core;
 
-import java.util.List;
+import edu.emory.bmi.datacafe.conf.ConfigReader;
 
 /**
- * Makes a warehouse from the merger.
+ * The core Data Cafe executor engine singleton
  */
-public interface WarehouseConnector {
+public final class CoreExecutorEngine {
+    private static CoreExecutorEngine coreExecutorEngine;
 
     /**
-     * Write the data to the data warehouse
-     *
-     * @param datasourcesNames the identifiers of the data sources
-     * @param texts            the data to be written, in text format.
+     * Initialize the singleton object
      */
-    public abstract void writeToWarehouse(String[] datasourcesNames, List<String>[] texts);
+    public static void init() {
+        if (coreExecutorEngine == null) {
+            coreExecutorEngine = new CoreExecutorEngine();
+        }
+    }
+
+    /**
+     * Executes the initialization workflow of Data Cafe once, and only once.
+     */
+    private CoreExecutorEngine() {
+        ConfigReader.readConfig();
+        DataSourcesRegistry.init();
+    }
 }
+
