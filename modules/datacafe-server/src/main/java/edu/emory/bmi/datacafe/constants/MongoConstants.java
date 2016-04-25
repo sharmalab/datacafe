@@ -27,7 +27,4 @@ public final class MongoConstants {
     }
 
     public static final String ID_ATTRIBUTE = "_id";
-
-    public static final String DATABASE_KEY_ENTRY = "database";
-    public static final String COLLECTION_KEY_ENTRY = "collection";
 }
