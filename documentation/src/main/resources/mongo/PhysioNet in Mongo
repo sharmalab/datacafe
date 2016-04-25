@@ -1,0 +1,8 @@
+ mongoimport --db admissions --collection admissionsData --type csv --headerline --file ADMISSIONS_DATA_TABLE.csv
+
+ mongoimport --db callout --collection calloutData --type csv --headerline --file CALLOUT_DATA_TABLE.csv
+
+ mongoimport --db icuStays --collection icuStaysData --type csv --headerline --file ICUSTAYS_DATA_TABLE.csv
+
+ mongoimport --db patients --collection patientsData --type csv --headerline --file PATIENTS_DATA_TABLE.csv
+
