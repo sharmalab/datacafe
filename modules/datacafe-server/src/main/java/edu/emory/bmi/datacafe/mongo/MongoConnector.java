@@ -15,24 +15,22 @@
  */
 package edu.emory.bmi.datacafe.mongo;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.Block;
 import com.mongodb.DB;
+import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
-import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
-import org.jongo.bson.Bson;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Connects to the Mongo database
@@ -52,9 +50,22 @@ public class MongoConnector {
      * @param collection the collection in the data base
      * @return an iterable document.
      */
-    public static FindIterable<Document> getCollection(String database, String collection) {
+    public static FindIterable<Document> iterateCollection(String database, String collection) {
         MongoDatabase db = mongoClient.getDatabase(database);
         return db.getCollection(collection).find();
+    }
+
+
+    /**
+     * Gets the Mongo Collection
+     *
+     * @param database   the data base
+     * @param collection the collection in the data base
+     * @return the DBCollection object.
+     */
+    public static DBCollection getCollection(String database, String collection) {
+        DB db = mongoClient.getDB(database);
+        return db.getCollection(collection);
     }
 
     /**
@@ -85,8 +96,10 @@ public class MongoConnector {
                 idList.add(document.get("_id"));
             }
         });
-        for (Object anIdList : idList) {
-            logger.info(anIdList);
+        if (logger.isDebugEnabled()) {
+            for (Object anIdList : idList) {
+                logger.debug(anIdList);
+            }
         }
         return idList;
     }
@@ -112,7 +125,7 @@ public class MongoConnector {
      * @param collection the collection in the data base
      */
     public static List getID(String database, String collection) {
-        return getID(getCollection(database, collection));
+        return getID(iterateCollection(database, collection));
     }
 
     /**
@@ -120,11 +133,41 @@ public class MongoConnector {
      *
      * @param database   the data base
      * @param collection the collection in the data base
-     * @param document   the interested attributes
+     * @param document   the Ids
      */
     public static List getID(String database, String collection, Document document) {
         return getID(getCollection(database, collection, document));
     }
+
+
+    public static List<FindIterable<Document>> getAllAttributes(String database1, String collection1, List ids1) {
+
+        List<FindIterable<Document>> iterableList = new ArrayList<>();
+        for (Object id : ids1) {
+            Document tempDocument1 = new Document("_id", id);//.append("patientID", 1).append("gender", 1).append("laterality", 1);
+
+            FindIterable<Document> iterable = getCollection(database1, collection1, tempDocument1);
+            iterableList.add(iterable);
+            printMongoCollection(iterable);
+        }
+        return iterableList;
+    }
+
+    public static List<DBCursor> getAttributes(String database1, String collection1, List ids1, String[] attributes) {
+        DBCollection collection = getCollection(database1, collection1);
+        List<DBCursor> dbCursors = new ArrayList<>();
+        for (int i = 0; i < ids1.size(); i++ ) {
+
+            DBCursor results_ = collection.find(new BasicDBObject("name", "SomeName"),
+                    new BasicDBObject("name", 1));
+
+            DBCursor results = collection.find(new BasicDBObject("_id", ids1.get(i)), new BasicDBObject("Gender", 1).append("Laterality", 1));//, new BasicDBObject("Laterality", 1));
+            dbCursors.add(results);
+            printCursor(results);
+        }
+        return dbCursors;
+    }
+
 
     /**
      * Gets cursor for a collection in a given database.
@@ -147,11 +190,22 @@ public class MongoConnector {
      */
     @Deprecated
     public static void printMongoCollection(String database, String collection) {
-        DBCursor clinicalCursor = mongoConnector.getCursor(database, collection);
+        DBCursor cursor = mongoConnector.getCursor(database, collection);
         if (logger.isDebugEnabled()) {
-            while (clinicalCursor.hasNext()) {
-                logger.debug(clinicalCursor.next());
+            while (cursor.hasNext()) {
+                logger.debug(cursor.next());
             }
+        }
+    }
+
+    /**
+     * Prints the cursor
+     *
+     * @param results the DBCursor
+     */
+    public static void printCursor(DBCursor results) {
+        while (results.hasNext()) {
+            logger.info(results.next());
         }
     }
 }

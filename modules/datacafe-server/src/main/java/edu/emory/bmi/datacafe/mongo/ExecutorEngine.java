@@ -63,6 +63,7 @@ public class ExecutorEngine extends AbstractExecutorEngine {
      *
      * @param idConstraintsMap Queries for data source ids.
      */
+    @Deprecated
     public void retrieveDataLakeIDs(Map<Class<? extends DataSourceBean>, String> idConstraintsMap) {
         // Get the IDs
         for (Class<? extends DataSourceBean> clazz : idConstraintsMap.keySet()) {
