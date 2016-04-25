@@ -127,7 +127,7 @@ public class MongoConnector {
      */
     public static List<FindIterable<Document>> getAllAttributes(String database, String collection, List ids) {
 
-        return getAllAttributes(database, collection, ids, MongoConstants.ID_ATTRIBUTE);
+        return getAllAttributes(database, collection,MongoConstants.ID_ATTRIBUTE, ids);
     }
 
     /**
@@ -141,7 +141,7 @@ public class MongoConnector {
      */
     public static List<String> getAttributeValues(String database, String collection, List ids,
                                                   String[] preferredAttributes) {
-        return getAttributeValues(database, collection, ids, preferredAttributes, MongoConstants.ID_ATTRIBUTE);
+        return getAttributeValues(database, collection, ids, MongoConstants.ID_ATTRIBUTE, preferredAttributes);
     }
 
     /**
@@ -155,7 +155,7 @@ public class MongoConnector {
      */
     public static List<DBCursor> getAttributes(String database, String collection, List ids,
                                                String[] preferredAttributes) {
-        return getAttributes(database, collection, ids, preferredAttributes, MongoConstants.ID_ATTRIBUTE);
+        return getAttributes(database, collection, ids, MongoConstants.ID_ATTRIBUTE, preferredAttributes);
     }
 
     /**
@@ -199,12 +199,12 @@ public class MongoConnector {
      *
      * @param database    the data base
      * @param collection  the collection in the database
-     * @param ids         the list of ids.
      * @param idAttribute The attribute key that is used as the ID.
+     * @param ids         the list of ids.
      * @return the iterable document
      */
-    public static List<FindIterable<Document>> getAllAttributes(String database, String collection, List ids,
-                                                                String idAttribute) {
+    public static List<FindIterable<Document>> getAllAttributes(String database, String collection,
+                                                                String idAttribute, List ids) {
 
         List<FindIterable<Document>> iterableList = new ArrayList<>();
         for (Object id : ids) {
@@ -222,12 +222,12 @@ public class MongoConnector {
      * @param database            the data base
      * @param collection          the collection in the data base
      * @param ids                 the list of ids.
-     * @param preferredAttributes the attributes to be added.
      * @param idAttribute         The attribute key that is used as the ID.
+     * @param preferredAttributes the attributes to be added.
      * @return the list of DBCursor.
      */
-    public static List<String> getAttributeValues(String database, String collection, List ids,
-                                                  String[] preferredAttributes, String idAttribute) {
+    public static List<String> getAttributeValues(String database, String collection, List ids, String idAttribute,
+                                                  String[] preferredAttributes) {
         DBCollection collection1 = getCollection(database, collection);
         List<String> dbCursors = new ArrayList<>();
         for (Object id : ids) {
@@ -247,12 +247,12 @@ public class MongoConnector {
      * @param database            the data base
      * @param collection          the collection in the data base
      * @param ids                 the list of ids.
-     * @param preferredAttributes the attributes to be added.
      * @param idAttribute         The attribute key that is used as the ID.
+     * @param preferredAttributes the attributes to be added.
      * @return the list of DBCursor.
      */
-    public static List<DBCursor> getAttributes(String database, String collection, List ids,
-                                               String[] preferredAttributes, String idAttribute) {
+    public static List<DBCursor> getAttributes(String database, String collection, List ids, String idAttribute,
+                                               String[] preferredAttributes) {
         DBCollection collection1 = getCollection(database, collection);
         List<DBCursor> dbCursors = new ArrayList<>();
         for (Object id : ids) {
