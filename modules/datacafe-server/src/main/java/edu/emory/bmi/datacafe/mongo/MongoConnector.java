@@ -127,7 +127,7 @@ public class MongoConnector {
      */
     public static List<FindIterable<Document>> getAllAttributes(String database, String collection, List ids) {
 
-        return getAllAttributes(database, collection,MongoConstants.ID_ATTRIBUTE, ids);
+        return getAllAttributes(database, collection, MongoConstants.ID_ATTRIBUTE, ids);
     }
 
     /**
@@ -141,7 +141,23 @@ public class MongoConnector {
      */
     public static List<String> getAttributeValues(String database, String collection, List ids,
                                                   String[] preferredAttributes) {
-        return getAttributeValues(database, collection, ids, MongoConstants.ID_ATTRIBUTE, preferredAttributes);
+        return getAttributeValues(database, collection, ids, MongoConstants.ID_ATTRIBUTE, preferredAttributes, null);
+    }
+
+    /**
+     * Get only the values for a chosen sub set of attributes. Default MongoID, _id is assumed.
+     *
+     * @param database            the data base
+     * @param collection          the collection in the data base
+     * @param ids                 the list of ids.
+     * @param preferredAttributes the attributes to be added.
+     * @param removedAttributes   the attributes to be removed.
+     * @return the list of DBCursor.
+     */
+    public static List<String> getAttributeValues(String database, String collection, List ids,
+                                                  String[] preferredAttributes, String[] removedAttributes) {
+        return getAttributeValues(database, collection, ids, MongoConstants.ID_ATTRIBUTE, preferredAttributes,
+                removedAttributes);
     }
 
     /**
@@ -228,11 +244,28 @@ public class MongoConnector {
      */
     public static List<String> getAttributeValues(String database, String collection, List ids, String idAttribute,
                                                   String[] preferredAttributes) {
+
+        return getAttributeValues(database, collection, ids, idAttribute, preferredAttributes, null);
+    }
+
+    /**
+     * Get only the values for a chosen sub set of attributes
+     *
+     * @param database            the data base
+     * @param collection          the collection in the data base
+     * @param ids                 the list of ids.
+     * @param idAttribute         The attribute key that is used as the ID.
+     * @param preferredAttributes the attributes to be added.
+     * @param removedAttributes   the attributes to be removed.
+     * @return the list of DBCursor.
+     */
+    public static List<String> getAttributeValues(String database, String collection, List ids, String idAttribute,
+                                                  String[] preferredAttributes, String[] removedAttributes) {
         DBCollection collection1 = getCollection(database, collection);
         List<String> dbCursors = new ArrayList<>();
         for (Object id : ids) {
             DBCursor results = collection1.find(new BasicDBObject(idAttribute, id),
-                    getDBObjFromAttributes(preferredAttributes));
+                    getDBObjFromAttributes(preferredAttributes, removedAttributes));
 
             String cursorValue = getCursorValues(results);
             dbCursors.add(cursorValue);
@@ -328,7 +361,7 @@ public class MongoConnector {
                 if (i != 0) {
                     temp += ",";
                 }
-                temp += (String) tempArray[i];
+                temp += tempArray[i].toString(); //todo: How to avoid losing the types.
             }
 
             outValue += temp;
