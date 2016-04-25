@@ -23,8 +23,8 @@ import org.bson.Document;
 
 import java.util.List;
 
-public class Tester {
-    private static Logger logger = LogManager.getLogger(Tester.class.getName());
+public class Executor {
+    private static Logger logger = LogManager.getLogger(Executor.class.getName());
 
     public static void main(String[] args) {
 
