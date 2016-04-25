@@ -23,6 +23,9 @@ import org.bson.Document;
 
 import java.util.List;
 
+/**
+ * A sample executor for Mongo, where the _id is considered as part of the original data.
+ */
 public class Executor {
     public static void main(String[] args) {
 
