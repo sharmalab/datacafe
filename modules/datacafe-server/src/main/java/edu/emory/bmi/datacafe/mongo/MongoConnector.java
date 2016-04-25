@@ -141,18 +141,18 @@ public class MongoConnector {
 
     /**
      * Gets all the attributes without removing or choosing a sub set of attributes
-     * @param database1 the data base
-     * @param collection1 the collection in the database
-     * @param ids1 the list of ids.
+     * @param database the data base
+     * @param collection the collection in the database
+     * @param ids the list of ids.
      * @return the iterable document
      */
-    public static List<FindIterable<Document>> getAllAttributes(String database1, String collection1, List ids1) {
+    public static List<FindIterable<Document>> getAllAttributes(String database, String collection, List ids) {
 
         List<FindIterable<Document>> iterableList = new ArrayList<>();
-        for (Object id : ids1) {
+        for (Object id : ids) {
             Document tempDocument1 = new Document(MongoConstants.ID_ATTRIBUTE, id);
 
-            FindIterable<Document> iterable = getCollection(database1, collection1, tempDocument1);
+            FindIterable<Document> iterable = getCollection(database, collection, tempDocument1);
             iterableList.add(iterable);
         }
         return iterableList;
@@ -160,18 +160,18 @@ public class MongoConnector {
 
     /**
      * Get a chosen sub set of attributes
-     * @param database1
-     * @param collection1
-     * @param ids1
-     * @param preferredAttributes
-     * @return
+     * @param database the data base
+     * @param collection the collection in the data base
+     * @param ids the list of ids.
+     * @param preferredAttributes the attributes to be added.
+     * @return the list of DBCursor.
      */
-    public static List<DBCursor> getAttributes(String database1, String collection1, List ids1,
+    public static List<DBCursor> getAttributes(String database, String collection, List ids,
                                                String[] preferredAttributes) {
-        DBCollection collection = getCollection(database1, collection1);
+        DBCollection collection1 = getCollection(database, collection);
         List<DBCursor> dbCursors = new ArrayList<>();
-        for (Object anIds1 : ids1) {
-            DBCursor results = collection.find(new BasicDBObject(MongoConstants.ID_ATTRIBUTE, anIds1), getDBObjFromAttributes(preferredAttributes));
+        for (Object anids : ids) {
+            DBCursor results = collection1.find(new BasicDBObject(MongoConstants.ID_ATTRIBUTE, anids), getDBObjFromAttributes(preferredAttributes));
             dbCursors.add(results);
             printCursor(results);
         }
