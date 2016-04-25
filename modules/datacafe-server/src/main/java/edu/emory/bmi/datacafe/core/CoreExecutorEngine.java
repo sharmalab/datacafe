@@ -32,8 +32,12 @@ public final class CoreExecutorEngine {
         }
     }
 
+    /**
+     * Executes the initialization workflow of Data Cafe once, and only once.
+     */
     private CoreExecutorEngine() {
         ConfigReader.readConfig();
+        DataSourcesRegistry.init();
     }
 }
 

@@ -276,7 +276,9 @@ public class MongoConnector {
             }
 
             outValue += temp;
-            logger.info(outValue);
+            if (logger.isDebugEnabled()) {
+                logger.debug(outValue);
+            }
         }
         return outValue;
     }
