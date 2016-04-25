@@ -171,16 +171,16 @@ public class MongoConnector {
      * @param preferredAttributes the attributes to be added.
      * @return the list of DBCursor.
      */
-    public static List<DBCursor> getAttributeValues(String database, String collection, List ids,
-                                                    String[] preferredAttributes) {
+    public static List<String> getAttributeValues(String database, String collection, List ids,
+                                                  String[] preferredAttributes) {
         DBCollection collection1 = getCollection(database, collection);
-        List<DBCursor> dbCursors = new ArrayList<>();
+        List<String> dbCursors = new ArrayList<>();
         for (Object id : ids) {
             DBCursor results = collection1.find(new BasicDBObject(MongoConstants.ID_ATTRIBUTE, id),
                     getDBObjFromAttributes(preferredAttributes));
 
-            dbCursors.add(results);
-            printCursorValues(results);
+            String cursorValue = getCursorValues(results);
+            dbCursors.add(cursorValue);
         }
         return dbCursors;
     }
@@ -188,9 +188,10 @@ public class MongoConnector {
 
     /**
      * Get a chosen sub set of attributes
-     * @param database the data base
-     * @param collection the collection in the data base
-     * @param ids the list of ids.
+     *
+     * @param database            the data base
+     * @param collection          the collection in the data base
+     * @param ids                 the list of ids.
      * @param preferredAttributes the attributes to be added.
      * @return the list of DBCursor.
      */
@@ -255,7 +256,8 @@ public class MongoConnector {
      *
      * @param results the DBCursor
      */
-    public static void printCursorValues(DBCursor results) {
+    public static String getCursorValues(DBCursor results) {
+        String outValue = "";
 
         while (results.hasNext()) {
 
@@ -263,8 +265,20 @@ public class MongoConnector {
             Map resultElementMap = resultElement.toMap();
             Collection resultValues = resultElementMap.values();
 
-            logger.info(resultValues);
+
+            Object[] tempArray = resultValues.toArray();
+            String temp = "";
+            for (int i = 0; i < tempArray.length; i++) {
+                if (i!=0) {
+                    temp += ",";
+                }
+                temp += (String) tempArray[i];
+            }
+
+            outValue += temp;
+            logger.info(outValue);
         }
+        return outValue;
     }
 
     /**
