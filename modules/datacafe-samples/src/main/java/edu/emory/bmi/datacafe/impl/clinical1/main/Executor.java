@@ -43,8 +43,8 @@ public class Executor {
         Document document2 = new Document("Tumor_Nuclei_Percentage", new Document("$gt", 65));
         List ids2 = MongoConnector.getID(database2, collection2, document2);
 
-        List chosenAttributes1 = MongoConnector.getAttributes(database1, collection1, ids1, new String[]{"Gender", "Laterality"});
-        List chosenAttributes2 = MongoConnector.getAttributes(database2, collection2, ids2, new String[]{"BCR_Patient_UID_From_Pathology", "Slide_Barcode"});
+        List chosenAttributes1 = MongoConnector.getAttributeValues(database1, collection1, ids1, new String[]{"Gender", "Laterality"});
+        List chosenAttributes2 = MongoConnector.getAttributeValues(database2, collection2, ids2, new String[]{"BCR_Patient_UID_From_Pathology", "Slide_Barcode"});
     }
 }
 

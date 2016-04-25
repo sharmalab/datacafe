@@ -20,6 +20,7 @@ import com.mongodb.Block;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
@@ -31,7 +32,9 @@ import org.apache.logging.log4j.Logger;
 import org.bson.Document;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Connects to the Mongo database
@@ -141,9 +144,10 @@ public class MongoConnector {
 
     /**
      * Gets all the attributes without removing or choosing a sub set of attributes
-     * @param database the data base
+     *
+     * @param database   the data base
      * @param collection the collection in the database
-     * @param ids the list of ids.
+     * @param ids        the list of ids.
      * @return the iterable document
      */
     public static List<FindIterable<Document>> getAllAttributes(String database, String collection, List ids) {
@@ -159,6 +163,30 @@ public class MongoConnector {
     }
 
     /**
+     * Get only the values for a chosen sub set of attributes
+     *
+     * @param database            the data base
+     * @param collection          the collection in the data base
+     * @param ids                 the list of ids.
+     * @param preferredAttributes the attributes to be added.
+     * @return the list of DBCursor.
+     */
+    public static List<DBCursor> getAttributeValues(String database, String collection, List ids,
+                                                    String[] preferredAttributes) {
+        DBCollection collection1 = getCollection(database, collection);
+        List<DBCursor> dbCursors = new ArrayList<>();
+        for (Object id : ids) {
+            DBCursor results = collection1.find(new BasicDBObject(MongoConstants.ID_ATTRIBUTE, id),
+                    getDBObjFromAttributes(preferredAttributes));
+
+            dbCursors.add(results);
+            printCursorValues(results);
+        }
+        return dbCursors;
+    }
+
+
+    /**
      * Get a chosen sub set of attributes
      * @param database the data base
      * @param collection the collection in the data base
@@ -170,8 +198,9 @@ public class MongoConnector {
                                                String[] preferredAttributes) {
         DBCollection collection1 = getCollection(database, collection);
         List<DBCursor> dbCursors = new ArrayList<>();
-        for (Object anids : ids) {
-            DBCursor results = collection1.find(new BasicDBObject(MongoConstants.ID_ATTRIBUTE, anids), getDBObjFromAttributes(preferredAttributes));
+        for (Object id : ids) {
+            DBCursor results = collection1.find(new BasicDBObject(MongoConstants.ID_ATTRIBUTE, id),
+                    getDBObjFromAttributes(preferredAttributes));
             dbCursors.add(results);
             printCursor(results);
         }
@@ -181,6 +210,7 @@ public class MongoConnector {
 
     /**
      * Gets a BasicDBObject with a few attributes preferred.
+     *
      * @param preferredAttributes the attributes to be added.
      * @return the BasicDBObject
      */
@@ -190,6 +220,7 @@ public class MongoConnector {
 
     /**
      * Gets a BasicDBObject with a few attributes removed.
+     *
      * @param removedAttributes the attributes to be removed.
      * @return the BasicDBObject.
      */
@@ -199,8 +230,9 @@ public class MongoConnector {
 
     /**
      * Gets a BasicDBObject with a few attributes added or removed.
+     *
      * @param preferredAttributes the attributes to be added.
-     * @param removedAttributes the attributes to be removed.
+     * @param removedAttributes   the attributes to be removed.
      * @return the BasicDBObject.
      */
     public static BasicDBObject getDBObjFromAttributes(String[] preferredAttributes, String[] removedAttributes) {
@@ -216,6 +248,23 @@ public class MongoConnector {
             }
         }
         return basicDBObject;
+    }
+
+    /**
+     * Prints the cursor
+     *
+     * @param results the DBCursor
+     */
+    public static void printCursorValues(DBCursor results) {
+
+        while (results.hasNext()) {
+
+            DBObject resultElement = results.next();
+            Map resultElementMap = resultElement.toMap();
+            Collection resultValues = resultElementMap.values();
+
+            logger.info(resultValues);
+        }
     }
 
     /**
