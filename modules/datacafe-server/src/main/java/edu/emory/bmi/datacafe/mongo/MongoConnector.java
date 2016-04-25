@@ -25,6 +25,7 @@ import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 import edu.emory.bmi.datacafe.conf.ConfigReader;
+import edu.emory.bmi.datacafe.constants.MongoConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
@@ -37,8 +38,6 @@ import java.util.List;
  */
 public class MongoConnector {
     private static Logger logger = LogManager.getLogger(MongoConnector.class.getName());
-    private static MongoConnector mongoConnector = new MongoConnector();
-
 
     private static final MongoClient mongoClient = new MongoClient(new ServerAddress(
             ConfigReader.getDataServerHost(), ConfigReader.getDataServerPort()));
@@ -93,7 +92,7 @@ public class MongoConnector {
         iterable.forEach(new Block<Document>() {
             @Override
             public void apply(final Document document) {
-                idList.add(document.get("_id"));
+                idList.add(document.get(MongoConstants.ID_ATTRIBUTE));
             }
         });
         if (logger.isDebugEnabled()) {
@@ -140,24 +139,39 @@ public class MongoConnector {
     }
 
 
+    /**
+     * Gets all the attributes without removing or choosing a sub set of attributes
+     * @param database1 the data base
+     * @param collection1 the collection in the database
+     * @param ids1 the list of ids.
+     * @return the iterable document
+     */
     public static List<FindIterable<Document>> getAllAttributes(String database1, String collection1, List ids1) {
 
         List<FindIterable<Document>> iterableList = new ArrayList<>();
         for (Object id : ids1) {
-            Document tempDocument1 = new Document("_id", id);//.append("patientID", 1).append("gender", 1).append("laterality", 1);
+            Document tempDocument1 = new Document(MongoConstants.ID_ATTRIBUTE, id);
 
             FindIterable<Document> iterable = getCollection(database1, collection1, tempDocument1);
             iterableList.add(iterable);
-            printMongoCollection(iterable);
         }
         return iterableList;
     }
 
-    public static List<DBCursor> getAttributes(String database1, String collection1, List ids1, String[] preferredAttributes) {
+    /**
+     * Get a chosen sub set of attributes
+     * @param database1
+     * @param collection1
+     * @param ids1
+     * @param preferredAttributes
+     * @return
+     */
+    public static List<DBCursor> getAttributes(String database1, String collection1, List ids1,
+                                               String[] preferredAttributes) {
         DBCollection collection = getCollection(database1, collection1);
         List<DBCursor> dbCursors = new ArrayList<>();
         for (Object anIds1 : ids1) {
-            DBCursor results = collection.find(new BasicDBObject("_id", anIds1), getDBObjFromAttributes(preferredAttributes));
+            DBCursor results = collection.find(new BasicDBObject(MongoConstants.ID_ATTRIBUTE, anIds1), getDBObjFromAttributes(preferredAttributes));
             dbCursors.add(results);
             printCursor(results);
         }
@@ -202,36 +216,6 @@ public class MongoConnector {
             }
         }
         return basicDBObject;
-    }
-
-
-    /**
-     * Gets cursor for a collection in a given database.
-     *
-     * @param database   the data base
-     * @param collection the collection in the data base
-     * @return a cursor that can be iterated.
-     */
-    @Deprecated
-    public DBCursor getCursor(String database, String collection) {
-        DB db = mongoClient.getDB(database);
-        return db.getCollection(collection).find();
-    }
-
-    /**
-     * Prints the collection to console
-     *
-     * @param database   the data base
-     * @param collection the collection in the data base
-     */
-    @Deprecated
-    public static void printMongoCollection(String database, String collection) {
-        DBCursor cursor = mongoConnector.getCursor(database, collection);
-        if (logger.isDebugEnabled()) {
-            while (cursor.hasNext()) {
-                logger.debug(cursor.next());
-            }
-        }
     }
 
     /**
