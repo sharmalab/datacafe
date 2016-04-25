@@ -43,12 +43,8 @@ public class Tester {
         Document document2 = new Document("Tumor_Nuclei_Percentage", new Document("$gt", 65));
         List ids2 = MongoConnector.getID(database2, collection2, document2);
 
-//        List chosenAttributes1 = MongoConnector.getAllAttributes(database1, collection1, ids1);
-        List chosenAttributes11 = MongoConnector.getAttributes(database1, collection1, ids1, new String[]{"Gender"});
-//        List chosenAttributes2 = MongoConnector.getAllAttributes(database2, collection2, ids2);
-
-        // Get the entire collection with only the interested attributes for the chosen IDs - ids1 and ids2.
+        List chosenAttributes1 = MongoConnector.getAttributes(database1, collection1, ids1, new String[]{"Gender", "Laterality"});
+        List chosenAttributes2 = MongoConnector.getAttributes(database2, collection2, ids2, new String[]{"BCR_Patient_UID_From_Pathology", "Slide_Barcode"});
     }
-
 }
 

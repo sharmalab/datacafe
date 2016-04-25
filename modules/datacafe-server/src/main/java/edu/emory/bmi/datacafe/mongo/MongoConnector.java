@@ -153,19 +153,55 @@ public class MongoConnector {
         return iterableList;
     }
 
-    public static List<DBCursor> getAttributes(String database1, String collection1, List ids1, String[] attributes) {
+    public static List<DBCursor> getAttributes(String database1, String collection1, List ids1, String[] preferredAttributes) {
         DBCollection collection = getCollection(database1, collection1);
         List<DBCursor> dbCursors = new ArrayList<>();
-        for (int i = 0; i < ids1.size(); i++ ) {
-
-            DBCursor results_ = collection.find(new BasicDBObject("name", "SomeName"),
-                    new BasicDBObject("name", 1));
-
-            DBCursor results = collection.find(new BasicDBObject("_id", ids1.get(i)), new BasicDBObject("Gender", 1).append("Laterality", 1));//, new BasicDBObject("Laterality", 1));
+        for (Object anIds1 : ids1) {
+            DBCursor results = collection.find(new BasicDBObject("_id", anIds1), getDBObjFromAttributes(preferredAttributes));
             dbCursors.add(results);
             printCursor(results);
         }
         return dbCursors;
+    }
+
+
+    /**
+     * Gets a BasicDBObject with a few attributes preferred.
+     * @param preferredAttributes the attributes to be added.
+     * @return the BasicDBObject
+     */
+    public static BasicDBObject getDBObjFromAttributes(String[] preferredAttributes) {
+        return getDBObjFromAttributes(preferredAttributes, null);
+    }
+
+    /**
+     * Gets a BasicDBObject with a few attributes removed.
+     * @param removedAttributes the attributes to be removed.
+     * @return the BasicDBObject.
+     */
+    public static BasicDBObject getDBObjWithRemovedAttributes(String[] removedAttributes) {
+        return getDBObjFromAttributes(null, removedAttributes);
+    }
+
+    /**
+     * Gets a BasicDBObject with a few attributes added or removed.
+     * @param preferredAttributes the attributes to be added.
+     * @param removedAttributes the attributes to be removed.
+     * @return the BasicDBObject.
+     */
+    public static BasicDBObject getDBObjFromAttributes(String[] preferredAttributes, String[] removedAttributes) {
+        BasicDBObject basicDBObject = new BasicDBObject();
+        if (preferredAttributes != null) {
+            for (String preferredAttribute : preferredAttributes) {
+                basicDBObject.append(preferredAttribute, 1);
+            }
+        }
+        if (removedAttributes != null) {
+            for (String removedAttribute : removedAttributes) {
+                basicDBObject.append(removedAttribute, 0);
+            }
+        }
+        return basicDBObject;
     }
 
 
