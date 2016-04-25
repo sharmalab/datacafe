@@ -18,7 +18,7 @@ package edu.emory.bmi.datacafe.core;
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 
 /**
- * The core Mongo executor engine singleton
+ * The core Data Cafe executor engine singleton
  */
 public final class CoreExecutorEngine {
     private static CoreExecutorEngine coreExecutorEngine;
