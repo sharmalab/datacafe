@@ -63,10 +63,6 @@
           <artifactId>mongo-java-driver</artifactId>
       </dependency>
       <dependency>
-          <groupId>org.jongo</groupId>
-          <artifactId>jongo</artifactId>
-      </dependency>
-      <dependency>
           <groupId>org.apache.hadoop</groupId>
           <artifactId>hadoop-common</artifactId>
       </dependency>
