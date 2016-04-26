@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.impl.clinical1.main;
+package edu.emory.bmi.datacafe.impl.mysql.clinical.main;
 
 import edu.emory.bmi.datacafe.constants.MongoConstants;
 import edu.emory.bmi.datacafe.core.CoreExecutorEngine;
