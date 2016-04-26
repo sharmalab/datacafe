@@ -18,8 +18,6 @@ package edu.emory.bmi.datacafe.impl.mongo.clinical.main;
 import edu.emory.bmi.datacafe.core.CoreExecutorEngine;
 import edu.emory.bmi.datacafe.core.DataSourcesRegistry;
 import edu.emory.bmi.datacafe.hdfs.HdfsConnector;
-import edu.emory.bmi.datacafe.mongo.MongoConnector;
-import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
