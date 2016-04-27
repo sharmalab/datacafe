@@ -1,4 +1,4 @@
 /*
- * Package for integration with HDFS - Hadoop and Hive.
+ * Package for integration with HDFS - Hadoop.
  */
 package edu.emory.bmi.datacafe.hdfs;

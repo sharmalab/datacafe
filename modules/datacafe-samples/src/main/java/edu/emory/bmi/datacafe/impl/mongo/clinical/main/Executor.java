@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.impl.clinical1.main;
+package edu.emory.bmi.datacafe.impl.mongo.clinical.main;
 
 import edu.emory.bmi.datacafe.core.CoreExecutorEngine;
 import edu.emory.bmi.datacafe.core.DataSourcesRegistry;
@@ -22,7 +22,6 @@ import edu.emory.bmi.datacafe.mongo.MongoConnector;
 import org.bson.Document;
 
 import java.util.List;
-
 /**
  * A sample executor for Mongo, where the _id is considered as part of the original data.
  */
@@ -40,25 +39,25 @@ public class Executor {
         DataSourcesRegistry.addDataSource(database1, collection1);
         DataSourcesRegistry.addDataSource(database2, collection2);
 
+        MongoConnector mongoConnector = new MongoConnector();
+
         // Get the list of IDs from the first data source
         Document document1 = new Document("Age_at_Initial_Diagnosis", new Document("$gt", 60)).append("Laterality", "Left");
-        List ids1 = MongoConnector.getID(database1, collection1, document1);
+        List ids1 = mongoConnector.getIDs(database1, collection1, document1);
 
         // Get the list of IDs from the second data source
         Document document2 = new Document("Tumor_Nuclei_Percentage", new Document("$gt", 65));
-        List ids2 = MongoConnector.getID(database2, collection2, document2);
+        List ids2 = mongoConnector.getIDs(database2, collection2, document2);
 
         // Interested Attributes: "patientID", "gender", "laterality"
-        List chosenAttributes1 = MongoConnector.getAttributeValues(database1, collection1, ids1, new String[]{"Gender", "Laterality"});
+        List chosenAttributes1 = mongoConnector.getAttributeValues(database1, collection1, ids1, new String[]{"Gender", "Laterality"});
 
         // Interested Attributes: "sliceID", "patientID", "slideBarCode"
-        List chosenAttributes2 = MongoConnector.getAttributeValues(database2, collection2, ids2, new String[]{"BCR_Patient_UID_From_Pathology", "Slide_Barcode"});
-
-        List<String>[] attributes = new List[]{chosenAttributes1, chosenAttributes2};
-        String[] dataSourcesNames = DataSourcesRegistry.getFullNamesAsArray();
+        List chosenAttributes2 = mongoConnector.getAttributeValues(database2, collection2, ids2, new String[]{"BCR_Patient_UID_From_Pathology", "Slide_Barcode"});
 
         // Write to the Data Lake
-        HdfsConnector.writeToWarehouse(dataSourcesNames, attributes);
+        HdfsConnector.composeDataLake(chosenAttributes1, chosenAttributes2);
+        mongoConnector.closeConnections();
     }
 }
 

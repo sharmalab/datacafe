@@ -27,6 +27,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.MongoConstants;
+import edu.emory.bmi.datacafe.core.SourceConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
@@ -39,7 +40,7 @@ import java.util.Map;
 /**
  * Connects to the Mongo database
  */
-public class MongoConnector {
+public class MongoConnector implements SourceConnector {
     private static Logger logger = LogManager.getLogger(MongoConnector.class.getName());
 
     private static final MongoClient mongoClient = new MongoClient(new ServerAddress(
@@ -52,7 +53,7 @@ public class MongoConnector {
      * @param collection the collection in the data base
      * @return an iterable document.
      */
-    public static FindIterable<Document> iterateCollection(String database, String collection) {
+    public FindIterable<Document> iterateCollection(String database, String collection) {
         MongoDatabase db = mongoClient.getDatabase(database);
         return db.getCollection(collection).find();
     }
@@ -65,7 +66,7 @@ public class MongoConnector {
      * @param collection the collection in the data base
      * @return the DBCollection object.
      */
-    public static DBCollection getCollection(String database, String collection) {
+    public DBCollection getCollection(String database, String collection) {
         DB db = mongoClient.getDB(database);
         return db.getCollection(collection);
     }
@@ -75,7 +76,7 @@ public class MongoConnector {
      *
      * @param iterable the collection iterable
      */
-    public static void printMongoCollection(FindIterable<Document> iterable) {
+    public void printMongoCollection(FindIterable<Document> iterable) {
         iterable.forEach(new Block<Document>() {
             @Override
             public void apply(final Document document) {
@@ -90,8 +91,8 @@ public class MongoConnector {
      *
      * @param iterable the collection iterable
      */
-    public static List getID(FindIterable<Document> iterable) {
-        return getID(iterable, MongoConstants.ID_ATTRIBUTE);
+    public List getAllIDs(FindIterable<Document> iterable) {
+        return getAllIDs(iterable, MongoConstants.ID_ATTRIBUTE);
     }
 
     /**
@@ -101,7 +102,7 @@ public class MongoConnector {
      * @param idAttribute The attribute key that is used as the ID.
      * @return the list of IDs.
      */
-    public static List getID(FindIterable<Document> iterable, String idAttribute) {
+    public List getAllIDs(FindIterable<Document> iterable, String idAttribute) {
         List idList = new ArrayList();
         iterable.forEach(new Block<Document>() {
             @Override
@@ -125,7 +126,7 @@ public class MongoConnector {
      * @param ids        the list of ids.
      * @return the iterable document
      */
-    public static List<FindIterable<Document>> getAllAttributes(String database, String collection, List ids) {
+    public List<FindIterable<Document>> getAllAttributes(String database, String collection, List ids) {
 
         return getAllAttributes(database, collection, MongoConstants.ID_ATTRIBUTE, ids);
     }
@@ -139,8 +140,8 @@ public class MongoConnector {
      * @param preferredAttributes the attributes to be added.
      * @return the list of DBCursor.
      */
-    public static List<String> getAttributeValues(String database, String collection, List ids,
-                                                  String[] preferredAttributes) {
+    public List<String> getAttributeValues(String database, String collection, List ids,
+                                           String[] preferredAttributes) {
         return getAttributeValues(database, collection, ids, MongoConstants.ID_ATTRIBUTE, preferredAttributes, null);
     }
 
@@ -154,8 +155,8 @@ public class MongoConnector {
      * @param removedAttributes   the attributes to be removed.
      * @return the list of DBCursor.
      */
-    public static List<String> getAttributeValues(String database, String collection, List ids,
-                                                  String[] preferredAttributes, String[] removedAttributes) {
+    public List<String> getAttributeValues(String database, String collection, List ids,
+                                           String[] preferredAttributes, String[] removedAttributes) {
         return getAttributeValues(database, collection, ids, MongoConstants.ID_ATTRIBUTE, preferredAttributes,
                 removedAttributes);
     }
@@ -169,8 +170,8 @@ public class MongoConnector {
      * @param preferredAttributes the attributes to be added.
      * @return the list of DBCursor.
      */
-    public static List<DBCursor> getAttributes(String database, String collection, List ids,
-                                               String[] preferredAttributes) {
+    public List<DBCursor> getAttributes(String database, String collection, List ids,
+                                        String[] preferredAttributes) {
         return getAttributes(database, collection, ids, MongoConstants.ID_ATTRIBUTE, preferredAttributes);
     }
 
@@ -182,7 +183,7 @@ public class MongoConnector {
      * @param document   the interested attributes
      * @return an iterable document.
      */
-    public static FindIterable<Document> getCollection(String database, String collection, Document document) {
+    public FindIterable<Document> getCollection(String database, String collection, Document document) {
         MongoDatabase db = mongoClient.getDatabase(database);
 
         return db.getCollection(collection).find(document);
@@ -194,8 +195,13 @@ public class MongoConnector {
      * @param database   the data base
      * @param collection the collection in the data base
      */
-    public static List getID(String database, String collection) {
-        return getID(iterateCollection(database, collection));
+    public List getAllIDs(String database, String collection) {
+        return getAllIDs(iterateCollection(database, collection));
+    }
+
+    @Override
+    public List getAllIDs(String database, String collection, String idAttribute) {
+        return getAllIDs(iterateCollection(database, collection), idAttribute);
     }
 
     /**
@@ -205,8 +211,8 @@ public class MongoConnector {
      * @param collection the collection in the data base
      * @param document   the Ids
      */
-    public static List getID(String database, String collection, Document document) {
-        return getID(getCollection(database, collection, document));
+    public List getIDs(String database, String collection, Document document) {
+        return getAllIDs(getCollection(database, collection, document));
     }
 
 
@@ -219,8 +225,8 @@ public class MongoConnector {
      * @param ids         the list of ids.
      * @return the iterable document
      */
-    public static List<FindIterable<Document>> getAllAttributes(String database, String collection,
-                                                                String idAttribute, List ids) {
+    public List<FindIterable<Document>> getAllAttributes(String database, String collection,
+                                                         String idAttribute, List ids) {
 
         List<FindIterable<Document>> iterableList = new ArrayList<>();
         for (Object id : ids) {
@@ -232,18 +238,9 @@ public class MongoConnector {
         return iterableList;
     }
 
-    /**
-     * Get only the values for a chosen sub set of attributes
-     *
-     * @param database            the data base
-     * @param collection          the collection in the data base
-     * @param ids                 the list of ids.
-     * @param idAttribute         The attribute key that is used as the ID.
-     * @param preferredAttributes the attributes to be added.
-     * @return the list of DBCursor.
-     */
-    public static List<String> getAttributeValues(String database, String collection, List ids, String idAttribute,
-                                                  String[] preferredAttributes) {
+    @Override
+    public List<String> getAttributeValues(String database, String collection, List ids, String idAttribute,
+                                           String[] preferredAttributes) {
 
         return getAttributeValues(database, collection, ids, idAttribute, preferredAttributes, null);
     }
@@ -259,8 +256,8 @@ public class MongoConnector {
      * @param removedAttributes   the attributes to be removed.
      * @return the list of DBCursor.
      */
-    public static List<String> getAttributeValues(String database, String collection, List ids, String idAttribute,
-                                                  String[] preferredAttributes, String[] removedAttributes) {
+    public List<String> getAttributeValues(String database, String collection, List ids, String idAttribute,
+                                           String[] preferredAttributes, String[] removedAttributes) {
         DBCollection collection1 = getCollection(database, collection);
         List<String> dbCursors = new ArrayList<>();
         for (Object id : ids) {
@@ -284,8 +281,8 @@ public class MongoConnector {
      * @param preferredAttributes the attributes to be added.
      * @return the list of DBCursor.
      */
-    public static List<DBCursor> getAttributes(String database, String collection, List ids, String idAttribute,
-                                               String[] preferredAttributes) {
+    public List<DBCursor> getAttributes(String database, String collection, List ids, String idAttribute,
+                                        String[] preferredAttributes) {
         DBCollection collection1 = getCollection(database, collection);
         List<DBCursor> dbCursors = new ArrayList<>();
         for (Object id : ids) {
@@ -304,7 +301,7 @@ public class MongoConnector {
      * @param preferredAttributes the attributes to be added.
      * @return the BasicDBObject
      */
-    public static BasicDBObject getDBObjFromAttributes(String[] preferredAttributes) {
+    public BasicDBObject getDBObjFromAttributes(String[] preferredAttributes) {
         return getDBObjFromAttributes(preferredAttributes, null);
     }
 
@@ -314,7 +311,7 @@ public class MongoConnector {
      * @param removedAttributes the attributes to be removed.
      * @return the BasicDBObject.
      */
-    public static BasicDBObject getDBObjWithRemovedAttributes(String[] removedAttributes) {
+    public BasicDBObject getDBObjWithRemovedAttributes(String[] removedAttributes) {
         return getDBObjFromAttributes(null, removedAttributes);
     }
 
@@ -325,7 +322,7 @@ public class MongoConnector {
      * @param removedAttributes   the attributes to be removed.
      * @return the BasicDBObject.
      */
-    public static BasicDBObject getDBObjFromAttributes(String[] preferredAttributes, String[] removedAttributes) {
+    public BasicDBObject getDBObjFromAttributes(String[] preferredAttributes, String[] removedAttributes) {
         BasicDBObject basicDBObject = new BasicDBObject();
         if (preferredAttributes != null) {
             for (String preferredAttribute : preferredAttributes) {
@@ -345,7 +342,7 @@ public class MongoConnector {
      *
      * @param results the DBCursor
      */
-    public static String getCursorValues(DBCursor results) {
+    public String getCursorValues(DBCursor results) {
         String outValue = "";
 
         while (results.hasNext()) {
@@ -377,9 +374,17 @@ public class MongoConnector {
      *
      * @param results the DBCursor
      */
-    public static void printCursor(DBCursor results) {
+    public void printCursor(DBCursor results) {
         while (results.hasNext()) {
             logger.info(results.next());
         }
+    }
+
+    @Override
+    public void closeConnections() {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Successfully closed the Mongo connection.");
+        }
+        mongoClient.close();
     }
 }

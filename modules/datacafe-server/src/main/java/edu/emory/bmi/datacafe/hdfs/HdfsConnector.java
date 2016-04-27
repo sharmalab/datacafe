@@ -17,6 +17,7 @@ package edu.emory.bmi.datacafe.hdfs;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.HDFSConstants;
+import edu.emory.bmi.datacafe.core.DataSourcesRegistry;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -37,12 +38,23 @@ public class HdfsConnector {
     private static Logger logger = LogManager.getLogger(HdfsConnector.class.getName());
 
     /**
+     * Composes the data lake
+     * @param chosenAttributes list of chosen attributes
+     */
+    public static void composeDataLake(List... chosenAttributes) {
+        String[] dataSourcesNames = DataSourcesRegistry.getFullNamesAsArray();
+
+        // Write to the Data Lake
+        HdfsConnector.writeToWarehouse(dataSourcesNames, chosenAttributes);
+    }
+
+    /**
      * Writes the data sources to HDFS
      *
      * @param datasourcesNames names of the data sources
      * @param texts       array of lists for each data sources to be written to the data warehouse.
      */
-    public static void writeToWarehouse(String[] datasourcesNames, List<String>[] texts) {
+    private static void writeToWarehouse(String[] datasourcesNames, List<String>[] texts) {
         try {
             FileSystem hdfs = getFileSystem();
 

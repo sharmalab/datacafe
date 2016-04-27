@@ -56,6 +56,14 @@ public class ConfigReader {
 
     private static String inputBulkDir;
 
+    /**
+     * MySQL Configurations
+     */
+    private static String completeMySQLUrl;
+    private static String mySQLUserName;
+    private static String mySQLPassword;
+    private static String additionalMySQLConf = "";
+
     protected static Properties prop;
 
     private static boolean loadProperties() {
@@ -116,6 +124,13 @@ public class ConfigReader {
             delimiter = prop.getProperty("delimiter");
             privateKey = prop.getProperty("privateKey");
             inputBulkDir = prop.getProperty("inputBulkDir");
+
+            completeMySQLUrl = prop.getProperty("completeMySQLUrl");
+            if (completeMySQLUrl != null) {
+                mySQLUserName = prop.getProperty("mySQLUserName");
+                mySQLPassword = prop.getProperty("mySQLPassword");
+                additionalMySQLConf = prop.getProperty("additionalMySQLConf");
+            }
         }
     }
 
@@ -165,5 +180,21 @@ public class ConfigReader {
 
     public static String getInputBulkDir() {
         return inputBulkDir;
+    }
+
+    public static String getCompleteMySQLUrl() {
+        return completeMySQLUrl;
+    }
+
+    public static String getMySQLUserName() {
+        return mySQLUserName;
+    }
+
+    public static String getMySQLPassword() {
+        return mySQLPassword;
+    }
+
+    public static String getAdditionalMySQLConf() {
+        return additionalMySQLConf;
     }
 }

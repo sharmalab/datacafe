@@ -63,10 +63,6 @@
           <artifactId>mongo-java-driver</artifactId>
       </dependency>
       <dependency>
-          <groupId>org.jongo</groupId>
-          <artifactId>jongo</artifactId>
-      </dependency>
-      <dependency>
           <groupId>org.apache.hadoop</groupId>
           <artifactId>hadoop-common</artifactId>
       </dependency>
@@ -87,8 +83,8 @@
           <artifactId>hazelcast-client</artifactId>
       </dependency>
       <dependency>
-          <groupId>org.apache.hive</groupId>
-          <artifactId>hive-jdbc</artifactId>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
       </dependency>
   </dependencies>
 </project>
