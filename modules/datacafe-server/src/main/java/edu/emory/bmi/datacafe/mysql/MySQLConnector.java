@@ -79,14 +79,14 @@ public class MySQLConnector implements SourceConnectorInterface {
 
     public Connection getConnection(String database) throws SQLException {
         getMySQLDriver();
-        if (databaseConnectionMap.get(database)!=null) {
+        if (databaseConnectionMap.get(database) != null) {
             return databaseConnectionMap.get(database);
-        }
-        else {
+        } else {
             Connection con = DriverManager.getConnection(SqlConstants.MYSQL_URL_PREFIX +
                             ConfigReader.getCompleteMySQLUrl() + "/" +
                             database + ConfigReader.getAdditionalMySQLConf(),
-                    ConfigReader.getMySQLUserName(), ConfigReader.getMySQLPassword());
+                    ConfigReader.getMySQLUserName(), ConfigReader.getMySQLPassword()
+            );
             databaseConnectionMap.put(database, con);
             return con;
         }
@@ -94,6 +94,7 @@ public class MySQLConnector implements SourceConnectorInterface {
 
     /**
      * Close the SQL Connection
+     *
      * @param con the sql connection
      */
     public void closeConnection(Connection con) {
@@ -145,13 +146,12 @@ public class MySQLConnector implements SourceConnectorInterface {
                 ResultSet rs = st.executeQuery(sql);
                 String outcomeOfEachEntry = "";
 
-                while (rs.next()) {
+                if (rs.next()) {
                     for (int key = 0; key < preferredAttributes.length; key++) {
                         if (key > 0) {
                             outcomeOfEachEntry += ", ";
                         }
                         outcomeOfEachEntry += rs.getString(preferredAttributes[key]);
-
                     }
                 }
                 logger.info(outcomeOfEachEntry);
