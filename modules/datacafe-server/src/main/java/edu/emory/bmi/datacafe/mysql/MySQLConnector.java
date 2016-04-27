@@ -27,13 +27,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Connects to the MySQL data server.
  */
-public class MySQLConnector implements SourceConnectorInterface{
+public class MySQLConnector implements SourceConnectorInterface {
     private static Logger logger = LogManager.getLogger(MySQLConnector.class.getName());
+    private static Map<String, Connection> databaseConnectionMap = new HashMap<>();
 
     @Override
     public List getAllIDs(String database, String table, String idAttribute) {
@@ -53,11 +56,7 @@ public class MySQLConnector implements SourceConnectorInterface{
         Connection con = null;
         List idList = new ArrayList<>();
         try {
-            getMySQLDriver();
-            con = DriverManager.getConnection(SqlConstants.MYSQL_URL_PREFIX + ConfigReader.getCompleteMySQLUrl() + "/" +
-                            database + ConfigReader.getAdditionalMySQLConf(),
-                    ConfigReader.getMySQLUserName(), ConfigReader.getMySQLPassword()
-            );
+            con = getConnection(database);
 
             Statement st = con.createStatement();
             String sql = ("SELECT " + idAttribute + " FROM " + table);
@@ -72,12 +71,31 @@ public class MySQLConnector implements SourceConnectorInterface{
         } catch (SQLException e) {
             logger.error("SQL Exception in initiating the connection", e);
 
-        } finally {
-            closeConnection(con);
+//        } finally {
+//            closeConnection(con);
         }
         return idList;
     }
 
+    public Connection getConnection(String database) throws SQLException {
+        getMySQLDriver();
+        if (databaseConnectionMap.get(database)!=null) {
+            return databaseConnectionMap.get(database);
+        }
+        else {
+            Connection con = DriverManager.getConnection(SqlConstants.MYSQL_URL_PREFIX +
+                            ConfigReader.getCompleteMySQLUrl() + "/" +
+                            database + ConfigReader.getAdditionalMySQLConf(),
+                    ConfigReader.getMySQLUserName(), ConfigReader.getMySQLPassword());
+            databaseConnectionMap.put(database, con);
+            return con;
+        }
+    }
+
+    /**
+     * Close the SQL Connection
+     * @param con the sql connection
+     */
     public void closeConnection(Connection con) {
         try {
             assert con != null;
@@ -103,7 +121,50 @@ public class MySQLConnector implements SourceConnectorInterface{
     }
 
     @Override
-    public List<String> getAttributeValues(String database, String collection, List ids, String idAttribute, String[] preferredAttributes) {
-        return null;
+    public List<String> getAttributeValues(String database, String table, List ids, String idAttribute,
+                                           String[] preferredAttributes) {
+        Connection con = null;
+        List idList = new ArrayList<>();
+        try {
+            con = getConnection(database);
+
+            Statement st = con.createStatement();
+
+            for (int a = 0; a < ids.size(); a++) {
+                String allAttributes = "";
+
+                for (int i = 0; i < preferredAttributes.length; i++) {
+                    if (i != 0) {
+                        allAttributes += ",";
+                    }
+                    allAttributes += preferredAttributes[i];
+                }
+                String sql = ("SELECT " + allAttributes + " FROM " + table + " WHERE " + idAttribute + " = " +
+                        "\"" + ids.get(a) + "\"");
+
+                ResultSet rs = st.executeQuery(sql);
+                String outcomeOfEachEntry = "";
+
+                while (rs.next()) {
+                    for (int key = 0; key < preferredAttributes.length; key++) {
+                        if (key > 0) {
+                            outcomeOfEachEntry += ", ";
+                        }
+                        outcomeOfEachEntry += rs.getString(preferredAttributes[key]);
+
+                    }
+                }
+                logger.info(outcomeOfEachEntry);
+                idList.add(outcomeOfEachEntry);
+            }
+
+        } catch (SQLException e) {
+            logger.error("SQL Exception in initiating the connection", e);
+
+//        } finally {
+//            closeConnection(con);
+        }
+        return idList;
+
     }
 }
