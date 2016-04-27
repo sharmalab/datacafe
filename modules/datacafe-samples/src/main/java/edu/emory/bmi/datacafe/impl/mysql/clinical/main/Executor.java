@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A sample executor for MySQL, where the _id is considered as part of the original data.
+ * A sample executor for MySQL.
  */
 public class Executor {
     private static Logger logger = LogManager.getLogger(MySQLConnector.class.getName());
