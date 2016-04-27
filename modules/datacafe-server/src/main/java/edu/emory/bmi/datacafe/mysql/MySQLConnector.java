@@ -52,9 +52,9 @@ public class MySQLConnector implements SourceConnector {
      * @param limitingClauses WHERE<..>
      * @return idList the list of ids.
      */
-    public List getIDs(String database, String table, String idAttribute, String... limitingClauses) {
+    public List<String> getIDs(String database, String table, String idAttribute, String... limitingClauses) {
         Connection con = null;
-        List idList = new ArrayList<>();
+        List<String> idList = new ArrayList<>();
         try {
             con = getConnection(database);
 
@@ -128,7 +128,7 @@ public class MySQLConnector implements SourceConnector {
 
             Statement st = con.createStatement();
 
-            for (int a = 0; a < ids.size(); a++) {
+            for (Object id : ids) {
                 String allAttributes = "";
 
                 for (int i = 0; i < preferredAttributes.length; i++) {
@@ -138,7 +138,7 @@ public class MySQLConnector implements SourceConnector {
                     allAttributes += preferredAttributes[i];
                 }
                 String sql = ("SELECT " + allAttributes + " FROM " + table + " WHERE " + idAttribute + " = " +
-                        "\"" + ids.get(a) + "\"");
+                        "\"" + id + "\"");
 
                 ResultSet rs = st.executeQuery(sql);
                 String outcomeOfEachEntry = "";
