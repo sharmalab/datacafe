@@ -53,7 +53,7 @@ public class MySQLConnector implements SourceConnector {
      * @return idList the list of ids.
      */
     public List<String> getIDs(String database, String table, String idAttribute, String... limitingClauses) {
-        Connection con = null;
+        Connection con;
         List<String> idList = new ArrayList<>();
         try {
             con = getConnection(database);
@@ -121,7 +121,7 @@ public class MySQLConnector implements SourceConnector {
     @Override
     public List<String> getAttributeValues(String database, String table, List ids, String idAttribute,
                                            String[] preferredAttributes) {
-        Connection con = null;
+        Connection con;
         List idList = new ArrayList<>();
         try {
             con = getConnection(database);
