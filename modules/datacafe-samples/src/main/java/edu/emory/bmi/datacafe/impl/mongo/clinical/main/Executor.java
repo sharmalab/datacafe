@@ -57,6 +57,7 @@ public class Executor {
 
         // Write to the Data Lake
         HdfsConnector.composeDataLake(chosenAttributes1, chosenAttributes2);
+        mongoConnector.closeConnections();
     }
 }
 

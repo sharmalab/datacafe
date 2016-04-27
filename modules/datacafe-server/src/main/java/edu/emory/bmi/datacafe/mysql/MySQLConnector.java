@@ -17,7 +17,7 @@ package edu.emory.bmi.datacafe.mysql;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.SqlConstants;
-import edu.emory.bmi.datacafe.core.SourceConnectorInterface;
+import edu.emory.bmi.datacafe.core.SourceConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,7 +34,7 @@ import java.util.Map;
 /**
  * Connects to the MySQL data server.
  */
-public class MySQLConnector implements SourceConnectorInterface {
+public class MySQLConnector implements SourceConnector {
     private static Logger logger = LogManager.getLogger(MySQLConnector.class.getName());
     private static Map<String, Connection> databaseConnectionMap = new HashMap<>();
 
@@ -70,9 +70,6 @@ public class MySQLConnector implements SourceConnectorInterface {
             }
         } catch (SQLException e) {
             logger.error("SQL Exception in initiating the connection", e);
-
-//        } finally {
-//            closeConnection(con);
         }
         return idList;
     }
@@ -160,11 +157,21 @@ public class MySQLConnector implements SourceConnectorInterface {
 
         } catch (SQLException e) {
             logger.error("SQL Exception in initiating the connection", e);
-
-//        } finally {
-//            closeConnection(con);
         }
         return idList;
+    }
 
+    @Override
+    public void closeConnections() {
+        for (Connection con : databaseConnectionMap.values()) {
+            try {
+                con.close();
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Successfully closed the MySQL server connection.");
+                }
+            } catch (SQLException e) {
+                logger.error("Error in closing the MySQL connection", e);
+            }
+        }
     }
 }

@@ -63,6 +63,7 @@ public class Executor {
                 new String[] {"_id", "BCR_Patient_UID_From_Pathology", "Slide_Barcode"});
 
         HdfsConnector.composeDataLake(chosenAttributes1, chosenAttributes2);
+        sqlConnector.closeConnections();
     }
 }
 

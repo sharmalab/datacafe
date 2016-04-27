@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Interface of the source data servers.
  */
-public interface SourceConnectorInterface {
+public interface SourceConnector {
 
     /**
      * Gets the list of IDs
@@ -43,4 +43,10 @@ public interface SourceConnectorInterface {
      */
     public List<String> getAttributeValues(String database, String collection, List ids, String idAttribute,
                                            String[] preferredAttributes);
+
+    /**
+     * Closes all the data server connections.
+     */
+    public void closeConnections();
+
 }

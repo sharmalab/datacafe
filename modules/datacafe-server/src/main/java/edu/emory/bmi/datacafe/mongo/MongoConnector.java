@@ -27,7 +27,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.MongoConstants;
-import edu.emory.bmi.datacafe.core.SourceConnectorInterface;
+import edu.emory.bmi.datacafe.core.SourceConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
@@ -40,7 +40,7 @@ import java.util.Map;
 /**
  * Connects to the Mongo database
  */
-public class MongoConnector implements SourceConnectorInterface {
+public class MongoConnector implements SourceConnector {
     private static Logger logger = LogManager.getLogger(MongoConnector.class.getName());
 
     private static final MongoClient mongoClient = new MongoClient(new ServerAddress(
@@ -378,5 +378,13 @@ public class MongoConnector implements SourceConnectorInterface {
         while (results.hasNext()) {
             logger.info(results.next());
         }
+    }
+
+    @Override
+    public void closeConnections() {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Successfully closed the Mongo connection.");
+        }
+        mongoClient.close();
     }
 }
