@@ -46,29 +46,20 @@ public class Executor {
 
         CoreExecutorEngine.init();
         MySQLConnector sqlConnector = new MySQLConnector();
-        sqlConnector.getAllIDs(database1, table1, "_id");
-        logger.info("*******************");
-        sqlConnector.getAllIDs(database2, table2, "_id");
 
-//        // Get the list of IDs from the first data source
-//        Document document1 = new Document("Age_at_Initial_Diagnosis", new Document("$gt", 60)).append("Laterality", "Left");
-//        List ids1 = MongoConnector.getID(database1, collection1, document1);
-//
-//        // Get the list of IDs from the second data source
-//        Document document2 = new Document("Tumor_Nuclei_Percentage", new Document("$gt", 65));
-//        List ids2 = MongoConnector.getID(database2, collection2, document2);
-//
+        // Get the list of IDs from the first data source
+        List ids1 = sqlConnector.getAllIDs(database1, table1, "_id", "WHERE Age_at_Initial_Diagnosis > 60 AND Laterality = 'Left'");
+        List ids2 = sqlConnector.getAllIDs(database2, table2, "_id", "WHERE Tumor_Nuclei_Percentage > 65");
+
         // Interested Attributes: "patientID", "gender", "laterality"
         List chosenAttributes1 = new ArrayList<>(); // = MongoConnector.getAttributeValues(database1, collection1, ids1, new String[]{"Gender", "Laterality"});
 
         // Interested Attributes: "sliceID", "patientID", "slideBarCode"
         List chosenAttributes2 = new ArrayList<>(); // = MongoConnector.getAttributeValues(database2, collection2, ids2, new String[]{"BCR_Patient_UID_From_Pathology", "Slide_Barcode"});
 
-        List<String>[] attributes = new List[]{chosenAttributes1, chosenAttributes2};
-        String[] dataSourcesNames = DataSourcesRegistry.getFullNamesAsArray();
-
-        // Write to the Data Lake
-        HdfsConnector.writeToWarehouse(dataSourcesNames, attributes);
+        HdfsConnector.composeDataLake(chosenAttributes1, chosenAttributes2);
     }
+
+
 }
 

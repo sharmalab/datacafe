@@ -69,11 +69,7 @@ public class ExecutorRandomID {
                 new String[]{"HADM_ID", "SUBJECT_ID", "DISCHARGE_LOCATION", "MARITAL_STATUS"},
                 new String[] {MongoConstants.ID_ATTRIBUTE});
 
-        List<String>[] attributes = new List[]{chosenAttributes1, chosenAttributes2};
-        String[] dataSourcesNames = DataSourcesRegistry.getFullNamesAsArray();
-
         // Write to the Data Lake
-        HdfsConnector.writeToWarehouse(dataSourcesNames, attributes);
-
+        HdfsConnector.composeDataLake(chosenAttributes1, chosenAttributes2);
     }
 }

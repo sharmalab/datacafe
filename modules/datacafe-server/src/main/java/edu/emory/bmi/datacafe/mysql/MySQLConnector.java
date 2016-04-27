@@ -25,6 +25,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Connects to the MySQL data server.
@@ -35,12 +37,15 @@ public class MySQLConnector {
     /**
      * Gets all the values from the given table for any attribute. Used to get the Ids.
      *
-     * @param database    the database name
-     * @param table       the table in the given database.
-     * @param idAttribute the attribute key.
+     * @param database        the database name
+     * @param table           the table in the given database.
+     * @param idAttribute     the attribute key.
+     * @param limitingClauses WHERE<..>
+     * @return idList the list of ids.
      */
-    public void getAllIDs(String database, String table, String idAttribute) {
+    public List getAllIDs(String database, String table, String idAttribute, String... limitingClauses) {
         Connection con = null;
+        List idList = new ArrayList<>();
         try {
             getMySQLDriver();
             con = DriverManager.getConnection(SqlConstants.MYSQL_URL_PREFIX + ConfigReader.getCompleteMySQLUrl() + "/" +
@@ -50,10 +55,13 @@ public class MySQLConnector {
 
             Statement st = con.createStatement();
             String sql = ("SELECT " + idAttribute + " FROM " + table);
+            if (limitingClauses.length == 1) {
+                sql += " " + limitingClauses[0];
+            }
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 String id = rs.getString(idAttribute);
-                logger.info(id);
+                idList.add(id);
             }
         } catch (SQLException e) {
             logger.error("SQL Exception in initiating the connection", e);
@@ -61,13 +69,14 @@ public class MySQLConnector {
         } finally {
             closeConnection(con);
         }
+        return idList;
     }
 
     public void closeConnection(Connection con) {
         try {
             assert con != null;
             con.close();
-            if(logger.isDebugEnabled()) {
+            if (logger.isDebugEnabled()) {
                 logger.debug("SQL Connection Closed..");
             }
         } catch (SQLException e) {

@@ -53,11 +53,8 @@ public class Executor {
         // Interested Attributes: "sliceID", "patientID", "slideBarCode"
         List chosenAttributes2 = MongoConnector.getAttributeValues(database2, collection2, ids2, new String[]{"BCR_Patient_UID_From_Pathology", "Slide_Barcode"});
 
-        List<String>[] attributes = new List[]{chosenAttributes1, chosenAttributes2};
-        String[] dataSourcesNames = DataSourcesRegistry.getFullNamesAsArray();
-
         // Write to the Data Lake
-        HdfsConnector.writeToWarehouse(dataSourcesNames, attributes);
+        HdfsConnector.composeDataLake(chosenAttributes1, chosenAttributes2);
     }
 }
 
