@@ -358,7 +358,7 @@ public class MongoConnector implements SourceConnector {
                 if (i != 0) {
                     temp += ",";
                 }
-                temp += tempArray[i].toString(); //todo: How to avoid losing the types.
+                temp += tempArray[i].toString();
             }
 
             outValue += temp;

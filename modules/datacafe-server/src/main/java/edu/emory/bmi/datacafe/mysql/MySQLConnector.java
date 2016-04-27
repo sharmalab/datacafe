@@ -146,12 +146,14 @@ public class MySQLConnector implements SourceConnector {
                 if (rs.next()) {
                     for (int key = 0; key < preferredAttributes.length; key++) {
                         if (key > 0) {
-                            outcomeOfEachEntry += ", ";
+                            outcomeOfEachEntry += ",";
                         }
                         outcomeOfEachEntry += rs.getString(preferredAttributes[key]);
                     }
                 }
-                logger.info(outcomeOfEachEntry);
+                if (logger.isDebugEnabled()) {
+                    logger.debug(outcomeOfEachEntry);
+                }
                 idList.add(outcomeOfEachEntry);
             }
 
