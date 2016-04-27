@@ -77,3 +77,8 @@ WHERE t1.SUBJECT_ID = t2.SUBJECT_ID AND t1.SUBJECT_ID = t3.SUBJECT_ID AND t1.SUB
 
 SELECT DEATHTIME
 FROM hdfs.root.`input/ADMISSIONS_DATA_TABLE.csv`
+
+
+------------------------------------------------------------
+
+ SELECT * FROM hdfs.root.`clinical_clinical.csv` WHERE CAST(columns[1] AS INTEGER)>70
