@@ -47,8 +47,8 @@ public class Executor {
         MySQLConnector sqlConnector = new MySQLConnector();
 
         // Get the list of IDs from the first data source
-        List ids1 = sqlConnector.getAllIDs(database1, table1, "_id", "WHERE Age_at_Initial_Diagnosis > 60 AND Laterality = 'Left'");
-        List ids2 = sqlConnector.getAllIDs(database2, table2, "_id", "WHERE Tumor_Nuclei_Percentage > 65");
+        List ids1 = sqlConnector.getIDs(database1, table1, "_id", "WHERE Age_at_Initial_Diagnosis > 60 AND Laterality = 'Left'");
+        List ids2 = sqlConnector.getIDs(database2, table2, "_id", "WHERE Tumor_Nuclei_Percentage > 65");
 
         if (logger.isDebugEnabled()) {
             logger.debug("list of IDs retrieved from the MySQL data server");

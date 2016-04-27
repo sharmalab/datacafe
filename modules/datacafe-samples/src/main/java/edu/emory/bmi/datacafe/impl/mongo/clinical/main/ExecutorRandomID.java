@@ -48,7 +48,7 @@ public class ExecutorRandomID {
 
         // Get the list of IDs from the first data source
         Document document1 = new Document("GENDER", "M");
-        List ids1 = mongoConnector.getID(database1, collection1, document1);
+        List ids1 = mongoConnector.getIDs(database1, collection1, document1);
 
         if(logger.isDebugEnabled()) {
             logger.debug("First list of IDs retrieved with ids, " + ids1.size());
@@ -56,7 +56,7 @@ public class ExecutorRandomID {
 
         // Get the list of IDs from the second data source
         Document document2 = new Document("ADMISSION_TYPE", "EMERGENCY");
-        List ids2 = mongoConnector.getID(database2, collection2, document2);
+        List ids2 = mongoConnector.getIDs(database2, collection2, document2);
 
         if (logger.isDebugEnabled()) {
             logger.debug("Second list of IDs retrieved with ids, " + ids2.size());

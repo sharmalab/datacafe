@@ -15,13 +15,22 @@
  */
 package edu.emory.bmi.datacafe.core;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Interface of the source data servers.
  */
 public interface SourceConnectorInterface {
+
+    /**
+     * Gets the list of IDs
+     *
+     * @param database    the data base
+     * @param collection  the collection in the data base
+     * @param idAttribute the id Attribute
+     */
+    public List getAllIDs(String database, String collection, String idAttribute);
+
     /**
      * Get only the values for a chosen sub set of attributes
      *

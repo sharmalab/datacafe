@@ -35,6 +35,11 @@ import java.util.List;
 public class MySQLConnector implements SourceConnectorInterface{
     private static Logger logger = LogManager.getLogger(MySQLConnector.class.getName());
 
+    @Override
+    public List getAllIDs(String database, String table, String idAttribute) {
+        return getIDs(database, table, idAttribute);
+    }
+
     /**
      * Gets all the values from the given table for any attribute. Used to get the Ids.
      *
@@ -44,7 +49,7 @@ public class MySQLConnector implements SourceConnectorInterface{
      * @param limitingClauses WHERE<..>
      * @return idList the list of ids.
      */
-    public List getAllIDs(String database, String table, String idAttribute, String... limitingClauses) {
+    public List getIDs(String database, String table, String idAttribute, String... limitingClauses) {
         Connection con = null;
         List idList = new ArrayList<>();
         try {

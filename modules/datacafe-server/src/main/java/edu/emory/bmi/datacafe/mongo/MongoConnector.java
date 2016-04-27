@@ -91,8 +91,8 @@ public class MongoConnector implements SourceConnectorInterface {
      *
      * @param iterable the collection iterable
      */
-    public List getID(FindIterable<Document> iterable) {
-        return getID(iterable, MongoConstants.ID_ATTRIBUTE);
+    public List getAllIDs(FindIterable<Document> iterable) {
+        return getAllIDs(iterable, MongoConstants.ID_ATTRIBUTE);
     }
 
     /**
@@ -102,7 +102,7 @@ public class MongoConnector implements SourceConnectorInterface {
      * @param idAttribute The attribute key that is used as the ID.
      * @return the list of IDs.
      */
-    public List getID(FindIterable<Document> iterable, String idAttribute) {
+    public List getAllIDs(FindIterable<Document> iterable, String idAttribute) {
         List idList = new ArrayList();
         iterable.forEach(new Block<Document>() {
             @Override
@@ -141,7 +141,7 @@ public class MongoConnector implements SourceConnectorInterface {
      * @return the list of DBCursor.
      */
     public List<String> getAttributeValues(String database, String collection, List ids,
-                                                  String[] preferredAttributes) {
+                                           String[] preferredAttributes) {
         return getAttributeValues(database, collection, ids, MongoConstants.ID_ATTRIBUTE, preferredAttributes, null);
     }
 
@@ -156,7 +156,7 @@ public class MongoConnector implements SourceConnectorInterface {
      * @return the list of DBCursor.
      */
     public List<String> getAttributeValues(String database, String collection, List ids,
-                                                  String[] preferredAttributes, String[] removedAttributes) {
+                                           String[] preferredAttributes, String[] removedAttributes) {
         return getAttributeValues(database, collection, ids, MongoConstants.ID_ATTRIBUTE, preferredAttributes,
                 removedAttributes);
     }
@@ -171,7 +171,7 @@ public class MongoConnector implements SourceConnectorInterface {
      * @return the list of DBCursor.
      */
     public List<DBCursor> getAttributes(String database, String collection, List ids,
-                                               String[] preferredAttributes) {
+                                        String[] preferredAttributes) {
         return getAttributes(database, collection, ids, MongoConstants.ID_ATTRIBUTE, preferredAttributes);
     }
 
@@ -195,8 +195,13 @@ public class MongoConnector implements SourceConnectorInterface {
      * @param database   the data base
      * @param collection the collection in the data base
      */
-    public List getID(String database, String collection) {
-        return getID(iterateCollection(database, collection));
+    public List getAllIDs(String database, String collection) {
+        return getAllIDs(iterateCollection(database, collection));
+    }
+
+    @Override
+    public List getAllIDs(String database, String collection, String idAttribute) {
+        return getAllIDs(iterateCollection(database, collection), idAttribute);
     }
 
     /**
@@ -206,8 +211,8 @@ public class MongoConnector implements SourceConnectorInterface {
      * @param collection the collection in the data base
      * @param document   the Ids
      */
-    public List getID(String database, String collection, Document document) {
-        return getID(getCollection(database, collection, document));
+    public List getIDs(String database, String collection, Document document) {
+        return getAllIDs(getCollection(database, collection, document));
     }
 
 
@@ -221,7 +226,7 @@ public class MongoConnector implements SourceConnectorInterface {
      * @return the iterable document
      */
     public List<FindIterable<Document>> getAllAttributes(String database, String collection,
-                                                                String idAttribute, List ids) {
+                                                         String idAttribute, List ids) {
 
         List<FindIterable<Document>> iterableList = new ArrayList<>();
         for (Object id : ids) {
@@ -235,7 +240,7 @@ public class MongoConnector implements SourceConnectorInterface {
 
     @Override
     public List<String> getAttributeValues(String database, String collection, List ids, String idAttribute,
-                                                  String[] preferredAttributes) {
+                                           String[] preferredAttributes) {
 
         return getAttributeValues(database, collection, ids, idAttribute, preferredAttributes, null);
     }
@@ -252,7 +257,7 @@ public class MongoConnector implements SourceConnectorInterface {
      * @return the list of DBCursor.
      */
     public List<String> getAttributeValues(String database, String collection, List ids, String idAttribute,
-                                                  String[] preferredAttributes, String[] removedAttributes) {
+                                           String[] preferredAttributes, String[] removedAttributes) {
         DBCollection collection1 = getCollection(database, collection);
         List<String> dbCursors = new ArrayList<>();
         for (Object id : ids) {
@@ -277,7 +282,7 @@ public class MongoConnector implements SourceConnectorInterface {
      * @return the list of DBCursor.
      */
     public List<DBCursor> getAttributes(String database, String collection, List ids, String idAttribute,
-                                               String[] preferredAttributes) {
+                                        String[] preferredAttributes) {
         DBCollection collection1 = getCollection(database, collection);
         List<DBCursor> dbCursors = new ArrayList<>();
         for (Object id : ids) {

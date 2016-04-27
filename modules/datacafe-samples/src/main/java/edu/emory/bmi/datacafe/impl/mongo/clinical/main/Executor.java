@@ -43,11 +43,11 @@ public class Executor {
 
         // Get the list of IDs from the first data source
         Document document1 = new Document("Age_at_Initial_Diagnosis", new Document("$gt", 60)).append("Laterality", "Left");
-        List ids1 = mongoConnector.getID(database1, collection1, document1);
+        List ids1 = mongoConnector.getIDs(database1, collection1, document1);
 
         // Get the list of IDs from the second data source
         Document document2 = new Document("Tumor_Nuclei_Percentage", new Document("$gt", 65));
-        List ids2 = mongoConnector.getID(database2, collection2, document2);
+        List ids2 = mongoConnector.getIDs(database2, collection2, document2);
 
         // Interested Attributes: "patientID", "gender", "laterality"
         List chosenAttributes1 = mongoConnector.getAttributeValues(database1, collection1, ids1, new String[]{"Gender", "Laterality"});
