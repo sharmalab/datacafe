@@ -17,6 +17,7 @@ package edu.emory.bmi.datacafe.mysql;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.SqlConstants;
+import edu.emory.bmi.datacafe.core.SourceConnectorInterface;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,7 +32,7 @@ import java.util.List;
 /**
  * Connects to the MySQL data server.
  */
-public class MySQLConnector {
+public class MySQLConnector implements SourceConnectorInterface{
     private static Logger logger = LogManager.getLogger(MySQLConnector.class.getName());
 
     /**
@@ -94,5 +95,10 @@ public class MySQLConnector {
         } catch (ClassNotFoundException e) {
             logger.error("Class not found Exception", e);
         }
+    }
+
+    @Override
+    public List<String> getAttributeValues(String database, String collection, List ids, String idAttribute, String[] preferredAttributes) {
+        return null;
     }
 }

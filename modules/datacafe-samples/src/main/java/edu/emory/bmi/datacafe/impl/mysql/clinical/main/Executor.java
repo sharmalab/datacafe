@@ -44,12 +44,15 @@ public class Executor {
         DataSourcesRegistry.addDataSource(database1, table1);
         DataSourcesRegistry.addDataSource(database2, table2);
 
-        CoreExecutorEngine.init();
         MySQLConnector sqlConnector = new MySQLConnector();
 
         // Get the list of IDs from the first data source
         List ids1 = sqlConnector.getAllIDs(database1, table1, "_id", "WHERE Age_at_Initial_Diagnosis > 60 AND Laterality = 'Left'");
         List ids2 = sqlConnector.getAllIDs(database2, table2, "_id", "WHERE Tumor_Nuclei_Percentage > 65");
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("list of IDs retrieved from the MySQL data server");
+        }
 
         // Interested Attributes: "patientID", "gender", "laterality"
         List chosenAttributes1 = new ArrayList<>(); // = MongoConnector.getAttributeValues(database1, collection1, ids1, new String[]{"Gender", "Laterality"});
