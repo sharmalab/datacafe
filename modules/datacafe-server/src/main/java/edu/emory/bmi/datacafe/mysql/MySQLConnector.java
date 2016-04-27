@@ -17,7 +17,6 @@ package edu.emory.bmi.datacafe.mysql;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.SqlConstants;
-import edu.emory.bmi.datacafe.core.CoreExecutorEngine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -64,16 +63,19 @@ public class MySQLConnector {
         }
     }
 
-    private void closeConnection(Connection con) {
+    public void closeConnection(Connection con) {
         try {
             assert con != null;
             con.close();
+            if(logger.isDebugEnabled()) {
+                logger.debug("SQL Connection Closed..");
+            }
         } catch (SQLException e) {
             logger.error("Exception in closing the connection");
         }
     }
 
-    private void getMySQLDriver() {
+    public void getMySQLDriver() {
         try {
             Class.forName(SqlConstants.MYSQL_DRIVER).newInstance();
         } catch (InstantiationException e) {
@@ -83,11 +85,5 @@ public class MySQLConnector {
         } catch (ClassNotFoundException e) {
             logger.error("Class not found Exception", e);
         }
-    }
-
-    public static void main(String[] args) {
-        CoreExecutorEngine.init();
-        MySQLConnector sqlConnector = new MySQLConnector();
-        sqlConnector.getAllIDs("clinical", "clinical", "_id");
     }
 }

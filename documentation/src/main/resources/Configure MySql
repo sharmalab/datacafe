@@ -1,3 +1,5 @@
+# Make sure to include the driver to the modules' classpath.
+
 # Install csvkit for easy conversion and creation of SQL databases from CSV files.
 
  https://csvkit.readthedocs.org/en/540/

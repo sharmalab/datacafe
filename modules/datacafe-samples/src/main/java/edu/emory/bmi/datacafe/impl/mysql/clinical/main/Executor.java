@@ -18,6 +18,9 @@ package edu.emory.bmi.datacafe.impl.mysql.clinical.main;
 import edu.emory.bmi.datacafe.core.CoreExecutorEngine;
 import edu.emory.bmi.datacafe.core.DataSourcesRegistry;
 import edu.emory.bmi.datacafe.hdfs.HdfsConnector;
+import edu.emory.bmi.datacafe.mysql.MySQLConnector;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,8 @@ import java.util.List;
  * A sample executor for MySQL, where the _id is considered as part of the original data.
  */
 public class Executor {
+    private static Logger logger = LogManager.getLogger(MySQLConnector.class.getName());
+
     public static void main(String[] args) {
 
         CoreExecutorEngine.init();
@@ -38,6 +43,12 @@ public class Executor {
 
         DataSourcesRegistry.addDataSource(database1, table1);
         DataSourcesRegistry.addDataSource(database2, table2);
+
+        CoreExecutorEngine.init();
+        MySQLConnector sqlConnector = new MySQLConnector();
+        sqlConnector.getAllIDs(database1, table1, "_id");
+        logger.info("*******************");
+        sqlConnector.getAllIDs(database2, table2, "_id");
 
 //        // Get the list of IDs from the first data source
 //        Document document1 = new Document("Age_at_Initial_Diagnosis", new Document("$gt", 60)).append("Laterality", "Left");
