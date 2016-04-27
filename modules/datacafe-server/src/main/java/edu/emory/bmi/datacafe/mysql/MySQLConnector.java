@@ -34,51 +34,60 @@ public class MySQLConnector {
     private static Logger logger = LogManager.getLogger(MySQLConnector.class.getName());
 
     /**
-     * Gets data from the given table
-     * @param database the database name
-     * @param table the table in the given database.
+     * Gets all the values from the given table for any attribute. Used to get the Ids.
+     *
+     * @param database    the database name
+     * @param table       the table in the given database.
+     * @param idAttribute the attribute key.
      */
-    public void getData(String database, String table) {
+    public void getAllIDs(String database, String table, String idAttribute) {
         Connection con = null;
         try {
-            try {
-                Class.forName(SqlConstants.MYSQL_DRIVER).newInstance();
-            } catch (InstantiationException e) {
-                logger.error("Exception initiating the instance", e);
-            } catch (IllegalAccessException e) {
-                logger.error("Illegal Access Exception", e);
-            } catch (ClassNotFoundException e) {
-                logger.error("Class not found Exception", e);
-            }
+            getMySQLDriver();
             con = DriverManager.getConnection(SqlConstants.MYSQL_URL_PREFIX + ConfigReader.getCompleteMySQLUrl() + "/" +
-                    database + ConfigReader.getAdditionalMySQLConf(),
-                    ConfigReader.getMySQLUserName(), ConfigReader.getMySQLPassword());
+                            database + ConfigReader.getAdditionalMySQLConf(),
+                    ConfigReader.getMySQLUserName(), ConfigReader.getMySQLPassword()
+            );
 
             Statement st = con.createStatement();
-            String sql = ("SELECT * FROM " + table);
+            String sql = ("SELECT " + idAttribute + " FROM " + table);
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
-                int ageAtInitialDiagnosis = rs.getInt("Age_at_Initial_Diagnosis");
-                String laterality = rs.getString("Laterality");
-                logger.info(ageAtInitialDiagnosis + " : " + laterality);
+                String id = rs.getString(idAttribute);
+                logger.info(id);
             }
-
         } catch (SQLException e) {
             logger.error("SQL Exception in initiating the connection", e);
 
         } finally {
-            try {
-                assert con != null;
-                con.close();
-            } catch (SQLException e) {
-                logger.error("Exception in closing the connection");
-            }
+            closeConnection(con);
+        }
+    }
+
+    private void closeConnection(Connection con) {
+        try {
+            assert con != null;
+            con.close();
+        } catch (SQLException e) {
+            logger.error("Exception in closing the connection");
+        }
+    }
+
+    private void getMySQLDriver() {
+        try {
+            Class.forName(SqlConstants.MYSQL_DRIVER).newInstance();
+        } catch (InstantiationException e) {
+            logger.error("Exception initiating the instance", e);
+        } catch (IllegalAccessException e) {
+            logger.error("Illegal Access Exception", e);
+        } catch (ClassNotFoundException e) {
+            logger.error("Class not found Exception", e);
         }
     }
 
     public static void main(String[] args) {
         CoreExecutorEngine.init();
         MySQLConnector sqlConnector = new MySQLConnector();
-        sqlConnector.getData("clinical", "clinical");
+        sqlConnector.getAllIDs("clinical", "clinical", "_id");
     }
 }
