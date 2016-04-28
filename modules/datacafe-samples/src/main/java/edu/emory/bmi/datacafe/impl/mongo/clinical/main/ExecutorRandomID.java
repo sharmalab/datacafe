@@ -63,13 +63,14 @@ public class ExecutorRandomID {
         }
 
         // ID: "SUBJECT_ID". Other Interested Attributes: "ROW_ID", "GENDER"
-        List chosenAttributes1 = mongoConnector.getAttributeValues(database1, collection1, ids1,
-                new String[]{"SUBJECT_ID", "ROW_ID", "GENDER"}, new String[] {MongoConstants.ID_ATTRIBUTE});
+        List chosenAttributes1 = mongoConnector.getAttributesWithHeader(database1, collection1, ids1,
+                MongoConstants.ID_ATTRIBUTE,
+                new String[]{"SUBJECT_ID", "ROW_ID", "GENDER"});
 
         // ID: "HADM_ID". Other Interested Attributes: "SUBJECT_ID", "DISCHARGE_LOCATION", "MARITAL_STATUS"
-        List chosenAttributes2 = mongoConnector.getAttributeValues(database2, collection2, ids2,
-                new String[]{"HADM_ID", "SUBJECT_ID", "DISCHARGE_LOCATION", "MARITAL_STATUS"},
-                new String[] {MongoConstants.ID_ATTRIBUTE});
+        List chosenAttributes2 = mongoConnector.getAttributesWithHeader(database2, collection2, ids2,
+                MongoConstants.ID_ATTRIBUTE,
+                new String[]{"HADM_ID", "SUBJECT_ID", "DISCHARGE_LOCATION", "MARITAL_STATUS"});
 
         // Write to the Data Lake
         HdfsConnector.composeDataLake(chosenAttributes1, chosenAttributes2);

@@ -17,7 +17,8 @@ package edu.emory.bmi.datacafe.mysql;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.SqlConstants;
-import edu.emory.bmi.datacafe.core.SourceConnector;
+import edu.emory.bmi.datacafe.core.AbstractDataSourceConnector;
+import edu.emory.bmi.datacafe.core.ISourceConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,7 +35,7 @@ import java.util.Map;
 /**
  * Connects to the MySQL data server.
  */
-public class MySQLConnector implements SourceConnector {
+public class MySQLConnector extends AbstractDataSourceConnector {
     private static Logger logger = LogManager.getLogger(MySQLConnector.class.getName());
     private static Map<String, Connection> databaseConnectionMap = new HashMap<>();
 
@@ -131,12 +132,7 @@ public class MySQLConnector implements SourceConnector {
             for (Object id : ids) {
                 String allAttributes = "";
 
-                for (int i = 0; i < preferredAttributes.length; i++) {
-                    if (i != 0) {
-                        allAttributes += ",";
-                    }
-                    allAttributes += preferredAttributes[i];
-                }
+                allAttributes = getChosenAttributeNames(preferredAttributes);
                 String sql = ("SELECT " + allAttributes + " FROM " + table + " WHERE " + idAttribute + " = " +
                         "\"" + id + "\"");
 

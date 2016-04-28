@@ -54,11 +54,11 @@ public class Executor {
         }
 
         // Interested Attributes: "patientID", "gender", "laterality"
-        List chosenAttributes1 = sqlConnector.getAttributeValues(database1, table1, ids1, "_id",
+        List chosenAttributes1 = sqlConnector.getAttributesWithHeader(database1, table1, ids1, "_id",
                 new String[] {"_id", "Age_at_Initial_Diagnosis", "Gender", "Laterality"});
 
         // Interested Attributes: "sliceID", "patientID", "slideBarCode"
-        List chosenAttributes2 = sqlConnector.getAttributeValues(database2, table2, ids2, "_id",
+        List chosenAttributes2 = sqlConnector.getAttributesWithHeader(database2, table2, ids2, "_id",
                 new String[] {"_id", "BCR_Patient_UID_From_Pathology", "Slide_Barcode"});
 
         HdfsConnector.composeDataLake(chosenAttributes1, chosenAttributes2);
