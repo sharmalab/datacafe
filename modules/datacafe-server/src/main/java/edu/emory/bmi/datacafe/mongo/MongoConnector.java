@@ -27,7 +27,8 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.MongoConstants;
-import edu.emory.bmi.datacafe.core.SourceConnector;
+import edu.emory.bmi.datacafe.core.AbstractDataSourceConnector;
+import edu.emory.bmi.datacafe.core.ISourceConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
@@ -36,11 +37,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Connects to the Mongo database
  */
-public class MongoConnector implements SourceConnector {
+public class MongoConnector extends AbstractDataSourceConnector {
     private static Logger logger = LogManager.getLogger(MongoConnector.class.getName());
 
     private static final MongoClient mongoClient = new MongoClient(new ServerAddress(
@@ -143,6 +145,18 @@ public class MongoConnector implements SourceConnector {
     public List<String> getAttributeValues(String database, String collection, List ids,
                                            String[] preferredAttributes) {
         return getAttributeValues(database, collection, ids, MongoConstants.ID_ATTRIBUTE, preferredAttributes, null);
+    }
+
+    @Override
+    public List<String> getAttributesWithHeader(String database, String collection, List ids, String idAttribute,
+                                                String[] preferredAttributes) {
+        List<String> attributes = new ArrayList<>();
+        attributes.add(getChosenAttributeNames(preferredAttributes));
+
+        attributes.addAll(getAttributeValues(database, collection, ids, MongoConstants.ID_ATTRIBUTE,
+                preferredAttributes,
+                new String[]{MongoConstants.ID_ATTRIBUTE}).stream().map(str -> str).collect(Collectors.toList()));
+        return attributes;
     }
 
     /**

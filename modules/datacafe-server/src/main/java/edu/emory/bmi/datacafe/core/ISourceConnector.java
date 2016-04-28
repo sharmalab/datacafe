@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Interface of the source data servers.
  */
-public interface SourceConnector {
+public interface ISourceConnector {
 
     /**
      * Gets the list of IDs
@@ -43,6 +43,28 @@ public interface SourceConnector {
      */
     public List<String> getAttributeValues(String database, String collection, List ids, String idAttribute,
                                            String[] preferredAttributes);
+
+    /**
+     * Get the values for a chosen sub set of attributes, with the first line as the header with the attribute
+     * names as a comma separated line.
+     *
+     * @param database            the data base
+     * @param collection          the collection in the data base
+     * @param ids                 the list of ids.
+     * @param idAttribute         The attribute key that is used as the ID.
+     * @param preferredAttributes the attributes to be added.
+     * @return the list of DBCursor.
+     */
+    public List<String> getAttributesWithHeader(String database, String collection, List ids, String idAttribute,
+                                                String[] preferredAttributes);
+
+    /**
+     * Return the chosen attribute names.
+     *
+     * @param preferredAttributes the preferred attributes
+     * @return the attribute names as a comma separated line.
+     */
+    public String getChosenAttributeNames(String[] preferredAttributes);
 
     /**
      * Closes all the data server connections.
