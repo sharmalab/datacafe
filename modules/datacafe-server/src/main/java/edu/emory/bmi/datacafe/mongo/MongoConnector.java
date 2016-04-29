@@ -28,7 +28,6 @@ import com.mongodb.client.MongoDatabase;
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.MongoConstants;
 import edu.emory.bmi.datacafe.core.AbstractDataSourceConnector;
-import edu.emory.bmi.datacafe.core.ISourceConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
