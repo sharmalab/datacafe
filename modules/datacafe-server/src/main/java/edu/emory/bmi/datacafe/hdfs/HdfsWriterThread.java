@@ -74,11 +74,9 @@ public class HdfsWriterThread extends Thread {
                 logger.error("IOException in closing the writer", e);
             }
         }
-        logger.info("Successfully written to the data lake: " + outputFile);
-
         long endTime = System.currentTimeMillis();
 
         long timeConsumed = endTime - CoreExecutorEngine.getStartTime();
-        logger.info("Time consumed in seconds: " + timeConsumed/1000.0 + " s.");
+        logger.info("Successfully written to the data lake: " + outputFile + " in " + timeConsumed/1000.0 + " s.");
     }
 }
