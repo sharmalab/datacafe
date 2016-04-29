@@ -20,7 +20,7 @@ import org.bson.Document;
 import java.util.List;
 
 /**
- * A wrapper to write from Mongo to HDFS.
+ * A wrapper to write from Mongo to HDFS in a parallel manner for each of the Mongo collection.
  */
 public class MongoHDFSIntegrator {
 
