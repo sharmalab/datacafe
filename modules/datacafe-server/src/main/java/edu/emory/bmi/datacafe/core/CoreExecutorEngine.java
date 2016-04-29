@@ -22,11 +22,13 @@ import edu.emory.bmi.datacafe.conf.ConfigReader;
  */
 public final class CoreExecutorEngine {
     private static CoreExecutorEngine coreExecutorEngine;
+    private static long startTime;
 
     /**
      * Initialize the singleton object
      */
     public static void init() {
+        startTime =  System.currentTimeMillis();
         if (coreExecutorEngine == null) {
             coreExecutorEngine = new CoreExecutorEngine();
         }
@@ -38,6 +40,10 @@ public final class CoreExecutorEngine {
     private CoreExecutorEngine() {
         ConfigReader.readConfig();
         DataSourcesRegistry.init();
+    }
+
+    public static long getStartTime() {
+        return startTime;
     }
 }
 
