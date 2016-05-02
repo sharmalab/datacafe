@@ -15,6 +15,8 @@
  */
 package edu.emory.bmi.datacafe.core;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -24,6 +26,28 @@ import java.util.stream.Collectors;
  * Utility methods of Data Cafe
  */
 public final class DataCafeUtil {
+
+    /**
+     * Double quotes mess up with the CSV parsing.
+     * @return double quote it double
+     */
+    public static String doubleTheDoubleQuote(String text) {
+        return text.replaceAll("\"", "\"\"");
+    }
+
+    /**
+     * Wraps the tex with double quotes.
+     * @param text the text
+     * @return the wrapped text.
+     */
+    public static String doublequote(String text) {
+        if (StringUtils.isNumeric(text)) { //checking only for numeric now. todo: all types.
+            return text;
+        } else {
+            return "\"" + text + "\"";
+        }
+    }
+
     /**
      * Construct a string from a collection
      *
@@ -32,7 +56,7 @@ public final class DataCafeUtil {
      */
     public static String constructStringFromCollection(Collection collection) {
         return (String) collection.stream()
-                .map(i -> i.toString())
+                .map(i -> doublequote(doubleTheDoubleQuote(i.toString())))
                 .collect(Collectors.joining(","));
     }
 

@@ -26,7 +26,7 @@ import org.bson.Document;
 /**
  * A larger scale example with PhysioNet.
  */
-public class PhysioNetSampleExecutor {
+public class PhysioNetSampleExecutor2 {
     private static Logger logger = LogManager.getLogger(ExecutorRandomID.class.getName());
 
     public static void main(String[] args) {
@@ -35,6 +35,7 @@ public class PhysioNetSampleExecutor {
         String[] databases = {"physionet", "physionet", "physionet", "physionet", "physionet", "physionet"};
         String[] collections = {"caregivers", "dicddiagnosis", "dlabitems", "datetimeevents", "patients",
                 "diagnosesicd"};
+        String[][] attributes = {{},{},{},{"ITEMID","SUBJECT_ID","CGID", "ICUSTAY_ID"},{},{}};
 
         DataSourcesRegistry.addDataSources(databases, collections);
 
@@ -48,6 +49,6 @@ public class PhysioNetSampleExecutor {
         documents[4] = new Document("GENDER", "M");
         documents[5] = new Document();
 
-        MongoHDFSIntegrator.writeToHDFSInParallel(databases, collections, documents);
+        MongoHDFSIntegrator.writeToHDFSInParallel(databases, collections, documents, attributes);
     }
 }
