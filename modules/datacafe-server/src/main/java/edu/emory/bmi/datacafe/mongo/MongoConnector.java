@@ -159,6 +159,19 @@ public class MongoConnector extends AbstractDataSourceConnector {
     }
 
     /**
+     * Get all the values except the default MongoID attribute.
+     *
+     * @param database   the data base
+     * @param collection the collection in the data base
+     * @param ids        the list of ids.
+     * @return the list of DBCursor.
+     */
+    public List<String> getAttributeValuesExceptAutoGenMongoId(String database, String collection, List ids, String[] preferredAttributes) {
+        return getAttributeValues(database, collection, ids, MongoConstants.ID_ATTRIBUTE, preferredAttributes,
+                new String[]{MongoConstants.ID_ATTRIBUTE}, true);
+    }
+
+    /**
      * Get all the values except a given attribute. Default MongoID, _id is assumed.
      *
      * @param database         the data base

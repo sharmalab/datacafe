@@ -32,6 +32,26 @@ public class MongoHDFSIntegrator {
      * @param databases   the databases as an array
      * @param collections the collections in the respective databases.
      * @param documents   the Document objects as an array
+     * @param attributes  the attributes to be included.
+     */
+    public static void writeToHDFSInParallel(String[] databases, String[] collections, Document[] documents,
+                                             String[][] attributes) {
+        MongoHDFSIntegratorThread[] mongoHDFSIntegratorThreads = new MongoHDFSIntegratorThread[collections.length];
+        String[] dataSourcesNames = DataSourcesRegistry.getFullNamesAsArray();
+
+        for (int i = 0; i < collections.length; i++) {
+            mongoHDFSIntegratorThreads[i] = new MongoHDFSIntegratorThread(databases[i], collections[i],
+                    documents[i], dataSourcesNames[i], attributes[i]);
+            mongoHDFSIntegratorThreads[i].start();
+        }
+    }
+
+    /**
+     * Write to HDFS. Parallel Execution.
+     *
+     * @param databases   the databases as an array
+     * @param collections the collections in the respective databases.
+     * @param documents   the Document objects as an array
      */
     public static void writeToHDFSInParallel(String[] databases, String[] collections, Document[] documents) {
         MongoHDFSIntegratorThread[] mongoHDFSIntegratorThreads = new MongoHDFSIntegratorThread[collections.length];
@@ -39,7 +59,7 @@ public class MongoHDFSIntegrator {
 
         for (int i = 0; i < collections.length; i++) {
             mongoHDFSIntegratorThreads[i] = new MongoHDFSIntegratorThread(databases[i], collections[i],
-                    documents[i], dataSourcesNames[i]);
+                    documents[i], dataSourcesNames[i], null);
             mongoHDFSIntegratorThreads[i].start();
         }
     }

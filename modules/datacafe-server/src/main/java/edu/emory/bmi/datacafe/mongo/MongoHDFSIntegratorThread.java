@@ -35,18 +35,27 @@ public class MongoHDFSIntegratorThread extends Thread {
     private String collection;
     private Document document;
     private String dataSourcesName;
+    private String[] attributes;
 
-    public MongoHDFSIntegratorThread(String database, String collection, Document document, String dataSourcesName) {
+    public MongoHDFSIntegratorThread(String database, String collection, Document document,
+                                     String dataSourcesName, String[] attributes) {
         this.database = database;
         this.collection = collection;
         this.document = document;
         this.dataSourcesName = dataSourcesName;
+        this.attributes = attributes;
     }
 
     public void run() {
         List ids = mongoConnector.getIDs(database, collection, document);
-        List<String> chosenAttributes =
-                mongoConnector.getAllAttributeValuesExceptAutoGenMongoId(database, collection, ids);
+        List<String> chosenAttributes = new ArrayList<>();
+        if (attributes == null || attributes.length == 0) {
+            chosenAttributes =
+                    mongoConnector.getAllAttributeValuesExceptAutoGenMongoId(database, collection, ids);
+        } else if (attributes.length > 0) {
+            chosenAttributes = mongoConnector.getAttributeValuesExceptAutoGenMongoId(database, collection, ids,
+                    attributes);
+        }
         ids.clear();
 
         String outputFile = ConfigReader.getHdfsPath() + dataSourcesName +
