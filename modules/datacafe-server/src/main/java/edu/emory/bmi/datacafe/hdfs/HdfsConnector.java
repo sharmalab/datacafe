@@ -16,19 +16,11 @@
 package edu.emory.bmi.datacafe.hdfs;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
-import edu.emory.bmi.datacafe.constants.HDFSConstants;
 import edu.emory.bmi.datacafe.core.DataSourcesRegistry;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.util.List;
 
 /**
@@ -39,6 +31,7 @@ public class HdfsConnector {
 
     /**
      * Composes the data lake
+     *
      * @param chosenAttributes list of chosen attributes
      */
     public static void composeDataLake(List... chosenAttributes) {
@@ -52,59 +45,33 @@ public class HdfsConnector {
      * Writes the data sources to HDFS
      *
      * @param datasourcesNames names of the data sources
-     * @param texts       array of lists for each data sources to be written to the data warehouse.
+     * @param chosenAttributes array of lists for each data sources to be written to the data warehouse.
      */
-    private static void writeToWarehouse(String[] datasourcesNames, List<String>[] texts) {
+    private static void writeToWarehouse(String[] datasourcesNames, List<String>[] chosenAttributes) {
+        HdfsWriterThread[] hdfsWriterThread = new HdfsWriterThread[datasourcesNames.length];
         try {
-            FileSystem hdfs = getFileSystem();
-
             for (int i = 0; i < datasourcesNames.length; i++) {
-                String temp = "";
-
-                String outputFile = ConfigReader.getHdfsPath() + datasourcesNames[i] +
-                        ConfigReader.getFileExtension();
-                OutputStream os = hdfs.create(new Path(outputFile));
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
-
-                for (int j = 0; j < texts[i].size(); j++) {
-                    temp += texts[i].get(j) + "\n";
-                }
-
-                writer.write(temp);
-                writer.close();
-                logger.info("Successfully written to the data lake: " + outputFile);
+                hdfsWriterThread[i] = new HdfsWriterThread(datasourcesNames[i], chosenAttributes[i]);
+                hdfsWriterThread[i].start();
             }
         } catch (IOException e) {
             logger.error("Error while attempting to get the file system", e);
         }
     }
 
-    private static FileSystem getFileSystem() throws IOException {
-        Configuration config = new Configuration();
-        config.addResource(new Path(ConfigReader.getHadoopConf() + File.separator + HDFSConstants.CORE_SITE_XML));
-        config.addResource(new Path(ConfigReader.getHadoopConf() + File.separator + HDFSConstants.HDFS_SITE_XML));
-
-        return FileSystem.get(config);
-    }
-
     /**
-     * Just to delete the entire content of an hdfs folder.
+     * Writes the data sources to HDFS sequentially
      *
-     * @param folder the folder to be deleted
-     * @throws IOException if the deletion failed.
+     * @param chosenAttributes array of lists for each data sources to be written to the data warehouse.
      */
-    private static void delete(String folder) throws IOException {
-        FileSystem fs = getFileSystem();
-        fs.delete(new Path(ConfigReader.getHdfsPath() + folder), true);
-        logger.info("Successfully deleted the contents of the HDFS folder: " + folder);
-    }
+    @Deprecated
+    public static void composeDataLakeSequential(List... chosenAttributes) {
+        String[] datasourcesNames = DataSourcesRegistry.getFullNamesAsArray();
 
-    public static void main(String[] args) {
-        ConfigReader.readConfig();
-        try {
-            delete(ConfigReader.getInputBulkDir());
-        } catch (IOException e) {
-            logger.error("Exception in deleting the contents of the directory: " + ConfigReader.getInputBulkDir(), e);
+        for (int i = 0; i < datasourcesNames.length; i++) {
+            String outputFile = ConfigReader.getHdfsPath() + datasourcesNames[i] +
+                    ConfigReader.getFileExtension();
+            HdfsUtil.write(chosenAttributes[i], outputFile);
         }
     }
 }

@@ -18,7 +18,6 @@ package edu.emory.bmi.datacafe.mysql;
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.SqlConstants;
 import edu.emory.bmi.datacafe.core.AbstractDataSourceConnector;
-import edu.emory.bmi.datacafe.core.ISourceConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

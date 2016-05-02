@@ -29,10 +29,30 @@ public class DataSourcesRegistry {
         fullNames = new ArrayList<>();
     }
 
+    /**
+     * Populate the datasources full names list. A one-to-one mapping is assumed across the databases and collections.
+     * @param databases the databases.
+     * @param collections the collections.
+     */
+    public static void addDataSources(String[] databases, String[] collections) {
+        for (int i = 0; i < collections.length; i++) {
+            fullNames.add(constructFullDataSourceName(databases[i], collections[i]));
+        }
+    }
+
+    /**
+     * Add a single data source to the list.
+     * @param database the name of the data base
+     * @param collection the name of the collection
+     */
     public static void addDataSource(String database, String collection) {
         fullNames.add(constructFullDataSourceName(database, collection));
     }
 
+    /**
+     * Gets the fullnames of the datasources as an array
+     * @return the full name of the data sources array
+     */
     public static String[] getFullNamesAsArray() {
         String[] fullNameArray = new String[fullNames.size()];
 
