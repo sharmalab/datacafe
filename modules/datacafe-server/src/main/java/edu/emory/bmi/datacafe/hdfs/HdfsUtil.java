@@ -17,17 +17,35 @@ package edu.emory.bmi.datacafe.hdfs;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.HDFSConstants;
+import edu.emory.bmi.datacafe.core.CoreExecutorEngine;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.util.List;
 
 /**
  * Utilities for HDFS.
  */
 public final class HdfsUtil {
+    private static Logger logger = LogManager.getLogger(HdfsUtil.class.getName());
+    private static FileSystem hdfs;
+
+    public static void init() {
+        try {
+            hdfs = HdfsUtil.getFileSystem();
+        } catch (IOException e) {
+            logger.error("Exception while initializing HDFS file system");
+        }
+    }
+
     /**
      * Get the HDFS file system.
      * @return the hdfs file system
@@ -39,5 +57,41 @@ public final class HdfsUtil {
         config.addResource(new Path(ConfigReader.getHadoopConf() + File.separator + HDFSConstants.HDFS_SITE_XML));
 
         return FileSystem.get(config);
+    }
+
+    public static void write(List<String> chosenAttributes, String outputFile) {
+        init();
+        String temp = "";
+
+        OutputStream os = null;
+        try {
+            os = hdfs.create(new Path(outputFile));
+        } catch (IOException e) {
+            logger.error("IOException in writing to hdfs.", e);
+        }
+
+        assert os != null;
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
+
+        for (String chosenAttribute : chosenAttributes) {
+            temp += chosenAttribute + "\n";
+        }
+
+        try {
+            writer.write(temp);
+        } catch (IOException e) {
+            logger.error("IOException in writing to hdfs.", e);
+        } finally {
+            try {
+                writer.close();
+            } catch (IOException e) {
+                logger.error("IOException in closing the writer", e);
+            }
+        }
+
+        long endTime = System.currentTimeMillis();
+
+        long timeConsumed = endTime - CoreExecutorEngine.getStartTime();
+        logger.info("Successfully written to the data lake: " + outputFile + " in " + timeConsumed/1000.0 + " s.");
     }
 }

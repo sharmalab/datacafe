@@ -43,13 +43,13 @@ public class HdfsConnector {
      * Writes the data sources to HDFS
      *
      * @param datasourcesNames names of the data sources
-     * @param texts       array of lists for each data sources to be written to the data warehouse.
+     * @param chosenAttributes       array of lists for each data sources to be written to the data warehouse.
      */
-    private static void writeToWarehouse(String[] datasourcesNames, List<String>[] texts) {
+    private static void writeToWarehouse(String[] datasourcesNames, List<String>[] chosenAttributes) {
         HdfsWriterThread[] hdfsWriterThread = new HdfsWriterThread[datasourcesNames.length];
         try {
             for (int i = 0; i < datasourcesNames.length; i++) {
-                hdfsWriterThread[i] = new HdfsWriterThread(datasourcesNames[i], texts[i]);
+                hdfsWriterThread[i] = new HdfsWriterThread(datasourcesNames[i], chosenAttributes[i]);
                 hdfsWriterThread[i].start();
             }
         } catch (IOException e) {

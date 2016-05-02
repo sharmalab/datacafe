@@ -17,14 +17,10 @@ package edu.emory.bmi.datacafe.impl.mongo.clinical.main;
 
 import edu.emory.bmi.datacafe.core.CoreExecutorEngine;
 import edu.emory.bmi.datacafe.core.DataSourcesRegistry;
-import edu.emory.bmi.datacafe.hdfs.HdfsConnector;
-import edu.emory.bmi.datacafe.mongo.MongoConnector;
 import edu.emory.bmi.datacafe.mongo.MongoHDFSIntegrator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
-
-import java.util.List;
 
 /**
  * A larger scale example with PhysioNet.
@@ -41,25 +37,16 @@ public class PhysioNetSampleExecutor {
 
         DataSourcesRegistry.addDataSources(databases, collections);
 
-        MongoConnector mongoConnector = new MongoConnector();
-
         // Get the list of IDs from the first data source
         Document[] documents = new Document[collections.length];
 
         documents[0] = new Document("DESCRIPTION", "Social Worker");
         documents[1] = new Document("ICD9_CODE", new Document("$gt", 70));
         documents[2] = new Document("CATEGORY", "CHEMISTRY");
-        documents[3] = new Document("STOPPED", "NotStopd");
+        documents[3] = new Document("SUBJECT_ID", new Document("$lt", 100));
         documents[4] = new Document("GENDER", "M");
-        documents[5] = new Document();
+        documents[5] = new Document("SUBJECT_ID", new Document("$lt", 100));
 
-        List[] idsArray = MongoHDFSIntegrator.getListsOfIds(databases, collections, mongoConnector, documents);
-
-        List[] chosenAttributes = MongoHDFSIntegrator.getAllChosenAttributes(databases, collections, mongoConnector,
-                idsArray);
-
-        // Write to the Data Lake
-        HdfsConnector.composeDataLake(chosenAttributes);
-        mongoConnector.closeConnections();
+        MongoHDFSIntegrator.writeToHDFSInParallel(databases, collections, documents);
     }
 }
