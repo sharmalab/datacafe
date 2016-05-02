@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Utilities for HDFS.
@@ -61,7 +62,6 @@ public final class HdfsUtil {
 
     public static void write(List<String> chosenAttributes, String outputFile) {
         init();
-        String temp = "";
 
         OutputStream os = null;
         try {
@@ -73,9 +73,7 @@ public final class HdfsUtil {
         assert os != null;
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
 
-        for (String chosenAttribute : chosenAttributes) {
-            temp += chosenAttribute + "\n";
-        }
+        String temp = chosenAttributes.stream().map(String::toString).collect(Collectors.joining("\n"));
 
         try {
             writer.write(temp);
