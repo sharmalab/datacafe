@@ -15,6 +15,7 @@
  */
 package edu.emory.bmi.datacafe.hdfs;
 
+import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.core.DataSourcesRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,6 +31,7 @@ public class HdfsConnector {
 
     /**
      * Composes the data lake
+     *
      * @param chosenAttributes list of chosen attributes
      */
     public static void composeDataLake(List... chosenAttributes) {
@@ -43,7 +45,7 @@ public class HdfsConnector {
      * Writes the data sources to HDFS
      *
      * @param datasourcesNames names of the data sources
-     * @param chosenAttributes       array of lists for each data sources to be written to the data warehouse.
+     * @param chosenAttributes array of lists for each data sources to be written to the data warehouse.
      */
     private static void writeToWarehouse(String[] datasourcesNames, List<String>[] chosenAttributes) {
         HdfsWriterThread[] hdfsWriterThread = new HdfsWriterThread[datasourcesNames.length];
@@ -54,6 +56,22 @@ public class HdfsConnector {
             }
         } catch (IOException e) {
             logger.error("Error while attempting to get the file system", e);
+        }
+    }
+
+    /**
+     * Writes the data sources to HDFS sequentially
+     *
+     * @param chosenAttributes array of lists for each data sources to be written to the data warehouse.
+     */
+    @Deprecated
+    public static void composeDataLakeSequential(List... chosenAttributes) {
+        String[] datasourcesNames = DataSourcesRegistry.getFullNamesAsArray();
+
+        for (int i = 0; i < datasourcesNames.length; i++) {
+            String outputFile = ConfigReader.getHdfsPath() + datasourcesNames[i] +
+                    ConfigReader.getFileExtension();
+            HdfsUtil.write(chosenAttributes[i], outputFile);
         }
     }
 }

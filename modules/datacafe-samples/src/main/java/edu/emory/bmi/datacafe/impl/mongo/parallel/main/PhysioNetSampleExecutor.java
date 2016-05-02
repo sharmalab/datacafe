@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.impl.mongo.clinical.main;
+package edu.emory.bmi.datacafe.impl.mongo.parallel.main;
 
 import edu.emory.bmi.datacafe.core.CoreExecutorEngine;
 import edu.emory.bmi.datacafe.core.DataSourcesRegistry;
+import edu.emory.bmi.datacafe.impl.mongo.clinical.main.ExecutorRandomID;
 import edu.emory.bmi.datacafe.mongo.MongoHDFSIntegrator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,9 +44,9 @@ public class PhysioNetSampleExecutor {
         documents[0] = new Document("DESCRIPTION", "Social Worker");
         documents[1] = new Document("ICD9_CODE", new Document("$gt", 70));
         documents[2] = new Document("CATEGORY", "CHEMISTRY");
-        documents[3] = new Document("SUBJECT_ID", new Document("$lt", 100));
+        documents[3] = new Document("SUBJECT_ID", new Document("$lt", 500));
         documents[4] = new Document("GENDER", "M");
-        documents[5] = new Document("SUBJECT_ID", new Document("$lt", 100));
+        documents[5] = new Document("SUBJECT_ID", new Document("$lt", 500));
 
         MongoHDFSIntegrator.writeToHDFSInParallel(databases, collections, documents);
     }
