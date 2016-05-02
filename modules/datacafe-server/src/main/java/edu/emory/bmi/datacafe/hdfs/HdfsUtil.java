@@ -74,6 +74,7 @@ public final class HdfsUtil {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
 
         String temp = chosenAttributes.stream().collect(Collectors.joining("\n"));
+        chosenAttributes.clear();
 
         try {
             writer.write(temp);

@@ -41,7 +41,7 @@ public class PhysioNetSampleExecutor {
         // Get the list of IDs from the first data source
         Document[] documents = new Document[collections.length];
 
-        documents[0] = new Document("DESCRIPTION", "Social Worker");
+        documents[0] = new Document();
         documents[1] = new Document("ICD9_CODE", new Document("$gt", 70));
         documents[2] = new Document("CATEGORY", "CHEMISTRY");
         documents[3] = new Document("STOPPED", "NotStopd");

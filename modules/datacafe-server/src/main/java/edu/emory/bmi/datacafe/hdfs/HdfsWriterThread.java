@@ -16,7 +16,6 @@
 package edu.emory.bmi.datacafe.hdfs;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
-import org.apache.hadoop.fs.FileSystem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,8 +30,6 @@ public class HdfsWriterThread extends Thread {
 
     private String datasourcesName;
     private List<String> chosenAttributes;
-    private FileSystem hdfs = HdfsUtil.getFileSystem();
-
 
     public HdfsWriterThread(String datasourceName, List<String> chosenAttributes) throws IOException {
         this.datasourcesName = datasourceName;

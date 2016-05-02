@@ -21,6 +21,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,9 +47,11 @@ public class MongoHDFSIntegratorThread extends Thread {
         List ids = mongoConnector.getIDs(database, collection, document);
         List<String> chosenAttributes =
                 mongoConnector.getAllAttributeValuesExceptAutoGenMongoId(database, collection, ids);
+        ids.clear();
 
         String outputFile = ConfigReader.getHdfsPath() + dataSourcesName +
                 ConfigReader.getFileExtension();
         HdfsUtil.write(chosenAttributes, outputFile);
+        chosenAttributes.clear();
     }
 }
