@@ -44,9 +44,9 @@ public class PhysioNetSampleExecutor {
         documents[0] = new Document("DESCRIPTION", "Social Worker");
         documents[1] = new Document("ICD9_CODE", new Document("$gt", 70));
         documents[2] = new Document("CATEGORY", "CHEMISTRY");
-        documents[3] = new Document("SUBJECT_ID", new Document("$lt", 500));
+        documents[3] = new Document("STOPPED", "NotStopd");
         documents[4] = new Document("GENDER", "M");
-        documents[5] = new Document("SUBJECT_ID", new Document("$lt", 500));
+        documents[5] = new Document();
 
         MongoHDFSIntegrator.writeToHDFSInParallel(databases, collections, documents);
     }
