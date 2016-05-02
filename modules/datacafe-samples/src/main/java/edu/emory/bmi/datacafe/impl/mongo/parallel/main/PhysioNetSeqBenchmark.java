@@ -53,13 +53,23 @@ public class PhysioNetSeqBenchmark {
         documents[4] = new Document("GENDER", "M");
         documents[5] = new Document();
 
+        long startT0 = System.currentTimeMillis();
         List[] idsArray = MongoIntegratedConnector.getListsOfIds(databases, collections, documents);
+        long endT0 = System.currentTimeMillis();
+        logger.info("Retrieved all the ids in, " + (endT0 - startT0)/1000.0 + " s.");
 
+        long startT1 = System.currentTimeMillis();
         List[] chosenAttributes = MongoIntegratedConnector.getAllChosenAttributes(databases, collections,
                 idsArray);
+        long endT1 = System.currentTimeMillis();
+        logger.info("Retrieved all the chosen attributes in, " + (endT1 - startT1)/1000.0 + " s.");
 
+        long startT2 = System.currentTimeMillis();
         // Write to the Data Lake
         HdfsConnector.composeDataLakeSequential(chosenAttributes);
+        long endT2 = System.currentTimeMillis();
+        logger.info("Written to the data lakes in, " + (endT2 - startT2)/1000.0 + " s.");
+
         mongoConnector.closeConnections();
     }
 }
