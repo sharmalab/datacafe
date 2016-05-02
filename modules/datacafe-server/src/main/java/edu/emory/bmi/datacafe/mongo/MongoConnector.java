@@ -331,7 +331,7 @@ public class MongoConnector extends AbstractDataSourceConnector {
             } else {
                 cursorValue = getCursorValues(results);
             }
-            dbCursors.add(cursorValue);
+            dbCursors.add(cursorValue.trim());
         }
         return dbCursors;
     }
