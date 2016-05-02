@@ -28,11 +28,19 @@ import java.util.stream.Collectors;
 public final class DataCafeUtil {
 
     /**
-     * Wraps the text.
+     * Double quotes mess up with the CSV parsing.
+     * @return double quote it double
+     */
+    public static String doubleTheDoubleQuote(String text) {
+        return text.replaceAll("\"", "\"\"");
+    }
+
+    /**
+     * Wraps the tex with double quotes.
      * @param text the text
      * @return the wrapped text.
      */
-    public static String wrap(String text) {
+    public static String doublequote(String text) {
         if (StringUtils.isNumeric(text)) { //checking only for numeric now. todo: all types.
             return text;
         } else {
@@ -48,7 +56,7 @@ public final class DataCafeUtil {
      */
     public static String constructStringFromCollection(Collection collection) {
         return (String) collection.stream()
-                .map(i -> wrap(i.toString()))
+                .map(i -> doublequote(doubleTheDoubleQuote(i.toString())))
                 .collect(Collectors.joining(","));
     }
 
