@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Connects through the DBCursor methods.
  */
-public class DBCursorConnector {
+public class DBCursorConnector extends MongoConnector {
 
     /**
      * Get a chosen sub set of attributes.
