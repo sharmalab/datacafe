@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.hazelcast;
+package edu.emory.bmi.datacafe.client.hazelcast;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,10 +23,6 @@ import org.apache.logging.log4j.Logger;
  */
 public class HzInitiator {
     private static Logger logger = LogManager.getLogger(HzInitiator.class.getName());
-
-    public static void main(String[] args) {
-        initInstance();
-    }
 
     /**
      * Initiates the empty hazelcast instances

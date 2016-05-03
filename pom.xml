@@ -93,6 +93,11 @@
   		</dependency>
   		<dependency>
   			<groupId>${project.groupId}</groupId>
+  			<artifactId>datacafe-core</artifactId>
+  			<version>${project.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>${project.groupId}</groupId>
   			<artifactId>datacafe-server</artifactId>
   			<version>${project.version}</version>
   		</dependency>

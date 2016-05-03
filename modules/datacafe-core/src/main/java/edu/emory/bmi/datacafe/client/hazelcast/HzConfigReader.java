@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.hazelcast;
+package edu.emory.bmi.datacafe.client.hazelcast;
 
 
-import edu.emory.bmi.datacafe.conf.ConfigReader;
+import edu.emory.bmi.datacafe.client.conf.CoreConfigReader;
 
 /**
  * The class that reads the Hazelcast properties from the properties file.
  */
-public class HzConfigReader extends ConfigReader {
+public class HzConfigReader extends CoreConfigReader {
     private static int simultaneousInstances = 1;
     private static int noOfExecutions = 1;
     private static int mapReduceSize;
@@ -34,8 +34,8 @@ public class HzConfigReader extends ConfigReader {
         readConfig("mainCluster");
     }
 
-    public static void readConfig(String iMainCluster) {
-        ConfigReader.readConfig();
+    protected static void readConfig(String iMainCluster) {
+        CoreConfigReader.readConfig();
         String temp = prop.getProperty("mapReduceSize");
         if (temp!= null) {
             // map-reduce executions

@@ -15,19 +15,14 @@
  */
 package edu.emory.bmi.datacafe.conf;
 
-import edu.emory.bmi.datacafe.constants.DatacafeConstants;
+import edu.emory.bmi.datacafe.client.hazelcast.HzConfigReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 /**
  * The class that reads the Data Cafe properties from the properties file.
  */
-public class ConfigReader {
+public class ConfigReader extends HzConfigReader {
 
     private static Logger logger = LogManager.getLogger(ConfigReader.class.getName());
     private static String dataServerHost;
@@ -64,73 +59,49 @@ public class ConfigReader {
     private static String mySQLPassword;
     private static String additionalMySQLConf = "";
 
-    protected static Properties prop;
-
-    private static boolean loadProperties() {
-        prop = new Properties();
-        InputStream input = null;
-        try {
-            input = new FileInputStream(DatacafeConstants.DATACAFE_PROPERTIES_FILE);
-            prop.load(input);
-            return true;
-        } catch (IOException ex) {
-            logger.error("Error in loading the properties file.. ", ex);
-            return false;
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 
     /**
      * Initiating Data Cafe from the configuration file.
      */
     public static void readConfig() {
-        logger.info("Initiating Data Cafe from the configurations file..");
 
-        boolean loaded = loadProperties();
+        HzConfigReader.readConfig();
 
-        if (loaded) {
-            dataServerHost = prop.getProperty("dataServerHost");
-            String temp = prop.getProperty("dataServerPort");
-            if (temp != null) {
-                dataServerPort = Integer.parseInt(temp);
+        dataServerHost = prop.getProperty("dataServerHost");
+        String temp = prop.getProperty("dataServerPort");
+        if (temp != null) {
+            dataServerPort = Integer.parseInt(temp);
+        }
+
+        String remoteStr = prop.getProperty("isRemote");
+        if (remoteStr != null) {
+            isRemoteDSServer = Boolean.parseBoolean(remoteStr);
+        }
+
+        clientOriginDir = prop.getProperty("clientOriginDir");
+
+        if (isRemoteDSServer) {
+            remoteTargetDir = prop.getProperty("remoteTargetDir");
+            clientCSVDir = prop.getProperty("clientCSVDir");
+            if (clientCSVDir == null) {
+                clientCSVDir = clientOriginDir + "conf/";
             }
+        }
 
-            String remoteStr = prop.getProperty("isRemote");
-            if (remoteStr != null) {
-                isRemoteDSServer = Boolean.parseBoolean(remoteStr);
-            }
+        hadoopConf = prop.getProperty("hadoopConf");
+        hdfsPath = prop.getProperty("hdfsPath");
 
-            clientOriginDir = prop.getProperty("clientOriginDir");
+        fileExtension = prop.getProperty("fileExtension");
+        delimiter = prop.getProperty("delimiter");
+        privateKey = prop.getProperty("privateKey");
+        inputBulkDir = prop.getProperty("inputBulkDir");
 
-            if (isRemoteDSServer) {
-                remoteTargetDir = prop.getProperty("remoteTargetDir");
-                clientCSVDir = prop.getProperty("clientCSVDir");
-                if (clientCSVDir == null) {
-                    clientCSVDir = clientOriginDir + "conf/";
-                }
-            }
+        completeMySQLUrl = prop.getProperty("completeMySQLUrl");
+        if (completeMySQLUrl != null) {
+            mySQLUserName = prop.getProperty("mySQLUserName");
+            mySQLPassword = prop.getProperty("mySQLPassword");
+            additionalMySQLConf = prop.getProperty("additionalMySQLConf");
 
-            hadoopConf = prop.getProperty("hadoopConf");
-            hdfsPath = prop.getProperty("hdfsPath");
-
-            fileExtension = prop.getProperty("fileExtension");
-            delimiter = prop.getProperty("delimiter");
-            privateKey = prop.getProperty("privateKey");
-            inputBulkDir = prop.getProperty("inputBulkDir");
-
-            completeMySQLUrl = prop.getProperty("completeMySQLUrl");
-            if (completeMySQLUrl != null) {
-                mySQLUserName = prop.getProperty("mySQLUserName");
-                mySQLPassword = prop.getProperty("mySQLPassword");
-                additionalMySQLConf = prop.getProperty("additionalMySQLConf");
-            }
         }
     }
 

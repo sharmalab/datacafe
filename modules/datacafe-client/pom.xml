@@ -17,14 +17,13 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   
-  <artifactId>datacafe-server</artifactId>
-  <name>datacafe-server</name>
+  <artifactId>datacafe-client</artifactId>
+  <name>datacafe-client</name>
 
-  <dependencies>
-      <dependency>
-          <groupId>edu.emory.bmi</groupId>
-          <artifactId>datacafe-core</artifactId>
-      </dependency>
-  </dependencies>
-
+    <dependencies>
+        <dependency>
+            <groupId>edu.emory.bmi</groupId>
+            <artifactId>datacafe-core</artifactId>
+        </dependency>
+    </dependencies>
 </project>
