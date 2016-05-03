@@ -49,6 +49,20 @@ public class MongoConnector extends AbstractDataSourceConnector {
             ConfigReader.getDataServerHost(), ConfigReader.getDataServerPort()));
 
     /**
+     * Get a collection with a selected set of attributes
+     *
+     * @param database   the data base
+     * @param collection the collection in the data base
+     * @param document   the interested attributes
+     * @return an iterable document.
+     */
+    public FindIterable<Document> getCollection(String database, String collection, Document document) {
+        MongoDatabase db = mongoClient.getDatabase(database);
+
+        return db.getCollection(collection).find(document);
+    }
+
+    /**
      * Iterates a collection in a given database.
      *
      * @param database   the database
@@ -71,20 +85,6 @@ public class MongoConnector extends AbstractDataSourceConnector {
     public DBCollection getCollection(String database, String collection) {
         DB db = mongoClient.getDB(database);
         return db.getCollection(collection);
-    }
-
-    /**
-     * Prints an iterable collection
-     *
-     * @param iterable the collection iterable
-     */
-    public void printMongoCollection(FindIterable<Document> iterable) {
-        iterable.forEach(new Block<Document>() {
-            @Override
-            public void apply(final Document document) {
-                logger.info(document);
-            }
-        });
     }
 
 
@@ -119,6 +119,33 @@ public class MongoConnector extends AbstractDataSourceConnector {
         }
         return idList;
     }
+
+    /**
+     * Gets the list of IDs
+     *
+     * @param database   the data base
+     * @param collection the collection in the data base
+     */
+    public List<Object> getAllIDs(String database, String collection) {
+        return getAllIDs(iterateCollection(database, collection));
+    }
+
+    @Override
+    public List getAllIDs(String database, String collection, String idAttribute) {
+        return getAllIDs(iterateCollection(database, collection), idAttribute);
+    }
+
+    /**
+     * Gets the list of IDs
+     *
+     * @param database   the data base
+     * @param collection the collection in the data base
+     * @param document   the Ids
+     */
+    public List<Object> getIDs(String database, String collection, Document document) {
+        return getAllIDs(getCollection(database, collection, document));
+    }
+
 
     /**
      * Gets all the attributes without removing or choosing a sub set of attributes. Default MongoID, _id is assumed.
@@ -159,6 +186,20 @@ public class MongoConnector extends AbstractDataSourceConnector {
     }
 
     /**
+     * Get a chosen sub set of attributes.
+     *
+     * @param database            the data base
+     * @param collection          the collection in the data base
+     * @param ids                 the list of ids.
+     * @param preferredAttributes the attributes to be added.
+     * @return the list of DBCursor.
+     */
+    public List<DBCursor> getAttributes(String database, String collection, List ids,
+                                        String[] preferredAttributes) {
+        return getAttributes(database, collection, ids, MongoConstants.ID_ATTRIBUTE, preferredAttributes);
+    }
+
+    /**
      * Get all the values except the default MongoID attribute.
      *
      * @param database   the data base
@@ -166,7 +207,8 @@ public class MongoConnector extends AbstractDataSourceConnector {
      * @param ids        the list of ids.
      * @return the list of DBCursor.
      */
-    public List<String> getAttributeValuesExceptAutoGenMongoId(String database, String collection, List ids, String[] preferredAttributes) {
+    public List<String> getAttributeValuesExceptAutoGenMongoId(String database, String collection, List ids,
+                                                               String[] preferredAttributes) {
         return getAttributeValues(database, collection, ids, MongoConstants.ID_ATTRIBUTE, preferredAttributes,
                 new String[]{MongoConstants.ID_ATTRIBUTE}, true);
     }
@@ -213,60 +255,6 @@ public class MongoConnector extends AbstractDataSourceConnector {
                                            String[] preferredAttributes, String[] removedAttributes) {
         return getAttributeValues(database, collection, ids, MongoConstants.ID_ATTRIBUTE, preferredAttributes,
                 removedAttributes);
-    }
-
-    /**
-     * Get a chosen sub set of attributes.
-     *
-     * @param database            the data base
-     * @param collection          the collection in the data base
-     * @param ids                 the list of ids.
-     * @param preferredAttributes the attributes to be added.
-     * @return the list of DBCursor.
-     */
-    public List<DBCursor> getAttributes(String database, String collection, List ids,
-                                        String[] preferredAttributes) {
-        return getAttributes(database, collection, ids, MongoConstants.ID_ATTRIBUTE, preferredAttributes);
-    }
-
-    /**
-     * Get a collection with a selected set of attributes
-     *
-     * @param database   the data base
-     * @param collection the collection in the data base
-     * @param document   the interested attributes
-     * @return an iterable document.
-     */
-    public FindIterable<Document> getCollection(String database, String collection, Document document) {
-        MongoDatabase db = mongoClient.getDatabase(database);
-
-        return db.getCollection(collection).find(document);
-    }
-
-    /**
-     * Gets the list of IDs
-     *
-     * @param database   the data base
-     * @param collection the collection in the data base
-     */
-    public List<Object> getAllIDs(String database, String collection) {
-        return getAllIDs(iterateCollection(database, collection));
-    }
-
-    @Override
-    public List getAllIDs(String database, String collection, String idAttribute) {
-        return getAllIDs(iterateCollection(database, collection), idAttribute);
-    }
-
-    /**
-     * Gets the list of IDs
-     *
-     * @param database   the data base
-     * @param collection the collection in the data base
-     * @param document   the Ids
-     */
-    public List<Object> getIDs(String database, String collection, Document document) {
-        return getAllIDs(getCollection(database, collection, document));
     }
 
 
@@ -335,7 +323,7 @@ public class MongoConnector extends AbstractDataSourceConnector {
         List<String> dbCursors = new ArrayList<>();
         for (Object id : ids) {
             DBCursor results = collection1.find(new BasicDBObject(idAttribute, id),
-                    getDBObjFromAttributes(preferredAttributes, removedAttributes));
+                    MongoUtil.getDBObjFromAttributes(preferredAttributes, removedAttributes));
 
             String cursorValue;
             if (addHeader) {
@@ -367,9 +355,9 @@ public class MongoConnector extends AbstractDataSourceConnector {
         List<DBCursor> dbCursors = new ArrayList<>();
         for (Object id : ids) {
             DBCursor results = collection1.find(new BasicDBObject(idAttribute, id),
-                    getDBObjFromAttributes(preferredAttributes, removedAttributes));
+                    MongoUtil.getDBObjFromAttributes(preferredAttributes, removedAttributes));
             dbCursors.add(results);
-            printCursor(results);
+            MongoUtil.printCursor(results);
         }
         return dbCursors;
     }
@@ -424,48 +412,6 @@ public class MongoConnector extends AbstractDataSourceConnector {
 
 
     /**
-     * Gets a BasicDBObject with a few attributes preferred.
-     *
-     * @param preferredAttributes the attributes to be added.
-     * @return the BasicDBObject
-     */
-    public BasicDBObject getDBObjFromAttributes(String[] preferredAttributes) {
-        return getDBObjFromAttributes(preferredAttributes, null);
-    }
-
-    /**
-     * Gets a BasicDBObject with a few attributes removed.
-     *
-     * @param removedAttributes the attributes to be removed.
-     * @return the BasicDBObject.
-     */
-    public BasicDBObject getDBObjWithRemovedAttributes(String[] removedAttributes) {
-        return getDBObjFromAttributes(null, removedAttributes);
-    }
-
-    /**
-     * Gets a BasicDBObject with a few attributes added or removed.
-     *
-     * @param preferredAttributes the attributes to be added.
-     * @param removedAttributes   the attributes to be removed.
-     * @return the BasicDBObject.
-     */
-    public BasicDBObject getDBObjFromAttributes(String[] preferredAttributes, String[] removedAttributes) {
-        BasicDBObject basicDBObject = new BasicDBObject();
-        if (preferredAttributes != null) {
-            for (String preferredAttribute : preferredAttributes) {
-                basicDBObject.append(preferredAttribute, 1);
-            }
-        }
-        if (removedAttributes != null) {
-            for (String removedAttribute : removedAttributes) {
-                basicDBObject.append(removedAttribute, 0);
-            }
-        }
-        return basicDBObject;
-    }
-
-    /**
      * Prints the cursor
      *
      * @param results   the DBCursor
@@ -505,17 +451,6 @@ public class MongoConnector extends AbstractDataSourceConnector {
      */
     public String getCursorValues(DBCursor results) {
         return getCursorValues(results, false);
-    }
-
-    /**
-     * Prints the cursor
-     *
-     * @param results the DBCursor
-     */
-    public void printCursor(DBCursor results) {
-        while (results.hasNext()) {
-            logger.info(results.next());
-        }
     }
 
     @Override
