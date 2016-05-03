@@ -21,6 +21,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
+import edu.emory.bmi.datacafe.client.conf.ClientConfigReader;
+import edu.emory.bmi.datacafe.client.core.ClientExecutorEngine;
 import org.apache.drill.jdbc.Driver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,20 +34,17 @@ import org.apache.logging.log4j.Logger;
 public class DrillQueryExecutor {
     private static Logger logger = LogManager.getLogger(DrillQueryExecutor.class.getName());
 
-
-    /* Drill JDBC Uri for local/cluster zookeeper */
-    public static final String DRILL_JDBC_LOCAL_URI = "jdbc:drill:zk=local";
-
     /* Sample query used by Drill */
     public static final String DRILL_SAMPLE_QUERY = "SELECT * FROM cp.`employee.json` LIMIT 20";
 
 
     public static void main(String[] args) {
+        ClientExecutorEngine.init();
 
         Connection con = null;
 
         try {
-            con = new Driver().connect(DRILL_JDBC_LOCAL_URI, new Properties());
+            con = new Driver().connect(ClientConfigReader.getDrillJdbc(), new Properties());
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(DRILL_SAMPLE_QUERY);
 

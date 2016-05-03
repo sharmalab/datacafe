@@ -15,8 +15,8 @@
  */
 package edu.emory.bmi.datacafe.impl.mysql.clinical.main;
 
-import edu.emory.bmi.datacafe.client.CoreExecutorEngine;
-import edu.emory.bmi.datacafe.client.DataSourcesRegistry;
+import edu.emory.bmi.datacafe.core.CoreExecutorEngine;
+import edu.emory.bmi.datacafe.core.DataSourcesRegistry;
 import edu.emory.bmi.datacafe.hdfs.HdfsConnector;
 import edu.emory.bmi.datacafe.mysql.MySQLConnector;
 import org.apache.logging.log4j.LogManager;

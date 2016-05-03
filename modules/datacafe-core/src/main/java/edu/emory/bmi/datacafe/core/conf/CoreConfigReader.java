@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.client.conf;
+package edu.emory.bmi.datacafe.core.conf;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -57,7 +57,7 @@ public class CoreConfigReader {
     protected static void readConfig() {
         boolean loaded = loadProperties();
         if (loaded) {
-            logger.info("Initiating Data Cafe from the configurations file..");
+            logger.info("Initiating Data Cafe Core from the configurations file..");
         }
     }
 }

@@ -15,8 +15,8 @@
  */
 package edu.emory.bmi.datacafe.impl.mongo.parallel.main;
 
-import edu.emory.bmi.datacafe.client.CoreExecutorEngine;
-import edu.emory.bmi.datacafe.client.DataSourcesRegistry;
+import edu.emory.bmi.datacafe.core.CoreExecutorEngine;
+import edu.emory.bmi.datacafe.core.DataSourcesRegistry;
 import edu.emory.bmi.datacafe.impl.mongo.clinical.main.ExecutorRandomID;
 import edu.emory.bmi.datacafe.mongo.MongoHDFSIntegrator;
 import org.apache.logging.log4j.LogManager;

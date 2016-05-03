@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.client.hazelcast;
+package edu.emory.bmi.datacafe.core.hazelcast;
 
 
-import edu.emory.bmi.datacafe.client.conf.CoreConfigReader;
+import edu.emory.bmi.datacafe.core.conf.CoreConfigReader;
 
 /**
  * The class that reads the Hazelcast properties from the properties file.

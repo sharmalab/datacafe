@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.client;
+package edu.emory.bmi.datacafe.core;
 
 import org.apache.commons.lang.StringUtils;
 

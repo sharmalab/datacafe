@@ -15,7 +15,7 @@
  */
 package edu.emory.bmi.datacafe.mongo;
 
-import edu.emory.bmi.datacafe.client.DataSourcesRegistry;
+import edu.emory.bmi.datacafe.core.DataSourcesRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;

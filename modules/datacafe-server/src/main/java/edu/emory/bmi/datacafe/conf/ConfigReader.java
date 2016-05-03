@@ -15,7 +15,7 @@
  */
 package edu.emory.bmi.datacafe.conf;
 
-import edu.emory.bmi.datacafe.client.hazelcast.HzConfigReader;
+import edu.emory.bmi.datacafe.core.hazelcast.HzConfigReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

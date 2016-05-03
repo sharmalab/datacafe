@@ -15,16 +15,33 @@
  */
 package edu.emory.bmi.datacafe.client.conf;
 
+import edu.emory.bmi.datacafe.core.hazelcast.HzConfigReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
- * The common constants of Data Cafe
+ * The class that reads the Data Cafe properties from the properties file.
  */
-public final class DatacafeConstants {
+public class ClientConfigReader extends HzConfigReader {
+
+    private static Logger logger = LogManager.getLogger(ClientConfigReader.class.getName());
 
     /**
-     * Suppress instantiation.
+     * Drill properties
      */
-    private DatacafeConstants() {
+    private static String drillJdbc;
+
+    /**
+     * Initiating Data Cafe from the configuration file.
+     */
+    public static void readConfig() {
+
+        HzConfigReader.readConfig();
+
+        drillJdbc = prop.getProperty("drillJdbc");
     }
 
-    public static final String DATACAFE_PROPERTIES_FILE = "conf/datacafe.properties";
+    public static String getDrillJdbc() {
+        return drillJdbc;
+    }
 }

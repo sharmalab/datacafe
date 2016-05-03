@@ -16,8 +16,8 @@
 package edu.emory.bmi.datacafe.client.samples;
 
 import com.hazelcast.core.HazelcastInstance;
-import edu.emory.bmi.datacafe.client.hazelcast.HazelSim;
-import edu.emory.bmi.datacafe.client.hazelcast.HzInitiator;
+import edu.emory.bmi.datacafe.core.hazelcast.HazelSim;
+import edu.emory.bmi.datacafe.core.hazelcast.HzInitiator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

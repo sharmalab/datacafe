@@ -13,22 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.impl.hazelcast.main;
-
-import com.hazelcast.core.HazelcastInstance;
-import edu.emory.bmi.datacafe.core.hazelcast.HazelSim;
-import edu.emory.bmi.datacafe.core.hazelcast.HzInitiator;
-
-import java.util.concurrent.ConcurrentMap;
+package edu.emory.bmi.datacafe.core.conf;
 
 /**
- * A sample Hazelcast Server
+ * The common constants of Data Cafe
  */
-public class HzServer {
-    public static void main(String[] args) {
-        HzInitiator.initInstance();
-        HazelcastInstance firstInstance = HazelSim.getHazelSim().getFirstInstance();
-        ConcurrentMap<String, String> map = firstInstance.getMap("my-distributed-map");
-        map.put("key", "sample-value");
+public final class DatacafeConstants {
+
+    /**
+     * Suppress instantiation.
+     */
+    private DatacafeConstants() {
     }
+
+    public static final String DATACAFE_PROPERTIES_FILE = "conf/datacafe.properties";
 }

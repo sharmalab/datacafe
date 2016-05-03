@@ -16,7 +16,7 @@
 package edu.emory.bmi.datacafe.hdfs;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
-import edu.emory.bmi.datacafe.client.DataSourcesRegistry;
+import edu.emory.bmi.datacafe.core.DataSourcesRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

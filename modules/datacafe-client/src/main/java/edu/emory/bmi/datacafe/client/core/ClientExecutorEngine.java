@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.client;
+package edu.emory.bmi.datacafe.client.core;
 
-import edu.emory.bmi.datacafe.conf.ConfigReader;
+
+import edu.emory.bmi.datacafe.client.conf.ClientConfigReader;
 
 /**
  * The core Data Cafe executor engine singleton
  */
-public final class CoreExecutorEngine {
-    private static CoreExecutorEngine coreExecutorEngine;
+public final class ClientExecutorEngine {
+    private static ClientExecutorEngine clientExecutorEngine;
     private static long startTime;
 
     /**
@@ -29,17 +30,16 @@ public final class CoreExecutorEngine {
      */
     public static void init() {
         startTime =  System.currentTimeMillis();
-        if (coreExecutorEngine == null) {
-            coreExecutorEngine = new CoreExecutorEngine();
+        if (clientExecutorEngine == null) {
+            clientExecutorEngine = new ClientExecutorEngine();
         }
     }
 
     /**
      * Executes the initialization workflow of Data Cafe once, and only once.
      */
-    private CoreExecutorEngine() {
-        ConfigReader.readConfig();
-        DataSourcesRegistry.init();
+    private ClientExecutorEngine() {
+        ClientConfigReader.readConfig();
     }
 
     public static long getStartTime() {
