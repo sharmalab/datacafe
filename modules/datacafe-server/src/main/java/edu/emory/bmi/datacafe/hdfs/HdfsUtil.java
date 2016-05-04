@@ -91,6 +91,6 @@ public final class HdfsUtil {
         long endTime = System.currentTimeMillis();
 
         long timeConsumed = endTime - ServerExecutorEngine.getStartTime();
-        logger.info("Successfully written to the data lake: " + outputFile + " in " + timeConsumed/1000.0 + " s.");
+        logger.info(String.format("Successfully written to the data lake: %s in %f seconds.", outputFile, timeConsumed/1000.0));
     }
 }

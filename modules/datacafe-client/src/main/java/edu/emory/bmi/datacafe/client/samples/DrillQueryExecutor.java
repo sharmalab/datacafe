@@ -27,8 +27,8 @@ import org.apache.logging.log4j.Logger;
 public class DrillQueryExecutor {
     private static Logger logger = LogManager.getLogger(DrillQueryExecutor.class.getName());
 
-    public static final String DRILL_SAMPLE_QUERY = "SELECT SUBJECT_ID, DOB " +
-            "FROM hdfs.root.`physionet_patients.csv`";
+    public static final String DRILL_SAMPLE_QUERY = "SELECT t1.SUBJECT_ID, t1.DOB " +
+            "FROM hdfs.root.`physionet_patients.csv` t1";
 
     public static void main(String[] args) {
         ClientExecutorEngine.init();

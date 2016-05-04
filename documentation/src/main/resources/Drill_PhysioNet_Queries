@@ -1,3 +1,8 @@
+SELECT t1.SUBJECT_ID, t1.DOB
+FROM hdfs.root.`physionet_patients.csv` t1
+
+----------------
+
 SELECT t1.SUBJECT_ID, t1.DOB, t2.HADM_ID
 FROM hdfs.root.`physionet_patients.csv` t1
 JOIN hdfs.root.`physionet_diagnosesicd.csv` t2
