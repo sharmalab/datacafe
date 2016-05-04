@@ -114,18 +114,13 @@ public class DrillConnector extends AbstractDataSourceConnector {
      * @param query the query to be executed
      */
     public static void executeQuery(String query, int noOfAttributes) {
-        ResultSet rs = null;
+        ResultSet rs;
         try {
             rs = executeQuery(query);
-
-
         while (rs.next()) {
-//                while(rs.getString(i) != null) {
             for (int i = 1; i <= noOfAttributes; i++) {
                 logger.info(rs.getString(i));
             }
-//                }
-//                i = 1;
         }
         } catch (SQLException e) {
             logger.error("SQL Exception in executing the query.", e);

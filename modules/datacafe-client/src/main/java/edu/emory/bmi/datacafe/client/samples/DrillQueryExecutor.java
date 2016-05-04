@@ -27,9 +27,6 @@ import org.apache.logging.log4j.Logger;
 public class DrillQueryExecutor {
     private static Logger logger = LogManager.getLogger(DrillQueryExecutor.class.getName());
 
-    /* Sample query used by Drill */
-//    public static final String DRILL_SAMPLE_QUERY = "SELECT * FROM cp.`employee.json` LIMIT 20";
-
     public static final String DRILL_SAMPLE_QUERY = "SELECT SUBJECT_ID, DOB " +
             "FROM hdfs.root.`physionet_patients.csv`";
 
