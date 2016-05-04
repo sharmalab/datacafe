@@ -17,11 +17,16 @@ package edu.emory.bmi.datacafe.client.core;
 
 
 import edu.emory.bmi.datacafe.client.conf.ClientConfigReader;
+import edu.emory.bmi.datacafe.client.drill.DrillConnector;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The core Data Cafe executor engine singleton
  */
 public final class ClientExecutorEngine {
+    private static Logger logger = LogManager.getLogger(ClientExecutorEngine.class.getName());
+
     private static ClientExecutorEngine clientExecutorEngine;
     private static long startTime;
 
@@ -29,7 +34,7 @@ public final class ClientExecutorEngine {
      * Initialize the singleton object
      */
     public static void init() {
-        startTime =  System.currentTimeMillis();
+        startTime = System.currentTimeMillis();
         if (clientExecutorEngine == null) {
             clientExecutorEngine = new ClientExecutorEngine();
         }
@@ -40,8 +45,14 @@ public final class ClientExecutorEngine {
      */
     private ClientExecutorEngine() {
         ClientConfigReader.readConfig();
+        DrillConnector.initConnection();
     }
 
+    /**
+     * Get the execution start time.
+     *
+     * @return the execution start time.
+     */
     public static long getStartTime() {
         return startTime;
     }

@@ -22,7 +22,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.client.FindIterable;
 import edu.emory.bmi.datacafe.constants.MongoConstants;
-import edu.emory.bmi.datacafe.core.AbstractDataSourceConnector;
+import edu.emory.bmi.datacafe.core.kernel.AbstractDataSourceConnector;
 import edu.emory.bmi.datacafe.core.DataCafeUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

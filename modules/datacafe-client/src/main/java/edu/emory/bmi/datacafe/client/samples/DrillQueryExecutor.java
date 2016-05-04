@@ -15,15 +15,8 @@
 */
 package edu.emory.bmi.datacafe.client.samples;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Properties;
-
-import edu.emory.bmi.datacafe.client.conf.ClientConfigReader;
 import edu.emory.bmi.datacafe.client.core.ClientExecutorEngine;
-import org.apache.drill.jdbc.Driver;
+import edu.emory.bmi.datacafe.client.drill.DrillConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,34 +28,13 @@ public class DrillQueryExecutor {
     private static Logger logger = LogManager.getLogger(DrillQueryExecutor.class.getName());
 
     /* Sample query used by Drill */
-    public static final String DRILL_SAMPLE_QUERY = "SELECT * FROM cp.`employee.json` LIMIT 20";
+//    public static final String DRILL_SAMPLE_QUERY = "SELECT * FROM cp.`employee.json` LIMIT 20";
 
+    public static final String DRILL_SAMPLE_QUERY = "SELECT SUBJECT_ID, DOB " +
+            "FROM hdfs.root.`physionet_patients.csv`";
 
     public static void main(String[] args) {
         ClientExecutorEngine.init();
-
-        Connection con = null;
-
-        try {
-            con = new Driver().connect(ClientConfigReader.getDrillJdbc(), new Properties());
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(DRILL_SAMPLE_QUERY);
-
-            while (rs.next()) {
-                logger.info(rs.getString(1));
-                logger.info(rs.getString(2));
-                logger.info(rs.getString(3));
-            }
-        } catch (Exception ex) {
-            logger.error("Exception in connecting to Drill", ex);
-        } finally {
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    logger.error("SQL Exception in Drill Query Executor", e);
-                }
-            }
-        }
+        DrillConnector.executeQuery(DRILL_SAMPLE_QUERY, 2);
     }
 }

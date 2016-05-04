@@ -16,7 +16,7 @@
 package edu.emory.bmi.datacafe.impl.mongo.clinical.main;
 
 import edu.emory.bmi.datacafe.constants.MongoConstants;
-import edu.emory.bmi.datacafe.core.CoreExecutorEngine;
+import edu.emory.bmi.datacafe.core.ServerExecutorEngine;
 import edu.emory.bmi.datacafe.core.DataSourcesRegistry;
 import edu.emory.bmi.datacafe.hdfs.HdfsConnector;
 import edu.emory.bmi.datacafe.mongo.MongoConnector;
@@ -33,7 +33,7 @@ public class ExecutorRandomID {
     private static Logger logger = LogManager.getLogger(ExecutorRandomID.class.getName());
 
     public static void main(String[] args) {
-        CoreExecutorEngine.init();
+        ServerExecutorEngine.init();
 
         String database1 = "patients";
         String collection1 = "patientsData";
