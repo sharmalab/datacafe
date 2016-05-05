@@ -27,12 +27,27 @@ public class DataLakeRetriever {
     private static Logger logger = LogManager.getLogger(DataLakeRetriever.class.getName());
 
     public static final String QUERY_RETRIEVE_DATABASES = "SHOW DATABASES";
+    public static final String SHOW_TABLES = "SHOW TABLES";
+
+    public static String retrieveDataLake() {
+        return CoreUtil.constructPageFromList(DrillConnector.getQueryExecutionResponse(QUERY_RETRIEVE_DATABASES, 1));
+    }
+
+    public static String getTables(String databaseName) {
+        String out = String.format("USE %s", databaseName);
+//        String out = String.format("USE %s; %s", databaseName, SHOW_TABLES);
+        DrillConnector.getQueryExecutionResponse(out, 1);
+
+        out = String.format("SHOW TABLES");
+        return CoreUtil.constructPageFromList(DrillConnector.getQueryExecutionResponse(out, 1));
+
+    }
 
     public static void main(String[] args) {
         ClientExecutorEngine.init();
 
-        String out =
-                CoreUtil.constructPageFromList(DrillConnector.getQueryExecutionResponse(QUERY_RETRIEVE_DATABASES, 1));
+        String out = getTables("mysql.clinical");
+
         logger.info(out);
     }
 }
