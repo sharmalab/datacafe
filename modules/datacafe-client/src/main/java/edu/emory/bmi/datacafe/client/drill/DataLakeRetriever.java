@@ -27,26 +27,34 @@ public class DataLakeRetriever {
     private static Logger logger = LogManager.getLogger(DataLakeRetriever.class.getName());
 
     public static final String QUERY_RETRIEVE_DATABASES = "SHOW DATABASES";
-    public static final String SHOW_TABLES = "SHOW TABLES";
+    public static final String SHOW_COLLECTIONS = "SHOW FILES";
 
+    /**
+     * Retrieve the data lake
+     * @return the data lake.
+     */
     public static String retrieveDataLake() {
         return CoreUtil.constructPageFromList(DrillConnector.getQueryExecutionResponse(QUERY_RETRIEVE_DATABASES, 1));
     }
 
-    public static String getTables(String databaseName) {
-        String out = String.format("USE %s", databaseName);
-//        String out = String.format("USE %s; %s", databaseName, SHOW_TABLES);
+    /**
+     * Get the collections from the workspace
+     * @param workspace The workspace
+     * @return the collections - each collection in a single line.
+     */
+    public static String getCollections(String workspace) {
+        String out = String.format("USE %s", workspace);
         DrillConnector.getQueryExecutionResponse(out, 1);
-
-        out = String.format("SHOW TABLES");
-        return CoreUtil.constructPageFromList(DrillConnector.getQueryExecutionResponse(out, 1));
-
+        return CoreUtil.constructPageFromList(DrillConnector.getQueryExecutionResponse(SHOW_COLLECTIONS, 1));
     }
 
     public static void main(String[] args) {
         ClientExecutorEngine.init();
+        String temp = retrieveDataLake();
+        logger.info(temp);
 
-        String out = getTables("mysql.clinical");
+        logger.info("****************");
+        String out = getCollections("hdfs.root");
 
         logger.info(out);
     }

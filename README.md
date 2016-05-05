@@ -47,7 +47,7 @@ Optional.
 
 ## Building Data Cafe
 
-Data Cafe can be built using Apache Maven 3.x.
+Data Cafe can be built using Apache Maven 3.x and Java 1.8.x or higher.
 
  $ mvn clean install
 
