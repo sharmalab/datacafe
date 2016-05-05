@@ -170,6 +170,11 @@
             Change it to match the version of your Hive server installation..-->
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
     </dependencies>
   </dependencyManagement>
 </project>

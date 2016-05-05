@@ -15,6 +15,8 @@
  */
 package edu.emory.bmi.datacafe.core.conf;
 
+import java.io.File;
+
 /**
  * The common constants of Data Cafe
  */
@@ -26,7 +28,12 @@ public final class DatacafeConstants {
     private DatacafeConstants() {
     }
 
+    public static final String DATACAFE_PROPERTIES_FILE_ALT = new File(".").getAbsolutePath() +
+            "/../../conf/datacafe.properties";
+
     public static final String DATACAFE_PROPERTIES_FILE = "conf/datacafe.properties";
 
     public static final String SQL_WRAP_CHARACTER = "`";
+
+    public static final String PERIOD = ".";
 }

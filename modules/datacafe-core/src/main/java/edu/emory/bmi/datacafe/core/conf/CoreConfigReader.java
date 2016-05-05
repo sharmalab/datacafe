@@ -18,9 +18,12 @@ package edu.emory.bmi.datacafe.core.conf;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.Properties;
 
 /**
@@ -38,10 +41,19 @@ public class CoreConfigReader {
         InputStream input = null;
         try {
             input = new FileInputStream(DatacafeConstants.DATACAFE_PROPERTIES_FILE);
+        } catch (FileNotFoundException ex) {
+            try {
+                input = new FileInputStream(DatacafeConstants.DATACAFE_PROPERTIES_FILE_ALT);
+            } catch (Exception e) {
+                logger.error("Error in loading the properties file.. ", ex);
+                return false;
+            }
+        }
+        try {
             prop.load(input);
             return true;
-        } catch (IOException ex) {
-            logger.error("Error in loading the properties file.. ", ex);
+        } catch (IOException e) {
+            logger.error("IOException in opening the file", e);
             return false;
         } finally {
             if (input != null) {
