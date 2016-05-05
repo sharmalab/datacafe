@@ -53,6 +53,8 @@ Built and tested with Apahe Maven 3.1.1 and Oracle Java 1.8.0.
 
 You may execute Data Cafe by writing a client to it.
 
+Make sure to include log4j2-test.xml into your class path to be able to configure and view the logs. Default log level is [WARN].
+
 Samples are provided in the datacafe-samples module.
 
 For example, to execute the clinical-1 sample,

@@ -16,7 +16,7 @@
 package edu.emory.bmi.datacafe.impl.mongo.parallel.main;
 
 import edu.emory.bmi.datacafe.core.ServerExecutorEngine;
-import edu.emory.bmi.datacafe.core.DataSourcesRegistry;
+import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;
 import edu.emory.bmi.datacafe.hdfs.HdfsConnector;
 import edu.emory.bmi.datacafe.impl.mongo.clinical.main.ExecutorRandomID;import edu.emory.bmi.datacafe.mongo.MongoConnector;
 import edu.emory.bmi.datacafe.mongo.MongoIntegratedConnector;

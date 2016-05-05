@@ -29,6 +29,9 @@ import java.util.Properties;
 public class CoreConfigReader {
     protected static Properties prop;
     private static Logger logger = LogManager.getLogger(CoreConfigReader.class.getName());
+    private static String fileExtension;
+    private static String delimiter;
+
 
     private static boolean loadProperties() {
         prop = new Properties();
@@ -58,6 +61,16 @@ public class CoreConfigReader {
         boolean loaded = loadProperties();
         if (loaded) {
             logger.info("Initiating Data Cafe Core from the configurations file..");
+            fileExtension = prop.getProperty("fileExtension");
+            delimiter = prop.getProperty("delimiter");
         }
+    }
+
+    public static String getFileExtension() {
+        return fileExtension;
+    }
+
+    public static String getDelimiter() {
+        return delimiter;
     }
 }

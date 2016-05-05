@@ -38,8 +38,6 @@ public class ConfigReader extends HzConfigReader {
 
     private static String remoteTargetDir;
 
-    private static String fileExtension;
-    private static String delimiter;
     private static String privateKey;
 
 
@@ -91,8 +89,6 @@ public class ConfigReader extends HzConfigReader {
         hadoopConf = prop.getProperty("hadoopConf");
         hdfsPath = prop.getProperty("hdfsPath");
 
-        fileExtension = prop.getProperty("fileExtension");
-        delimiter = prop.getProperty("delimiter");
         privateKey = prop.getProperty("privateKey");
         inputBulkDir = prop.getProperty("inputBulkDir");
 
@@ -123,14 +119,6 @@ public class ConfigReader extends HzConfigReader {
 
     public static String getHdfsPath() {
         return hdfsPath;
-    }
-
-    public static String getFileExtension() {
-        return fileExtension;
-    }
-
-    public static String getDelimiter() {
-        return delimiter;
     }
 
     public static String getPrivateKey() {

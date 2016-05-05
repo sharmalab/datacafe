@@ -16,6 +16,7 @@
 package edu.emory.bmi.datacafe.core;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
+import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;
 
 /**
  * The core Data Cafe executor engine singleton

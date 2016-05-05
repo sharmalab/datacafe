@@ -27,4 +27,6 @@ public final class DatacafeConstants {
     }
 
     public static final String DATACAFE_PROPERTIES_FILE = "conf/datacafe.properties";
+
+    public static final String SQL_WRAP_CHARACTER = "`";
 }

@@ -16,7 +16,7 @@
 package edu.emory.bmi.datacafe.hdfs;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
-import edu.emory.bmi.datacafe.core.DataSourcesRegistry;
+import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -69,8 +69,8 @@ public class HdfsConnector {
         String[] datasourcesNames = DataSourcesRegistry.getFullNamesAsArray();
 
         for (int i = 0; i < datasourcesNames.length; i++) {
-            String outputFile = ConfigReader.getHdfsPath() + datasourcesNames[i] +
-                    ConfigReader.getFileExtension();
+            String outputFile = ConfigReader.getHdfsPath() +
+                    DataSourcesRegistry.getFullDSNameWithExtension(datasourcesNames[i]);
             HdfsUtil.write(chosenAttributes[i], outputFile);
         }
     }
