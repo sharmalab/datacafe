@@ -15,11 +15,10 @@
  */
 package edu.emory.bmi.datacafe.impl.mongo.parallel.main;
 
-import edu.emory.bmi.datacafe.core.CoreExecutorEngine;
-import edu.emory.bmi.datacafe.core.DataSourcesRegistry;
+import edu.emory.bmi.datacafe.core.ServerExecutorEngine;
+import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;
 import edu.emory.bmi.datacafe.hdfs.HdfsConnector;
 import edu.emory.bmi.datacafe.impl.mongo.clinical.main.ExecutorRandomID;import edu.emory.bmi.datacafe.mongo.MongoConnector;
-import edu.emory.bmi.datacafe.mongo.MongoHDFSIntegrator;
 import edu.emory.bmi.datacafe.mongo.MongoIntegratedConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,7 +33,7 @@ public class PhysioNetSeqBenchmark {
     private static Logger logger = LogManager.getLogger(ExecutorRandomID.class.getName());
 
     public static void main(String[] args) {
-        CoreExecutorEngine.init();
+        ServerExecutorEngine.init();
 
         String[] databases = {"physionet", "physionet", "physionet", "physionet", "physionet", "physionet"};
         String[] collections = {"caregivers", "dicddiagnosis", "dlabitems", "datetimeevents", "patients",
@@ -56,19 +55,19 @@ public class PhysioNetSeqBenchmark {
         long startT0 = System.currentTimeMillis();
         List[] idsArray = MongoIntegratedConnector.getListsOfIds(databases, collections, documents);
         long endT0 = System.currentTimeMillis();
-        logger.info("Retrieved all the ids in, " + (endT0 - startT0)/1000.0 + " s.");
+        logger.info(String.format("Retrieved all the ids in, %f seconds.", (endT0 - startT0)/1000.0 ));
 
         long startT1 = System.currentTimeMillis();
         List[] chosenAttributes = MongoIntegratedConnector.getAllChosenAttributes(databases, collections,
                 idsArray);
         long endT1 = System.currentTimeMillis();
-        logger.info("Retrieved all the chosen attributes in, " + (endT1 - startT1)/1000.0 + " s.");
+        logger.info(String.format("Retrieved all the chosen attributes in, %f seconds.", (endT1 - startT1)/1000.0));
 
         long startT2 = System.currentTimeMillis();
         // Write to the Data Lake
         HdfsConnector.composeDataLakeSequential(chosenAttributes);
         long endT2 = System.currentTimeMillis();
-        logger.info("Written to the data lakes in, " + (endT2 - startT2)/1000.0 + " s.");
+        logger.info(String.format("Written to the data lakes in, %f seconds.", (endT2 - startT2)/1000.0));
 
         mongoConnector.closeConnections();
     }

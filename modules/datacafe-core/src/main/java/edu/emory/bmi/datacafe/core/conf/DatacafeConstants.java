@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.constants;
+package edu.emory.bmi.datacafe.core.conf;
 
 /**
  * The common constants of Data Cafe
@@ -27,4 +27,6 @@ public final class DatacafeConstants {
     }
 
     public static final String DATACAFE_PROPERTIES_FILE = "conf/datacafe.properties";
+
+    public static final String SQL_WRAP_CHARACTER = "`";
 }

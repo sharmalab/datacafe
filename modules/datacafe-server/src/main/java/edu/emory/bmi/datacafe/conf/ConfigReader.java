@@ -15,19 +15,14 @@
  */
 package edu.emory.bmi.datacafe.conf;
 
-import edu.emory.bmi.datacafe.constants.DatacafeConstants;
+import edu.emory.bmi.datacafe.core.hazelcast.HzConfigReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 /**
  * The class that reads the Data Cafe properties from the properties file.
  */
-public class ConfigReader {
+public class ConfigReader extends HzConfigReader {
 
     private static Logger logger = LogManager.getLogger(ConfigReader.class.getName());
     private static String dataServerHost;
@@ -43,8 +38,6 @@ public class ConfigReader {
 
     private static String remoteTargetDir;
 
-    private static String fileExtension;
-    private static String delimiter;
     private static String privateKey;
 
 
@@ -64,73 +57,70 @@ public class ConfigReader {
     private static String mySQLPassword;
     private static String additionalMySQLConf = "";
 
-    protected static Properties prop;
-
-    private static boolean loadProperties() {
-        prop = new Properties();
-        InputStream input = null;
-        try {
-            input = new FileInputStream(DatacafeConstants.DATACAFE_PROPERTIES_FILE);
-            prop.load(input);
-            return true;
-        } catch (IOException ex) {
-            logger.error("Error in loading the properties file.. ", ex);
-            return false;
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
+    /**
+     * Hive Configurations.
+     */
+    private static String hiveServer;
+    private static int hivePort;
+    private static String hiveUserName;
+    private static String hivePassword = "";
+    private static String hiveCSVDir;
+    private static String hiveDriver;
 
     /**
      * Initiating Data Cafe from the configuration file.
      */
     public static void readConfig() {
-        logger.info("Initiating Data Cafe from the configurations file..");
 
-        boolean loaded = loadProperties();
+        HzConfigReader.readConfig();
 
-        if (loaded) {
-            dataServerHost = prop.getProperty("dataServerHost");
-            String temp = prop.getProperty("dataServerPort");
-            if (temp != null) {
-                dataServerPort = Integer.parseInt(temp);
+        dataServerHost = prop.getProperty("dataServerHost");
+        String temp = prop.getProperty("dataServerPort");
+        if (temp != null) {
+            dataServerPort = Integer.parseInt(temp);
+        }
+
+        String remoteStr = prop.getProperty("isRemote");
+        if (remoteStr != null) {
+            isRemoteDSServer = Boolean.parseBoolean(remoteStr);
+        }
+
+        clientOriginDir = prop.getProperty("clientOriginDir");
+
+        if (isRemoteDSServer) {
+            remoteTargetDir = prop.getProperty("remoteTargetDir");
+            clientCSVDir = prop.getProperty("clientCSVDir");
+            if (clientCSVDir == null) {
+                clientCSVDir = clientOriginDir + "conf/";
             }
+        }
 
-            String remoteStr = prop.getProperty("isRemote");
-            if (remoteStr != null) {
-                isRemoteDSServer = Boolean.parseBoolean(remoteStr);
+        hadoopConf = prop.getProperty("hadoopConf");
+        hdfsPath = prop.getProperty("hdfsPath");
+
+        hiveServer = prop.getProperty("hiveServer");
+
+        if (!(hiveServer.equals("") || (hiveServer == null))) {
+            String hivePortStr = prop.getProperty("hivePort");
+            hivePort = Integer.parseInt(hivePortStr);
+            hiveUserName = prop.getProperty("hiveUserName");
+            String tempPass = prop.getProperty("hivePassword");
+            if (tempPass != null) {
+                hivePassword = tempPass;
             }
+            hiveCSVDir = prop.getProperty("hiveCSVDir");
+            hiveDriver = prop.getProperty("hiveDriver");
+        }
 
-            clientOriginDir = prop.getProperty("clientOriginDir");
+        privateKey = prop.getProperty("privateKey");
+        inputBulkDir = prop.getProperty("inputBulkDir");
 
-            if (isRemoteDSServer) {
-                remoteTargetDir = prop.getProperty("remoteTargetDir");
-                clientCSVDir = prop.getProperty("clientCSVDir");
-                if (clientCSVDir == null) {
-                    clientCSVDir = clientOriginDir + "conf/";
-                }
-            }
+        completeMySQLUrl = prop.getProperty("completeMySQLUrl");
+        if (completeMySQLUrl != null) {
+            mySQLUserName = prop.getProperty("mySQLUserName");
+            mySQLPassword = prop.getProperty("mySQLPassword");
+            additionalMySQLConf = prop.getProperty("additionalMySQLConf");
 
-            hadoopConf = prop.getProperty("hadoopConf");
-            hdfsPath = prop.getProperty("hdfsPath");
-
-            fileExtension = prop.getProperty("fileExtension");
-            delimiter = prop.getProperty("delimiter");
-            privateKey = prop.getProperty("privateKey");
-            inputBulkDir = prop.getProperty("inputBulkDir");
-
-            completeMySQLUrl = prop.getProperty("completeMySQLUrl");
-            if (completeMySQLUrl != null) {
-                mySQLUserName = prop.getProperty("mySQLUserName");
-                mySQLPassword = prop.getProperty("mySQLPassword");
-                additionalMySQLConf = prop.getProperty("additionalMySQLConf");
-            }
         }
     }
 
@@ -152,14 +142,6 @@ public class ConfigReader {
 
     public static String getHdfsPath() {
         return hdfsPath;
-    }
-
-    public static String getFileExtension() {
-        return fileExtension;
-    }
-
-    public static String getDelimiter() {
-        return delimiter;
     }
 
     public static String getPrivateKey() {
@@ -196,5 +178,29 @@ public class ConfigReader {
 
     public static String getAdditionalMySQLConf() {
         return additionalMySQLConf;
+    }
+
+    public static String getHiveServer() {
+        return hiveServer;
+    }
+
+    public static int getHivePort() {
+        return hivePort;
+    }
+
+    public static String getHiveUserName() {
+        return hiveUserName;
+    }
+
+    public static String getHivePassword() {
+        return hivePassword;
+    }
+
+    public static String getHiveCSVDir() {
+        return hiveCSVDir;
+    }
+
+    public static String getHiveDriver() {
+        return hiveDriver;
     }
 }

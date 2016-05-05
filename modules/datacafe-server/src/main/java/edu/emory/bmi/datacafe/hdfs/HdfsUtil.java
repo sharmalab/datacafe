@@ -17,7 +17,7 @@ package edu.emory.bmi.datacafe.hdfs;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.HDFSConstants;
-import edu.emory.bmi.datacafe.core.CoreExecutorEngine;
+import edu.emory.bmi.datacafe.core.ServerExecutorEngine;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -90,7 +90,7 @@ public final class HdfsUtil {
 
         long endTime = System.currentTimeMillis();
 
-        long timeConsumed = endTime - CoreExecutorEngine.getStartTime();
-        logger.info("Successfully written to the data lake: " + outputFile + " in " + timeConsumed/1000.0 + " s.");
+        long timeConsumed = endTime - ServerExecutorEngine.getStartTime();
+        logger.info(String.format("Successfully written to the data lake: %s in %f seconds.", outputFile, timeConsumed/1000.0));
     }
 }

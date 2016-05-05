@@ -16,12 +16,13 @@
 package edu.emory.bmi.datacafe.core;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
+import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;
 
 /**
  * The core Data Cafe executor engine singleton
  */
-public final class CoreExecutorEngine {
-    private static CoreExecutorEngine coreExecutorEngine;
+public final class ServerExecutorEngine {
+    private static ServerExecutorEngine serverExecutorEngine;
     private static long startTime;
 
     /**
@@ -29,15 +30,15 @@ public final class CoreExecutorEngine {
      */
     public static void init() {
         startTime =  System.currentTimeMillis();
-        if (coreExecutorEngine == null) {
-            coreExecutorEngine = new CoreExecutorEngine();
+        if (serverExecutorEngine == null) {
+            serverExecutorEngine = new ServerExecutorEngine();
         }
     }
 
     /**
      * Executes the initialization workflow of Data Cafe once, and only once.
      */
-    private CoreExecutorEngine() {
+    private ServerExecutorEngine() {
         ConfigReader.readConfig();
         DataSourcesRegistry.init();
     }

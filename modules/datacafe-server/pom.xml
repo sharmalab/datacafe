@@ -20,4 +20,30 @@
   <artifactId>datacafe-server</artifactId>
   <name>datacafe-server</name>
 
+  <dependencies>
+      <dependency>
+          <groupId>edu.emory.bmi</groupId>
+          <artifactId>datacafe-core</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>org.mongodb</groupId>
+          <artifactId>mongo-java-driver</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.hadoop</groupId>
+          <artifactId>hadoop-common</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.hadoop</groupId>
+          <artifactId>hadoop-hdfs</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.hive</groupId>
+          <artifactId>hive-jdbc</artifactId>
+      </dependency>
+  </dependencies>
 </project>

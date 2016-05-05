@@ -15,8 +15,8 @@
  */
 package edu.emory.bmi.datacafe.impl.mongo.parallel.main;
 
-import edu.emory.bmi.datacafe.core.CoreExecutorEngine;
-import edu.emory.bmi.datacafe.core.DataSourcesRegistry;
+import edu.emory.bmi.datacafe.core.ServerExecutorEngine;
+import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;
 import edu.emory.bmi.datacafe.impl.mongo.clinical.main.ExecutorRandomID;
 import edu.emory.bmi.datacafe.mongo.MongoHDFSIntegrator;
 import org.apache.logging.log4j.LogManager;
@@ -30,7 +30,7 @@ public class PhysioNetSampleExecutor2 {
     private static Logger logger = LogManager.getLogger(ExecutorRandomID.class.getName());
 
     public static void main(String[] args) {
-        CoreExecutorEngine.init();
+        ServerExecutorEngine.init();
 
         String[] databases = {"physionet", "physionet", "physionet", "physionet", "physionet", "physionet"};
         String[] collections = {"caregivers", "dicddiagnosis", "dlabitems", "datetimeevents", "patients",

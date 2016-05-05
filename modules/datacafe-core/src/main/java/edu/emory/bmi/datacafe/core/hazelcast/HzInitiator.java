@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.hazelcast;
+package edu.emory.bmi.datacafe.core.hazelcast;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,10 +23,6 @@ import org.apache.logging.log4j.Logger;
  */
 public class HzInitiator {
     private static Logger logger = LogManager.getLogger(HzInitiator.class.getName());
-
-    public static void main(String[] args) {
-        initInstance();
-    }
 
     /**
      * Initiates the empty hazelcast instances
@@ -47,6 +43,6 @@ public class HzInitiator {
         HzConfigReader.readConfig();
         HazelSim.spawnInstance(HazelSimCore.getCfg(clusterName));
         int size = HazelSim.getHazelSim().getFirstInstance().getCluster().getMembers().size();
-        logger.info("Number of instances in the cluster: " + clusterName + " is, " + size);
+        logger.info(String.format("Number of instances in the cluster %s is, %d", clusterName, size));
     }
 }

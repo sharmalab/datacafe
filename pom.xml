@@ -12,13 +12,13 @@
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <tomcat.version>7.0.34</tomcat.version>
   </properties>
-  
+
   <modules>
   	<module>modules</module>
   	<module>documentation</module>
   	<module>distribution</module>
   </modules>
-  
+
   <issueManagement>
   	<system>GitHub</system>
   	<url>https://github.com/sharmaashish/datacafe/issues</url>
@@ -28,12 +28,12 @@
   	<developerConnection>https://github.com/sharmaashish/datacafe.git</developerConnection>
   	<url>https://github.com/sharmaashish/datacafe</url>
   </scm>
-  
+
   <organization>
   	<name>Biomedical Informatics, Emory University</name>
   	<url>http://www.bmi.emory.edu/</url>
   </organization>
-  
+
   <build>
   	<pluginManagement>
   		<plugins>
@@ -51,9 +51,9 @@
   				<artifactId>maven-release-plugin</artifactId>
   				<version>2.3.2</version>
   				<configuration>
-  					<remoteTagging>true</remoteTagging>  				
+  					<remoteTagging>true</remoteTagging>
   					<preparationGoals>clean install</preparationGoals>
-  					<autoVersionSubmodules>true</autoVersionSubmodules>  					
+  					<autoVersionSubmodules>true</autoVersionSubmodules>
   				</configuration>
   			</plugin>
             <plugin>
@@ -75,7 +75,7 @@
         </plugins>
   	</pluginManagement>
   </build>
-  
+
   <distributionManagement>
 	<repository>
 		<id>localrepo</id>
@@ -93,6 +93,11 @@
   		</dependency>
   		<dependency>
   			<groupId>${project.groupId}</groupId>
+  			<artifactId>datacafe-core</artifactId>
+  			<version>${project.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>${project.groupId}</groupId>
   			<artifactId>datacafe-server</artifactId>
   			<version>${project.version}</version>
   		</dependency>
@@ -105,11 +110,6 @@
   			<groupId>${project.groupId}</groupId>
   			<artifactId>distribution</artifactId>
   			<version>${project.version}</version>
-  		</dependency>
-  		<dependency>
-  			<groupId>junit</groupId>
-  			<artifactId>junit</artifactId>
-  			<version>4.12</version>
   		</dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -139,17 +139,17 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>3.4</version>
+            <version>3.6.2</version>
         </dependency>
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast-all</artifactId>
-            <version>3.4</version>
+            <version>3.6.2</version>
         </dependency>
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast-client</artifactId>
-            <version>3.4</version>
+            <version>3.6.2</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -157,6 +157,19 @@
             <!--<version>5.5.41</version>-->
             <version>6.0.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.drill.exec</groupId>
+            <artifactId>drill-jdbc</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hive</groupId>
+            <artifactId>hive-jdbc</artifactId>
+            <!--The version must match the version of the Hive server.
+            http://kkpradeeban.blogspot.com/2015/08/hive-on-amazon-emr.html
+            Change it to match the version of your Hive server installation..-->
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
-  </dependencyManagement>    
+  </dependencyManagement>
 </project>

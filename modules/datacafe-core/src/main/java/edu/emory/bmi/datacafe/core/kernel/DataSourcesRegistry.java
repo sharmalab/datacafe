@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.core;
+package edu.emory.bmi.datacafe.core.kernel;
+
+import edu.emory.bmi.datacafe.core.conf.CoreConfigReader;
+import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,5 +84,34 @@ public class DataSourcesRegistry {
             fullName = UUID.randomUUID().toString();
         }
         return fullName;
+    }
+
+    /**
+     * Gets the full data source name along with its extension, as ds<extension>.
+     * For example, data_source -> data_source.csv
+     * @param dsName the full data sourceName.
+     * @return the full name with extension
+     */
+    public static String getFullDSNameWithExtension(String dsName) {
+        return dsName + CoreConfigReader.getFileExtension();
+    }
+
+    /**
+     * Gets the full data source name along with its extension, as ds<extension>.
+     * For example, database,collection -> database_collection.csv
+     * @param data the data source attributes
+     * @return the full name with extension
+     */
+    public static String getFullDSNameWithExtension(String... data) {
+        return getFullDSNameWithExtension(constructFullDataSourceName(data));
+    }
+
+    /**
+     * Wrap the datasource by DatacafeConstants.SQL_WRAP_CHARACTER.
+     * @param datasource the data source name
+     * @return the name, wrapped.
+     */
+    public static String sqlWrapTheDataSource(String datasource) {
+        return DatacafeConstants.SQL_WRAP_CHARACTER + datasource + DatacafeConstants.SQL_WRAP_CHARACTER;
     }
 }

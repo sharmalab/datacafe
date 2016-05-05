@@ -17,14 +17,13 @@ package edu.emory.bmi.datacafe.mongo;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.Block;
-import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.client.FindIterable;
 import edu.emory.bmi.datacafe.constants.MongoConstants;
-import edu.emory.bmi.datacafe.core.AbstractDataSourceConnector;
 import edu.emory.bmi.datacafe.core.DataCafeUtil;
+import edu.emory.bmi.datacafe.core.kernel.AbstractDataSourceConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;

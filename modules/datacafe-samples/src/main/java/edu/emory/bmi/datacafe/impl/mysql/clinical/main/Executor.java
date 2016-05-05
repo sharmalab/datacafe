@@ -15,8 +15,8 @@
  */
 package edu.emory.bmi.datacafe.impl.mysql.clinical.main;
 
-import edu.emory.bmi.datacafe.core.CoreExecutorEngine;
-import edu.emory.bmi.datacafe.core.DataSourcesRegistry;
+import edu.emory.bmi.datacafe.core.ServerExecutorEngine;
+import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;
 import edu.emory.bmi.datacafe.hdfs.HdfsConnector;
 import edu.emory.bmi.datacafe.mysql.MySQLConnector;
 import org.apache.logging.log4j.LogManager;
@@ -32,7 +32,7 @@ public class Executor {
 
     public static void main(String[] args) {
 
-        CoreExecutorEngine.init();
+        ServerExecutorEngine.init();
 
         String database1 = "clinical";
         String table1 = "clinical";

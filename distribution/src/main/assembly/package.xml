@@ -8,8 +8,12 @@
 		<dependencySet>
 			<outputDirectory>jars</outputDirectory>
 			<includes>
+				<include>${project.groupId}:datacafe-core:jar</include>
+				<include>${project.groupId}:datacafe-core:jar:sources</include>
 				<include>${project.groupId}:datacafe-server:jar</include>
 				<include>${project.groupId}:datacafe-server:jar:sources</include>
+				<include>${project.groupId}:datacafe-client:jar</include>
+				<include>${project.groupId}:datacafe-client:jar:sources</include>
 				<include>${project.groupId}:datacafe-samples:jar</include>
 				<include>${project.groupId}:datacafe-samples:jar:sources</include>
 			</includes>
@@ -23,7 +27,9 @@
 				</excludes>
 			</unpackOptions>
 			<includes>
+				<include>${project.groupId}:datacafe-core:jar:sources</include>
 				<include>${project.groupId}:datacafe-server:jar:sources</include>
+				<include>${project.groupId}:datacafe-client:jar:sources</include>
 				<include>${project.groupId}:datacafe-samples:jar:sources</include>
 			</includes>
 		</dependencySet>
