@@ -16,6 +16,7 @@
 package edu.emory.bmi.datacafe.client.core;
 
 import edu.emory.bmi.datacafe.client.conf.ClientConfigReader;
+import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
 import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,19 +29,15 @@ public final class QueryWrapper {
 
 
     /**
-     * Get the destination from drill
-     * @param database the database
+     * Get the destination from drill, if the original data sources are known.
+     *
+     * @param database   the database
      * @param collection the collection in the database
      * @return the destination, complete reference.
      */
     public static String getDestinationInDataLakeFromDrill(String database, String collection) {
-        return ClientConfigReader.getDrillHdfsNameSpace() +
-               DataSourcesRegistry.sqlWrapTheDataSource(
-                       DataSourcesRegistry.getFullDSNameWithExtension(database, collection));
-    }
-
-    public static void main(String[] args) {
-        ClientExecutorEngine.init();
-        logger.info(getDestinationInDataLakeFromDrill("physionet", "patients"));
+        return ClientConfigReader.getDrillHdfsNameSpace() + DatacafeConstants.PERIOD +
+                DataSourcesRegistry.sqlWrapTheDataSource(
+                        DataSourcesRegistry.getFullDSNameWithExtension(database, collection));
     }
 }

@@ -45,5 +45,9 @@
           <groupId>org.apache.hive</groupId>
           <artifactId>hive-jdbc</artifactId>
       </dependency>
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+      </dependency>
   </dependencies>
 </project>

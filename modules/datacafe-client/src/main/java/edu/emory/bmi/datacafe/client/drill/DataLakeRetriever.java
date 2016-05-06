@@ -15,7 +15,6 @@
  */
 package edu.emory.bmi.datacafe.client.drill;
 
-import edu.emory.bmi.datacafe.client.core.ClientExecutorEngine;
 import edu.emory.bmi.datacafe.core.kernel.CoreUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,16 +45,5 @@ public class DataLakeRetriever {
         String out = String.format("USE %s", workspace);
         DrillConnector.getQueryExecutionResponse(out, 1);
         return CoreUtil.constructPageFromList(DrillConnector.getQueryExecutionResponse(SHOW_COLLECTIONS, 1));
-    }
-
-    public static void main(String[] args) {
-        ClientExecutorEngine.init();
-        String temp = retrieveDataLake();
-        logger.info(temp);
-
-        logger.info("****************");
-        String out = getCollections("hdfs.root");
-
-        logger.info(out);
     }
 }
