@@ -62,6 +62,8 @@ public class ConfigReader extends HzConfigReader {
      */
     private static String hiveServer;
     private static int hivePort;
+    private static String hivePrefix;
+    private static String hivePostfix;
     private static String hiveUserName;
     private static String hivePassword = "";
     private static String hiveCSVDir;
@@ -110,6 +112,8 @@ public class ConfigReader extends HzConfigReader {
             }
             hiveCSVDir = prop.getProperty("hiveCSVDir");
             hiveDriver = prop.getProperty("hiveDriver");
+            hivePrefix = prop.getProperty("hivePrefix");
+            hivePostfix = prop.getProperty("hivePostfix");
         }
 
         privateKey = prop.getProperty("privateKey");
@@ -202,5 +206,13 @@ public class ConfigReader extends HzConfigReader {
 
     public static String getHiveDriver() {
         return hiveDriver;
+    }
+
+    public static String getHivePrefix() {
+        return hivePrefix;
+    }
+
+    public static String getHivePostfix() {
+        return hivePostfix;
     }
 }

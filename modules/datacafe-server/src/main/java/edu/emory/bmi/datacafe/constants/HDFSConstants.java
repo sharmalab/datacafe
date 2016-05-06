@@ -37,7 +37,6 @@ public final class HDFSConstants {
     /**
      * Hive connection uri.
      */
-    public static final String HIVE_CONNECTION_URI = "jdbc:hive2://" + ConfigReader.getHiveServer() + ":" +
-            ConfigReader.getHivePort() + "/default";
-
+    public static final String HIVE_CONNECTION_URI = ConfigReader.getHivePrefix() + ConfigReader.getHiveServer() + ":" +
+            ConfigReader.getHivePort() + ConfigReader.getHivePostfix();
 }

@@ -33,30 +33,27 @@ public class HiveConnector {
     private static Logger logger = LogManager.getLogger(HiveConnector.class.getName());
 
     /**
-     * Writes to Hive
-     * @param csvFileName, file to be written to Hive
+     * Writes to Hive. Only when the hive server is defined in the properties.
      * @param hiveTable, the table name in Hive
      * @param query, query to execute
      * @throws java.sql.SQLException, if execution failed.
      */
-    public void writeToHive(String csvFileName, String hiveTable, String query)  throws SQLException {
-        try {
-            Class.forName(ConfigReader.getHiveDriver());
-        } catch (ClassNotFoundException e) {
-            logger.error("Exception in finding the driver", e);
+    public void writeToHive(String hiveTable, String query)  throws SQLException {
+        if (!(ConfigReader.getHiveServer().equals("") || (ConfigReader.getHiveServer() == null))) {
+            logger.info(String.format("Writing the query [%s] metadata to Hive Table: %s", query, hiveTable));
+            try {
+                Class.forName(ConfigReader.getHiveDriver());
+            } catch (ClassNotFoundException e) {
+                logger.error("Exception in finding the Hive driver", e);
+            }
+
+            Connection con = DriverManager.getConnection(HDFSConstants.HIVE_CONNECTION_URI,
+                    ConfigReader.getHiveUserName(), ConfigReader.getHivePassword());
+            Statement stmt = con.createStatement();
+
+            stmt.execute("drop table if exists " + hiveTable);
+
+            stmt.execute("create table " + hiveTable + query);
         }
-
-        Connection con = DriverManager.getConnection(HDFSConstants.HIVE_CONNECTION_URI, ConfigReader.getHiveUserName(),
-                ConfigReader.getHivePassword());
-        Statement stmt = con.createStatement();
-
-        stmt.execute("drop table if exists " + hiveTable);
-
-        stmt.execute("create table " + hiveTable+ query);
-
-        String csvFilePath = ConfigReader.getHiveCSVDir() + csvFileName;
-
-        String sql = "load data local inpath '" + csvFilePath + "' into table " + hiveTable;
-        stmt.execute(sql);
     }
 }
