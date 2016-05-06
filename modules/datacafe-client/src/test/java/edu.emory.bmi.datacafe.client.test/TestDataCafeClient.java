@@ -3,6 +3,7 @@ package edu.emory.bmi.datacafe.client.test;
 import edu.emory.bmi.datacafe.client.conf.ClientConfigReader;
 import edu.emory.bmi.datacafe.client.core.ClientExecutorEngine;
 import edu.emory.bmi.datacafe.client.core.QueryWrapper;
+import edu.emory.bmi.datacafe.client.drill.DataLakeRetriever;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
@@ -24,5 +25,15 @@ public class TestDataCafeClient {
         String out = QueryWrapper.getDestinationInDataLakeFromDrill("physionet", "patients");
         logger.info(out);
         Assert.assertEquals(out, ClientConfigReader.getDrillHdfsNameSpace() + ".`physionet_patients.csv`");
+    }
+
+    /**
+     * Test whether the datalakes can be retrieved.
+     */
+    @Test
+    public void testDataLakeRetriever() {
+        ClientExecutorEngine.init();
+        String collections = DataLakeRetriever.getCollections(ClientConfigReader.getDrillHdfsNameSpace());
+        logger.info(collections);
     }
 }

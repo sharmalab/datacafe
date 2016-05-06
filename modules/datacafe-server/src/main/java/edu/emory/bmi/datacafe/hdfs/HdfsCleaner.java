@@ -41,13 +41,4 @@ public class HdfsCleaner {
         fs.delete(new Path(ConfigReader.getHdfsPath() + folder), true);
         logger.info("Successfully deleted the contents of the HDFS folder: " + folder);
     }
-
-    public static void main(String[] args) {
-        ConfigReader.readConfig();
-        try {
-            delete(ConfigReader.getInputBulkDir());
-        } catch (IOException e) {
-            logger.error("Exception in deleting the contents of the directory: " + ConfigReader.getInputBulkDir(), e);
-        }
-    }
 }
