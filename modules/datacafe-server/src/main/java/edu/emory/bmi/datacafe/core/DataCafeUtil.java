@@ -28,7 +28,8 @@ import java.util.stream.Collectors;
 public final class DataCafeUtil {
 
     /**
-     * Double quotes mess up with the CSV parsing.
+     * Double quotes mess up with the CSV parsing. First double the double quote before wrapping the entire thing in
+     * a pair of double quotes.
      * @return double quote it double
      */
     public static String doubleTheDoubleQuote(String text) {
@@ -55,6 +56,8 @@ public final class DataCafeUtil {
      * @return the collection as a comma separated line
      */
     public static String constructStringFromCollection(Collection collection) {
+        // This line of code is genius (despite looking ugly).
+        // Future maintainer: Be careful if you are trying to refactor it.
         return (String) collection.stream()
                 .map(i -> doublequote(doubleTheDoubleQuote(i.toString())))
                 .collect(Collectors.joining(","));
