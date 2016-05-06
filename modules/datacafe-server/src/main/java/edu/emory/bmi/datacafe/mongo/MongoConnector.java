@@ -115,7 +115,7 @@ public class MongoConnector extends AbstractDataSourceConnector {
         attributes.add(getChosenAttributeNames(preferredAttributes));
 
         attributes.addAll(getAttributeValues(database, collection, ids, idAttribute, preferredAttributes,
-                new String[]{idAttribute}).stream().map(str -> str).collect(Collectors.toList()));
+                new String[]{idAttribute}).stream().collect(Collectors.toList()));
         return attributes;
     }
 
