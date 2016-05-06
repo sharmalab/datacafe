@@ -36,7 +36,7 @@ public class HdfsCleaner {
      * @param folder the folder to be deleted
      * @throws java.io.IOException if the deletion failed.
      */
-    private static void delete(String folder) throws IOException {
+    public static void delete(String folder) throws IOException {
         FileSystem fs = HdfsUtil.getFileSystem();
         fs.delete(new Path(ConfigReader.getHdfsPath() + folder), true);
         logger.info("Successfully deleted the contents of the HDFS folder: " + folder);

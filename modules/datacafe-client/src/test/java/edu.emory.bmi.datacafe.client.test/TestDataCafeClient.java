@@ -9,7 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Simple tests for the query wrapper.
+ * Simple tests for the Data Cafe Client
  */
 public class TestDataCafeClient {
     private static Logger logger = LogManager.getLogger(TestDataCafeClient.class.getName());
