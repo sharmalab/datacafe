@@ -47,7 +47,7 @@ Optional.
 
 ## Execute Hive
 
-Optional
+Optional.
 
 * Run Hive Metastore and Hive
 
