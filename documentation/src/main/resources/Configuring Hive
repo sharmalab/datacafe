@@ -9,19 +9,14 @@ Hive is optional to Data Cafe. It can be configured following the below steps on
 
  $HADOOP_HOME/bin/hadoop fs -mkdir       /user/hive
 
+ $HADOOP_HOME/bin/hadoop fs -mkdir       /user/hive/warehouse
 
+ $HADOOP_HOME/bin/hadoop fs -chmod g+w   /user/hive/warehouse
 
 
 
 * Configure Hive Metastore with MySQL.
 
-## Run Hive Metastore and Hive
-
- $HIVE_HOME/bin/hive --service metastore &
-
-Start HiveServer2
-
- $HIVE_HOME/bin/hiveserver2
 
 
 

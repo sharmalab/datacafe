@@ -40,7 +40,7 @@ public abstract class AbstractDataSourceConnector implements ISourceConnector {
         attributes.add(getChosenAttributeNames(preferredAttributes));
 
         attributes.addAll(getAttributeValues(database, table, ids, idAttribute, preferredAttributes).
-                stream().map(str -> str).collect(Collectors.toList()));
+                stream().collect(Collectors.toList()));
 
         return attributes;
     }

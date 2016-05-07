@@ -33,30 +33,35 @@ public class HiveConnector {
     private static Logger logger = LogManager.getLogger(HiveConnector.class.getName());
 
     /**
-     * Writes to Hive
-     * @param csvFileName, file to be written to Hive
+     * Writes to Hive. Only when the hive server is defined in the properties.
+     *
      * @param hiveTable, the table name in Hive
-     * @param query, query to execute
-     * @throws java.sql.SQLException, if execution failed.
+     * @param query,     query to execute
      */
-    public void writeToHive(String csvFileName, String hiveTable, String query)  throws SQLException {
-        try {
-            Class.forName(ConfigReader.getHiveDriver());
-        } catch (ClassNotFoundException e) {
-            logger.error("Exception in finding the driver", e);
+    public static void writeToHive(String hiveTable, String query) {
+        if (!(ConfigReader.getHiveServer().equals("") || (ConfigReader.getHiveServer() == null))) {
+            try {
+                Class.forName(ConfigReader.getHiveDriver());
+            } catch (ClassNotFoundException e) {
+                logger.error("Exception in finding the Hive driver: " + ConfigReader.getHiveDriver(), e);
+            }
+
+            Connection con = null;
+            try {
+                con = DriverManager.getConnection(HDFSConstants.HIVE_CONNECTION_URI,
+                        ConfigReader.getHiveUserName(), ConfigReader.getHivePassword());
+
+                Statement stmt = con.createStatement();
+
+                stmt.execute("drop table if exists " + hiveTable);
+
+                stmt.execute("create table " + hiveTable + " " + query);
+                logger.info(String.format("Successfully executed the query [%s] metadata for " +
+                        "Hive Table: %s", query, hiveTable));
+
+            } catch (SQLException e) {
+                logger.error("SQLException in executing the Hive query for the data source, " + hiveTable, e);
+            }
         }
-
-        Connection con = DriverManager.getConnection(HDFSConstants.HIVE_CONNECTION_URI, ConfigReader.getHiveUserName(),
-                ConfigReader.getHivePassword());
-        Statement stmt = con.createStatement();
-
-        stmt.execute("drop table if exists " + hiveTable);
-
-        stmt.execute("create table " + hiveTable+ query);
-
-        String csvFilePath = ConfigReader.getHiveCSVDir() + csvFileName;
-
-        String sql = "load data local inpath '" + csvFilePath + "' into table " + hiveTable;
-        stmt.execute(sql);
     }
 }

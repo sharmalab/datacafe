@@ -168,7 +168,7 @@
             <!--The version must match the version of the Hive server.
             http://kkpradeeban.blogspot.com/2015/08/hive-on-amazon-emr.html
             Change it to match the version of your Hive server installation..-->
-            <version>1.0.0</version>
+            <version>1.2.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

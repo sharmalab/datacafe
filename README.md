@@ -45,6 +45,19 @@ Make sure to set extractHeader element appropriately in the Drill storage accord
 Optional.
 
 
+## Execute Hive
+
+Optional
+
+* Run Hive Metastore and Hive
+
+ $HIVE_HOME/bin/hive --service metastore &
+
+* Start HiveServer2
+
+ $HIVE_HOME/bin/hiveserver2
+
+
 ## Building Data Cafe
 
 Data Cafe can be built using Apache Maven 3.x and Java 1.8.x or higher.

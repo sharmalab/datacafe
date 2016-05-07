@@ -21,9 +21,12 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.client.FindIterable;
+import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.MongoConstants;
 import edu.emory.bmi.datacafe.core.DataCafeUtil;
 import edu.emory.bmi.datacafe.core.kernel.AbstractDataSourceConnector;
+import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;
+import edu.emory.bmi.datacafe.hdfs.HiveConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
@@ -115,7 +118,7 @@ public class MongoConnector extends AbstractDataSourceConnector {
         attributes.add(getChosenAttributeNames(preferredAttributes));
 
         attributes.addAll(getAttributeValues(database, collection, ids, idAttribute, preferredAttributes,
-                new String[]{idAttribute}).stream().map(str -> str).collect(Collectors.toList()));
+                new String[]{idAttribute}).stream().collect(Collectors.toList()));
         return attributes;
     }
 
@@ -200,10 +203,12 @@ public class MongoConnector extends AbstractDataSourceConnector {
 
             String cursorValue;
             if (addHeader) {
-                cursorValue = getCursorValues(results, true);
+                cursorValue = getCursorValues(DataSourcesRegistry.constructFullDataSourceName(database, collection),
+                        results, true);
                 addHeader = false;
             } else {
-                cursorValue = getCursorValues(results);
+                cursorValue = getCursorValues(DataSourcesRegistry.constructFullDataSourceName(database, collection),
+                        results);
             }
             dbCursors.add(cursorValue.trim());
         }
@@ -214,10 +219,11 @@ public class MongoConnector extends AbstractDataSourceConnector {
     /**
      * Prints the cursor
      *
-     * @param results   the DBCursor
-     * @param addHeader Should a header with attributes be added.
+     * @param fullDataSourceName the full data source name
+     * @param results            the DBCursor
+     * @param addHeader          Should a header with attributes be added.
      */
-    public String getCursorValues(DBCursor results, boolean addHeader) {
+    public String getCursorValues(String fullDataSourceName, DBCursor results, boolean addHeader) {
         String outValue = "";
 
         while (results.hasNext()) {
@@ -230,6 +236,11 @@ public class MongoConnector extends AbstractDataSourceConnector {
                 if (outValue.trim().equals("")) {
                     Collection resultNames = resultElementMap.keySet();
                     outValue += DataCafeUtil.constructStringFromCollection(resultNames);
+                    if (!(ConfigReader.getHiveServer().equals("") || (ConfigReader.getHiveServer() == null))) {
+                        //start doing the Hive Things
+                        String query = DataCafeUtil.wrapTheQuery(DataCafeUtil.constructQueryFromCollection(resultNames));
+                        HiveConnector.writeToHive(fullDataSourceName, query);
+                    }
                     outValue += "\n";
                 }
             }
@@ -250,8 +261,8 @@ public class MongoConnector extends AbstractDataSourceConnector {
      *
      * @param results the DBCursor
      */
-    public String getCursorValues(DBCursor results) {
-        return getCursorValues(results, false);
+    public String getCursorValues(String fullDataSourceName, DBCursor results) {
+        return getCursorValues(fullDataSourceName, results, false);
     }
 
 
