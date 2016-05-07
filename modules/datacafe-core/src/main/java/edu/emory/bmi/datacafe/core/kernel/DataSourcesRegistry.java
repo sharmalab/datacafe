@@ -71,7 +71,7 @@ public class DataSourcesRegistry {
      * @param data data elements
      * @return fullName
      */
-    protected static String constructFullDataSourceName(String... data) {
+    public static String constructFullDataSourceName(String... data) {
         String fullName = "";
         if (data.length > 0) {
             for (String element : data) {

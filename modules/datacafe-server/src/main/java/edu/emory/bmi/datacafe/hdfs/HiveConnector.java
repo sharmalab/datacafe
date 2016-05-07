@@ -34,26 +34,34 @@ public class HiveConnector {
 
     /**
      * Writes to Hive. Only when the hive server is defined in the properties.
+     *
      * @param hiveTable, the table name in Hive
-     * @param query, query to execute
-     * @throws java.sql.SQLException, if execution failed.
+     * @param query,     query to execute
      */
-    public void writeToHive(String hiveTable, String query)  throws SQLException {
+    public static void writeToHive(String hiveTable, String query) {
         if (!(ConfigReader.getHiveServer().equals("") || (ConfigReader.getHiveServer() == null))) {
-            logger.info(String.format("Writing the query [%s] metadata to Hive Table: %s", query, hiveTable));
             try {
                 Class.forName(ConfigReader.getHiveDriver());
             } catch (ClassNotFoundException e) {
-                logger.error("Exception in finding the Hive driver", e);
+                logger.error("Exception in finding the Hive driver: " + ConfigReader.getHiveDriver(), e);
             }
 
-            Connection con = DriverManager.getConnection(HDFSConstants.HIVE_CONNECTION_URI,
-                    ConfigReader.getHiveUserName(), ConfigReader.getHivePassword());
-            Statement stmt = con.createStatement();
+            Connection con = null;
+            try {
+                con = DriverManager.getConnection(HDFSConstants.HIVE_CONNECTION_URI,
+                        ConfigReader.getHiveUserName(), ConfigReader.getHivePassword());
 
-            stmt.execute("drop table if exists " + hiveTable);
+                Statement stmt = con.createStatement();
 
-            stmt.execute("create table " + hiveTable + query);
+                stmt.execute("drop table if exists " + hiveTable);
+
+                stmt.execute("create table " + hiveTable + " " + query);
+                logger.info(String.format("Successfully executed the query [%s] metadata for " +
+                        "Hive Table: %s", query, hiveTable));
+
+            } catch (SQLException e) {
+                logger.error("SQLException in executing the Hive query for the data source, " + hiveTable, e);
+            }
         }
     }
 }

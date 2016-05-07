@@ -38,7 +38,7 @@ public final class DataCafeUtil {
     }
 
     /**
-     * Wraps the tex with double quotes.
+     * Wraps the text with double quotes.
      *
      * @param text the text
      * @return the wrapped text.
@@ -52,6 +52,19 @@ public final class DataCafeUtil {
     }
 
     /**
+     * Writes string next to each param. Assuming all string now. todo: all types.
+     *
+     * @param text the text
+     * @return the final text.
+     */
+    public static String append_string_(String text) {
+       return text + " string";
+    }
+
+    public static String wrapTheQuery(String query) {
+        return "(" + query + ") row format delimited fields terminated by ',' stored as textfile";
+    }
+    /**
      * Construct a string from a collection
      *
      * @param collection the collection
@@ -61,6 +74,19 @@ public final class DataCafeUtil {
         // This line of code is genius (despite looking ugly).
         // Future maintainer: Be careful if you are trying to refactor it.
         return (String) collection.stream().map(i -> doublequote(doubleTheDoubleQuote(i.toString()))).
+                collect(Collectors.joining(","));
+    }
+
+    /**
+     * Construct a string from a collection
+     *
+     * @param collection the collection
+     * @return the collection as a comma separated line
+     */
+    public static String constructQueryFromCollection(Collection collection) {
+        // This line of code is genius (despite looking ugly).
+        // Future maintainer: Be careful if you are trying to refactor it.
+        return (String) collection.stream().map(i -> append_string_(i.toString())).
                 collect(Collectors.joining(","));
     }
 
