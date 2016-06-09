@@ -31,6 +31,10 @@ Refer to the relevant files in documentation for detailed instructions on each o
 
  $DRILL_HOME/bin/drill-embedded 
 
+* If Drill is secured, log in with the credentials.
+
+ $DRILL_HOME/bin/drill-embedded -n username -p password
+
 
 * Browse the web interface of Drill - http://localhost:8047/
 
@@ -64,7 +68,7 @@ Data Cafe can be built using Apache Maven 3.x and Java 1.8.x or higher.
 
  $ mvn clean install
 
-Built and tested with Apahe Maven 3.1.1 and Oracle Java 1.8.0.
+Built and tested with Apache Maven 3.1.1 and Oracle Java 1.8.0.
 
 
 ## Executing Data Cafe
