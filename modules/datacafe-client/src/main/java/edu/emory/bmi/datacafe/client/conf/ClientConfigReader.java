@@ -30,6 +30,8 @@ public class ClientConfigReader extends HzConfigReader {
      * Drill properties
      */
     private static String drillJdbc;
+    private static String drillUsername;
+    private static String drillPassword;
     private static String drillHdfsNameSpace;
 
     /**
@@ -40,6 +42,8 @@ public class ClientConfigReader extends HzConfigReader {
         HzConfigReader.readConfig();
 
         drillJdbc = prop.getProperty("drillJdbc");
+        drillUsername = prop.getProperty("drillUsername");
+        drillPassword = prop.getProperty("drillPassword");
         drillHdfsNameSpace = prop.getProperty("drillHdfsNameSpace");
     }
 
@@ -49,5 +53,13 @@ public class ClientConfigReader extends HzConfigReader {
 
     public static String getDrillHdfsNameSpace() {
         return drillHdfsNameSpace;
+    }
+
+    public static String getDrillUsername() {
+        return drillUsername;
+    }
+
+    public static String getDrillPassword() {
+        return drillPassword;
     }
 }

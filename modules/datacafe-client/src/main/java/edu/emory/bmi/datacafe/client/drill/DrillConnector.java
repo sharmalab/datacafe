@@ -39,7 +39,14 @@ public class DrillConnector extends AbstractDataSourceConnector {
 
     public static void initConnection() {
         try {
-            connection = new Driver().connect(ClientConfigReader.getDrillJdbc(), new Properties());
+            String username = ClientConfigReader.getDrillUsername();
+            String password = ClientConfigReader.getDrillPassword();
+
+            Properties connectionProps = new Properties();
+            connectionProps.put("user", username);
+            connectionProps.put("password", password);
+
+            connection = new Driver().connect(ClientConfigReader.getDrillJdbc(), connectionProps);
         } catch (SQLException e) {
             logger.error("SQL Exception in initiating a JDBC connection to Drill.", e);
         }
