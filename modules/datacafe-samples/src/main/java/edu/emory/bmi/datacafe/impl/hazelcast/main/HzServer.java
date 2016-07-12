@@ -29,7 +29,6 @@ public class HzServer {
 
     public static void main(String[] args) {
         init();
-        addValueToMap("my-distributed-map", "sample-key", "sample-value");
     }
 
     /**
@@ -42,6 +41,7 @@ public class HzServer {
 
     /**
      * Adds an entry to a map
+     * invoke: HzServer.addValueToMap("my-distributed-map", "sample-key", "sample-value");
      * @param mapName the name of the map
      * @param key the key
      * @param value the value

@@ -33,7 +33,6 @@ public class HzClient {
 
     public static void main(String[] args) {
         init();
-        readValues("my-distributed-map", "sample-key");
     }
 
     /**
@@ -44,9 +43,27 @@ public class HzClient {
         firstInstance = HazelSim.getHazelSim().getFirstInstance();
     }
 
-    public static void readValues(String mapName, String key) {
+    /**
+     * Reads an entry from the map
+     * invoke: HzClient.readValues("my-distributed-map", "sample-key");
+     *
+     * @param mapName the name of the map
+     * @param key     the key
+     * @return the value of the entry.
+     */
+    public static String readValues(String mapName, String key) {
         ConcurrentMap<String, String> map = firstInstance.getMap(mapName);
-        String val = map.get(key);
+        return map.get(key);
+    }
+
+    /**
+     * Reads and prints a value from a map.
+     *
+     * @param mapName the name of the map
+     * @param key     the key
+     */
+    public static void printValues(String mapName, String key) {
+        String val = readValues(mapName, key);
         logger.info("The value is: " + val);
     }
 }
