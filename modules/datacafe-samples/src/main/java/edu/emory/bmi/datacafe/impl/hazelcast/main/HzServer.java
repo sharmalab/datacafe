@@ -25,10 +25,38 @@ import java.util.concurrent.ConcurrentMap;
  * A sample Hazelcast Server
  */
 public class HzServer {
+    private static HazelcastInstance firstInstance;
+
     public static void main(String[] args) {
+        init();
+        addValueToMap("my-distributed-map", "sample-key", "sample-value");
+    }
+
+    /**
+     * Initializes the Hazelcast Server
+     */
+    public static void init() {
         HzInitiator.initInstance();
-        HazelcastInstance firstInstance = HazelSim.getHazelSim().getFirstInstance();
-        ConcurrentMap<String, String> map = firstInstance.getMap("my-distributed-map");
-        map.put("key", "sample-value");
+        firstInstance = HazelSim.getHazelSim().getFirstInstance();
+    }
+
+    /**
+     * Adds an entry to a map
+     * @param mapName the name of the map
+     * @param key the key
+     * @param value the value
+     */
+    public static void addValueToMap(String mapName, String key, String value) {
+        ConcurrentMap<String, String> map = firstInstance.getMap(mapName);
+        map.put(key, value);
+    }
+
+    /**
+     * Gets a Hazelcast distributed map.
+     * @param mapName the name of the map
+     * @return the concurrent map.
+     */
+    public static ConcurrentMap<String, String> getMap(String mapName) {
+        return firstInstance.getMap(mapName);
     }
 }

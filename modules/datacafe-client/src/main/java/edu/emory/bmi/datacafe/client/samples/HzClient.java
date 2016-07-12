@@ -27,13 +27,26 @@ import java.util.concurrent.ConcurrentMap;
  * The client for Hazelcast In-Memory Data Grid
  */
 public class HzClient {
+    private static HazelcastInstance firstInstance;
+
     private static Logger logger = LogManager.getLogger(HzClient.class.getName());
 
     public static void main(String[] args) {
+        init();
+        readValues("my-distributed-map", "sample-key");
+    }
+
+    /**
+     * Initializes the Hazelcast Client
+     */
+    public static void init() {
         HzInitiator.initInstance();
-        HazelcastInstance firstInstance = HazelSim.getHazelSim().getFirstInstance();
-        ConcurrentMap<String, String> map = firstInstance.getMap("my-distributed-map");
-        String key = map.get("key");
-        logger.info("The key is: " + key);
+        firstInstance = HazelSim.getHazelSim().getFirstInstance();
+    }
+
+    public static void readValues(String mapName, String key) {
+        ConcurrentMap<String, String> map = firstInstance.getMap(mapName);
+        String val = map.get(key);
+        logger.info("The value is: " + val);
     }
 }
