@@ -13,39 +13,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.impl.hazelcast.main;
+package edu.emory.bmi.datacafe.client.core;
 
 import edu.emory.bmi.datacafe.core.hazelcast.HzInstance;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * A sample Hazelcast Server
+ * The client for Hazelcast In-Memory Data Grid
  */
-public class HzServer extends HzInstance{
+public class HzClient extends HzInstance {
+    private static Logger logger = LogManager.getLogger(HzClient.class.getName());
 
     public static void main(String[] args) {
         init();
     }
 
     /**
-     * Adds an entry to a map
-     * invoke: HzServer.addValueToMap("my-distributed-map", "sample-key", "sample-value");
+     * Reads an entry from the map
+     * invoke: HzClient.readValues("my-distributed-map", "sample-key");
+     *
      * @param mapName the name of the map
-     * @param key the key
-     * @param value the value
+     * @param key     the key
+     * @return the value of the entry.
      */
-    public static void addValueToMap(String mapName, String key, String value) {
+    public static String readValues(String mapName, String key) {
         ConcurrentMap<String, String> map = firstInstance.getMap(mapName);
-        map.put(key, value);
+        return map.get(key);
     }
 
     /**
-     * Gets a Hazelcast distributed map.
+     * Reads and prints a value from a map.
+     *
      * @param mapName the name of the map
-     * @return the concurrent map.
+     * @param key     the key
      */
-    public static ConcurrentMap<String, String> getMap(String mapName) {
-        return firstInstance.getMap(mapName);
+    public static void printValues(String mapName, String key) {
+        String val = readValues(mapName, key);
+        logger.info("The value is: " + val);
     }
 }
