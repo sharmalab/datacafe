@@ -26,7 +26,7 @@ import org.bson.Document;
 /**
  * A larger scale example with PhysioNet.
  */
-public class PhysioNetSampleExecutor2 {
+public class PhysioNetIntegratedExecutor {
     private static Logger logger = LogManager.getLogger(ExecutorRandomID.class.getName());
 
     public static void main(String[] args) {

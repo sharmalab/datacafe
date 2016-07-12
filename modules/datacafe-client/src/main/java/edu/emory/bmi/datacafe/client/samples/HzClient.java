@@ -15,9 +15,7 @@
  */
 package edu.emory.bmi.datacafe.client.samples;
 
-import com.hazelcast.core.HazelcastInstance;
-import edu.emory.bmi.datacafe.core.hazelcast.HazelSim;
-import edu.emory.bmi.datacafe.core.hazelcast.HzInitiator;
+import edu.emory.bmi.datacafe.core.hazelcast.HzInstance;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,14 +24,34 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * The client for Hazelcast In-Memory Data Grid
  */
-public class HzClient {
+public class HzClient extends HzInstance {
     private static Logger logger = LogManager.getLogger(HzClient.class.getName());
 
     public static void main(String[] args) {
-        HzInitiator.initInstance();
-        HazelcastInstance firstInstance = HazelSim.getHazelSim().getFirstInstance();
-        ConcurrentMap<String, String> map = firstInstance.getMap("my-distributed-map");
-        String key = map.get("key");
-        logger.info("The key is: " + key);
+        init();
+    }
+
+    /**
+     * Reads an entry from the map
+     * invoke: HzClient.readValues("my-distributed-map", "sample-key");
+     *
+     * @param mapName the name of the map
+     * @param key     the key
+     * @return the value of the entry.
+     */
+    public static String readValues(String mapName, String key) {
+        ConcurrentMap<String, String> map = firstInstance.getMap(mapName);
+        return map.get(key);
+    }
+
+    /**
+     * Reads and prints a value from a map.
+     *
+     * @param mapName the name of the map
+     * @param key     the key
+     */
+    public static void printValues(String mapName, String key) {
+        String val = readValues(mapName, key);
+        logger.info("The value is: " + val);
     }
 }

@@ -27,11 +27,16 @@ import org.apache.logging.log4j.Logger;
 public class DrillQueryExecutor {
     private static Logger logger = LogManager.getLogger(DrillQueryExecutor.class.getName());
 
-    public static final String DRILL_SAMPLE_QUERY = "SELECT t1.SUBJECT_ID, t1.DOB " +
-            "FROM hdfs.root.`physionet_patients.csv` t1";
+    public static final String DRILL_SAMPLE_QUERY = "SELECT t1.SUBJECT_ID, t1.DOB, t2.HADM_ID, t3.ICD9_CODE, t3.SHORT_TITLE, t5.DESCRIPTION\n" +
+            "FROM hdfs.root.`physionet_patients.csv` t1,\n" +
+            "hdfs.root.`physionet_diagnosesicd.csv` t2,\n" +
+            "hdfs.root.`physionet_dicddiagnosis.csv` t3,\n" +
+            "hdfs.root.`physionet_datetimeevents.csv` t4,\n" +
+            "hdfs.root.`physionet_caregivers.csv` t5\n" +
+            "WHERE t1.SUBJECT_ID = t2.SUBJECT_ID AND t2.ICD9_CODE = t3.ICD9_CODE AND t4.SUBJECT_ID = t1.SUBJECT_ID AND t4.CGID = t5.CGID";
 
     public static void main(String[] args) {
         ClientExecutorEngine.init();
-        DrillConnector.executeQuery(DRILL_SAMPLE_QUERY, 2);
+        DrillConnector.executeQuery(DRILL_SAMPLE_QUERY, 6);
     }
 }

@@ -15,20 +15,37 @@
  */
 package edu.emory.bmi.datacafe.impl.hazelcast.main;
 
-import com.hazelcast.core.HazelcastInstance;
-import edu.emory.bmi.datacafe.core.hazelcast.HazelSim;
-import edu.emory.bmi.datacafe.core.hazelcast.HzInitiator;
+import edu.emory.bmi.datacafe.core.hazelcast.HzInstance;
 
 import java.util.concurrent.ConcurrentMap;
 
 /**
  * A sample Hazelcast Server
  */
-public class HzServer {
+public class HzServer extends HzInstance{
+
     public static void main(String[] args) {
-        HzInitiator.initInstance();
-        HazelcastInstance firstInstance = HazelSim.getHazelSim().getFirstInstance();
-        ConcurrentMap<String, String> map = firstInstance.getMap("my-distributed-map");
-        map.put("key", "sample-value");
+        init();
+    }
+
+    /**
+     * Adds an entry to a map
+     * invoke: HzServer.addValueToMap("my-distributed-map", "sample-key", "sample-value");
+     * @param mapName the name of the map
+     * @param key the key
+     * @param value the value
+     */
+    public static void addValueToMap(String mapName, String key, String value) {
+        ConcurrentMap<String, String> map = firstInstance.getMap(mapName);
+        map.put(key, value);
+    }
+
+    /**
+     * Gets a Hazelcast distributed map.
+     * @param mapName the name of the map
+     * @return the concurrent map.
+     */
+    public static ConcurrentMap<String, String> getMap(String mapName) {
+        return firstInstance.getMap(mapName);
     }
 }
