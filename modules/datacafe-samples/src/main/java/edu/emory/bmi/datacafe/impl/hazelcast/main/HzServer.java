@@ -15,28 +15,17 @@
  */
 package edu.emory.bmi.datacafe.impl.hazelcast.main;
 
-import com.hazelcast.core.HazelcastInstance;
-import edu.emory.bmi.datacafe.core.hazelcast.HazelSim;
-import edu.emory.bmi.datacafe.core.hazelcast.HzInitiator;
+import edu.emory.bmi.datacafe.core.hazelcast.HzInstance;
 
 import java.util.concurrent.ConcurrentMap;
 
 /**
  * A sample Hazelcast Server
  */
-public class HzServer {
-    private static HazelcastInstance firstInstance;
+public class HzServer extends HzInstance{
 
     public static void main(String[] args) {
         init();
-    }
-
-    /**
-     * Initializes the Hazelcast Server
-     */
-    public static void init() {
-        HzInitiator.initInstance();
-        firstInstance = HazelSim.getHazelSim().getFirstInstance();
     }
 
     /**

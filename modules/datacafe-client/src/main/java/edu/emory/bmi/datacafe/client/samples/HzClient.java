@@ -15,9 +15,7 @@
  */
 package edu.emory.bmi.datacafe.client.samples;
 
-import com.hazelcast.core.HazelcastInstance;
-import edu.emory.bmi.datacafe.core.hazelcast.HazelSim;
-import edu.emory.bmi.datacafe.core.hazelcast.HzInitiator;
+import edu.emory.bmi.datacafe.core.hazelcast.HzInstance;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,21 +24,11 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * The client for Hazelcast In-Memory Data Grid
  */
-public class HzClient {
-    private static HazelcastInstance firstInstance;
-
+public class HzClient extends HzInstance {
     private static Logger logger = LogManager.getLogger(HzClient.class.getName());
 
     public static void main(String[] args) {
         init();
-    }
-
-    /**
-     * Initializes the Hazelcast Client
-     */
-    public static void init() {
-        HzInitiator.initInstance();
-        firstInstance = HazelSim.getHazelSim().getFirstInstance();
     }
 
     /**
