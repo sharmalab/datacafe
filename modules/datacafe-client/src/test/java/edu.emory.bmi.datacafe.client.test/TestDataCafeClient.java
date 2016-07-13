@@ -21,19 +21,9 @@ public class TestDataCafeClient {
      */
     @Test
     public void testGetDestinationInDataLakeFromDrill() {
-        ClientExecutorEngine.init();
+        ClientExecutorEngine.initDrillConnector();
         String out = QueryWrapper.getDestinationInDataLakeFromDrill("physionet", "patients");
         logger.info(out);
         Assert.assertEquals(out, ClientConfigReader.getDrillHdfsNameSpace() + ".`physionet_patients.csv`");
-    }
-
-    /**
-     * Test whether the datalakes can be retrieved.
-     */
-    @Test
-    public void testDataLakeRetriever() {
-        ClientExecutorEngine.init();
-        String collections = DataLakeRetriever.getCollections(ClientConfigReader.getDrillHdfsNameSpace());
-        logger.info(collections);
     }
 }

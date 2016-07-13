@@ -38,7 +38,6 @@ public class DrillQueryExecutor {
 
     public static void main(String[] args) {
         ClientExecutorEngine.init();
-        HzClient.init();
         DrillConnector.executeQuery(DRILL_SAMPLE_QUERY, 6);
     }
 }

@@ -15,23 +15,46 @@
  */
 package edu.emory.bmi.datacafe.client.core;
 
+import com.hazelcast.client.HazelcastClient;
+import com.hazelcast.client.config.ClientConfig;
+import com.hazelcast.client.config.ClientNetworkConfig;
+import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.MultiMap;
 import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
+import edu.emory.bmi.datacafe.core.hazelcast.HzConfigReader;
 import edu.emory.bmi.datacafe.core.hazelcast.HzInstance;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * The client for Hazelcast In-Memory Data Grid
+ * The hazelcastClientInstance for Hazelcast In-Memory Data Grid
  */
 public class HzClient extends HzInstance {
     private static Logger logger = LogManager.getLogger(HzClient.class.getName());
+    private static HazelcastInstance hazelcastClientInstance;
 
     public static void main(String[] args) {
-        init();
+        initClient();
+    }
+
+    public static void initClient() {
+        logger.info("Initiating a Hazelcast Client instance.");
+        HzConfigReader.readConfig();
+        ClientConfig clientConfig = new ClientConfig();
+        // The credentials as set in hazelcast.xml.
+        clientConfig.getGroupConfig().setName("dev");
+        clientConfig.getGroupConfig().setPassword("dev-pass");
+        ClientNetworkConfig networkConfig = new ClientNetworkConfig();
+        List list = new ArrayList<>();
+        list.add("172.17.0.1");
+        networkConfig.setAddresses(list);
+        clientConfig.setNetworkConfig(networkConfig);
+        hazelcastClientInstance = HazelcastClient.newHazelcastClient(clientConfig);
     }
 
     /**
@@ -49,6 +72,20 @@ public class HzClient extends HzInstance {
 
 
     /**
+     * Reads an entry from the multi-map
+     * invoke: HzClient.readValuesFromMultiMap("my-distributed-map", "sample-key");
+     *
+     * @param mapName the name of the map
+     * @param key     the key
+     * @return the values of the entry.
+     */
+    public static Collection<String> readValuesFromMultiMapThroughClient(String mapName, String key) {
+        MultiMap<String, String> map = hazelcastClientInstance.getMultiMap(mapName);
+        return map.get(key);
+    }
+
+
+    /**
      * Reads an entry from the map
      * invoke: HzClient.readValues("my-distributed-map", "sample-key");
      *
@@ -58,6 +95,19 @@ public class HzClient extends HzInstance {
      */
     public static String readValues(String mapName, String key) {
         ConcurrentMap<String, String> map = firstInstance.getMap(mapName);
+        return map.get(key);
+    }
+
+    /**
+     * Reads an entry from the map
+     * invoke: HzClient.readValues("my-distributed-map", "sample-key");
+     *
+     * @param mapName the name of the map
+     * @param key     the key
+     * @return the value of the entry.
+     */
+    public static String readValuesThroughClient(String mapName, String key) {
+        ConcurrentMap<String, String> map = hazelcastClientInstance.getMap(mapName);
         return map.get(key);
     }
 

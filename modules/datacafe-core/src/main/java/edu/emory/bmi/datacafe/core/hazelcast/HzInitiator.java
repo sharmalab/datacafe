@@ -15,6 +15,8 @@
  */
 package edu.emory.bmi.datacafe.core.hazelcast;
 
+import com.hazelcast.config.Config;
+import com.hazelcast.config.NetworkConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
