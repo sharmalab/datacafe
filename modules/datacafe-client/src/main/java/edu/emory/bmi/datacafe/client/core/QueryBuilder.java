@@ -15,10 +15,23 @@
  */
 package edu.emory.bmi.datacafe.client.core;
 
+import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
+
 /**
  * Builds an SQL query from the user provided information. Supporting schema-less queries.
  */
 public class QueryBuilder {
+    private String executionID;
 
-    public static void displayTablesWithAttribute(String executionId, String database, String collection) {}
+    public QueryBuilder(String executionID) {
+        this.executionID = executionID;
+    }
+
+    public QueryBuilder() {
+        this.executionID = DatacafeConstants.DEFAULT_HAZELCAST_MULTI_MAP;
+    }
+
+    public void displayTablesWithAttribute(String attribute) {
+        HzClient.printValuesFromMultiMap(executionID, attribute);
+    }
 }

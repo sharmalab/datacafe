@@ -37,5 +37,5 @@ public final class DatacafeConstants {
 
     public static final String PERIOD = ".";
 
-    public static final String DEFAULT_HAZELCAST_MULTI_MAP = "DEFAULT";
+    public static final String DEFAULT_HAZELCAST_MULTI_MAP = "default";
 }

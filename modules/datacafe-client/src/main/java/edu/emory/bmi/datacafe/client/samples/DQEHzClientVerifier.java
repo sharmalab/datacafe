@@ -17,6 +17,7 @@ package edu.emory.bmi.datacafe.client.samples;
 
 import edu.emory.bmi.datacafe.client.core.ClientExecutorEngine;
 import edu.emory.bmi.datacafe.client.core.HzClient;
+import edu.emory.bmi.datacafe.client.core.QueryBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,6 +41,8 @@ public class DQEHzClientVerifier {
 
     public static void main(String[] args) {
         ClientExecutorEngine.init();
+        QueryBuilder queryBuilder = new QueryBuilder(executionId);
+
         if (DRILL_SAMPLE_QUERY.trim().equals(derivedQueryFromHazelcast.trim())) {
             logger.info("The derived Query is equal to the static query");
         } else {
@@ -52,11 +55,12 @@ public class DQEHzClientVerifier {
 //        HzClient.printValuesFromMultiMap("ICD9_CODE");
 //        HzClient.printValuesFromMultiMap("SHORT_TITLE");
 //        HzClient.printValuesFromMultiMap("DESCRIPTION");
-        HzClient.printValuesFromMultiMap(executionId, "SUBJECT_ID");
-        HzClient.printValuesFromMultiMap(executionId, "DOB");
-        HzClient.printValuesFromMultiMap(executionId, "HADM_ID");
-        HzClient.printValuesFromMultiMap(executionId, "ICD9_CODE");
-        HzClient.printValuesFromMultiMap(executionId, "SHORT_TITLE");
-        HzClient.printValuesFromMultiMap(executionId, "DESCRIPTION");
+
+        queryBuilder.displayTablesWithAttribute("SUBJECT_ID");
+        queryBuilder.displayTablesWithAttribute("DOB");
+        queryBuilder.displayTablesWithAttribute("HADM_ID");
+        queryBuilder.displayTablesWithAttribute("ICD9_CODE");
+        queryBuilder.displayTablesWithAttribute("SHORT_TITLE");
+        queryBuilder.displayTablesWithAttribute("DESCRIPTION");
     }
 }
