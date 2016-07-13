@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.client.core;
+package edu.emory.bmi.datacafe.core.conf;
 
-import edu.emory.bmi.datacafe.client.conf.ClientConfigReader;
-import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
+import edu.emory.bmi.datacafe.core.hazelcast.HzConfigReader;
 import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,7 +35,7 @@ public final class QueryWrapper {
      * @return the destination, complete reference.
      */
     public static String getDestinationInDataLakeFromDrill(String database, String collection) {
-        return ClientConfigReader.getDrillHdfsNameSpace() + DatacafeConstants.PERIOD +
+        return HzConfigReader.getDrillHdfsNameSpace() + DatacafeConstants.PERIOD +
                 DataSourcesRegistry.sqlWrapTheDataSource(
                         DataSourcesRegistry.getFullDSNameWithExtension(database, collection));
     }

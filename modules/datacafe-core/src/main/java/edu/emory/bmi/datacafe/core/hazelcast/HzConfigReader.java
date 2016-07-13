@@ -30,6 +30,8 @@ public class HzConfigReader extends CoreConfigReader {
     private static String mainClusterName;
     private static String subClusterName;
 
+    private static String drillHdfsNameSpace;
+
     public static void readConfig() {
         readConfig("mainCluster");
     }
@@ -49,6 +51,7 @@ public class HzConfigReader extends CoreConfigReader {
         hazelcastXml = prop.getProperty("hazelcastXml");
         mainClusterName = prop.getProperty(iMainCluster);
         subClusterName = prop.getProperty("subCluster");
+        drillHdfsNameSpace = prop.getProperty("drillHdfsNameSpace");
     }
 
     public static String getHazelcastXml() {
@@ -73,5 +76,9 @@ public class HzConfigReader extends CoreConfigReader {
 
     public static int getMapReduceSize() {
         return mapReduceSize;
+    }
+
+    public static String getDrillHdfsNameSpace() {
+        return drillHdfsNameSpace;
     }
 }
