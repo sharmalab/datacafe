@@ -40,13 +40,18 @@ public class DQEHzClientVerifier {
 
     public static void main(String[] args) {
         ClientExecutorEngine.init();
-        HzClient.init();
         if (DRILL_SAMPLE_QUERY.trim().equals(derivedQueryFromHazelcast.trim())) {
             logger.info("The derived Query is equal to the static query");
         } else {
             logger.info("The derived query is: " + derivedQueryFromHazelcast);
         }
 
+//        HzClient.printValuesFromMultiMap("SUBJECT_ID");
+//        HzClient.printValuesFromMultiMap("DOB");
+//        HzClient.printValuesFromMultiMap("HADM_ID");
+//        HzClient.printValuesFromMultiMap("ICD9_CODE");
+//        HzClient.printValuesFromMultiMap("SHORT_TITLE");
+//        HzClient.printValuesFromMultiMap("DESCRIPTION");
         HzClient.printValuesFromMultiMap(executionId, "SUBJECT_ID");
         HzClient.printValuesFromMultiMap(executionId, "DOB");
         HzClient.printValuesFromMultiMap(executionId, "HADM_ID");

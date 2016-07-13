@@ -16,6 +16,7 @@
 package edu.emory.bmi.datacafe.hazelcast;
 
 import com.hazelcast.core.MultiMap;
+import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
 import edu.emory.bmi.datacafe.core.hazelcast.HzInstance;
 
 import java.util.Set;
@@ -55,6 +56,16 @@ public class HzServer extends HzInstance{
         map.put(key, value);
     }
 
+    /**
+     * Adds an entry to the default multi-map. The beauty is, each key can have multiple value entries.
+     * invoke: HzServer.addValueToMultiMap("sample-key", "sample-value");
+     * @param key the key
+     * @param value the value
+     */
+    public static void addValueToMultiMap(String key, String value) {
+        addValueToMultiMap(DatacafeConstants.DEFAULT_HAZELCAST_MULTI_MAP, key, value);
+    }
+
 
     /**
      * Adds an entry to a map
@@ -75,11 +86,30 @@ public class HzServer extends HzInstance{
     }
 
     /**
+     * Adds an entry to the default map
+     * invoke: HzServer.addValueToMap("sample-key", Set<"sample-value">);
+     * @param key the key
+     * @param valueSet the value set
+     */
+    public static void addValueToMap(String key, Set<String> valueSet) {
+        addValueToMap(DatacafeConstants.DEFAULT_HAZELCAST_MULTI_MAP, key, valueSet);
+    }
+
+
+    /**
      * Gets a Hazelcast distributed map.
      * @param mapName the name of the map
      * @return the concurrent map.
      */
     public static ConcurrentMap<String, String> getMap(String mapName) {
         return firstInstance.getMap(mapName);
+    }
+
+    /**
+     * Gets the default Hazelcast distributed map.
+     * @return the concurrent map.
+     */
+    public static ConcurrentMap<String, String> getMap() {
+        return firstInstance.getMap(DatacafeConstants.DEFAULT_HAZELCAST_MULTI_MAP);
     }
 }

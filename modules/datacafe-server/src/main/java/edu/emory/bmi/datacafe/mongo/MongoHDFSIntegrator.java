@@ -30,7 +30,6 @@ public class MongoHDFSIntegrator {
 
     public MongoHDFSIntegrator(String executionId) {
         this.executionId = executionId;
-        HzServer.init();
     }
 
     /**

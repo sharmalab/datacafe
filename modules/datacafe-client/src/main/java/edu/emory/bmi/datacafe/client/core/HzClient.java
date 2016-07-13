@@ -16,12 +16,12 @@
 package edu.emory.bmi.datacafe.client.core;
 
 import com.hazelcast.core.MultiMap;
+import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
 import edu.emory.bmi.datacafe.core.hazelcast.HzInstance;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
-import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
 /**
@@ -75,5 +75,37 @@ public class HzClient extends HzInstance {
         if (values.size()<=0) {
             logger.info("No entry found for the key: " + key);
         }
+    }
+
+    /**
+     * Reads an entry from the default multi-map
+     * invoke: HzClient.readValuesFromMultiMap("sample-key");
+     *
+     * @param key     the key
+     * @return the values of the entry.
+     */
+    public static Collection<String> readValuesFromMultiMap(String key) {
+        return readValuesFromMultiMap(DatacafeConstants.DEFAULT_HAZELCAST_MULTI_MAP, key);
+    }
+
+
+    /**
+     * Reads an entry from the default map
+     * invoke: HzClient.readValues("sample-key");
+     *
+     * @param key     the key
+     * @return the value of the entry.
+     */
+    public static String readValues(String key) {
+        return readValues(DatacafeConstants.DEFAULT_HAZELCAST_MULTI_MAP, key);
+    }
+
+    /**
+     * Reads and prints a value from the default multi-map.
+     *
+     * @param key     the key
+     */
+    public static void printValuesFromMultiMap(String key) {
+        printValuesFromMultiMap(DatacafeConstants.DEFAULT_HAZELCAST_MULTI_MAP, key);
     }
 }

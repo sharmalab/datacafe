@@ -13,29 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.core.conf;
-
-import java.io.File;
+package edu.emory.bmi.datacafe.client.core;
 
 /**
- * The common constants of Data Cafe
+ * Builds an SQL query from the user provided information. Supporting schema-less queries.
  */
-public final class DatacafeConstants {
+public class QueryBuilder {
 
-    /**
-     * Suppress instantiation.
-     */
-    private DatacafeConstants() {
-    }
-
-    public static final String DATACAFE_PROPERTIES_FILE_ALT = new File(".").getAbsolutePath() +
-            "/../../conf/datacafe.properties";
-
-    public static final String DATACAFE_PROPERTIES_FILE = "conf/datacafe.properties";
-
-    public static final String SQL_WRAP_CHARACTER = "`";
-
-    public static final String PERIOD = ".";
-
-    public static final String DEFAULT_HAZELCAST_MULTI_MAP = "DEFAULT";
+    public static void displayTablesWithAttribute(String executionId, String database, String collection) {}
 }

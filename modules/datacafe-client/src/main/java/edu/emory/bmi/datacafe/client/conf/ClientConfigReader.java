@@ -38,6 +38,7 @@ public class ClientConfigReader extends HzConfigReader {
      */
     public static void readConfig() {
 
+        logger.info("Initiating Data Cafe client from the configurations file");
         HzConfigReader.readConfig();
 
         drillJdbc = prop.getProperty("drillJdbc");

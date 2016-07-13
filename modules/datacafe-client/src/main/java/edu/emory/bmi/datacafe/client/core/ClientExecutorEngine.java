@@ -46,6 +46,7 @@ public final class ClientExecutorEngine {
     private ClientExecutorEngine() {
         ClientConfigReader.readConfig();
         DrillConnector.initConnection();
+        HzClient.init();
     }
 
     /**

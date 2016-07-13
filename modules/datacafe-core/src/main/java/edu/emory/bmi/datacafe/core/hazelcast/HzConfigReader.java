@@ -17,11 +17,15 @@ package edu.emory.bmi.datacafe.core.hazelcast;
 
 
 import edu.emory.bmi.datacafe.core.conf.CoreConfigReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The class that reads the Hazelcast properties from the properties file.
  */
 public class HzConfigReader extends CoreConfigReader {
+    private static Logger logger = LogManager.getLogger(HzConfigReader.class.getName());
+
     private static int simultaneousInstances = 1;
     private static int noOfExecutions = 1;
     private static int mapReduceSize;
@@ -31,13 +35,21 @@ public class HzConfigReader extends CoreConfigReader {
     private static String subClusterName;
 
     private static String drillHdfsNameSpace;
+    private static boolean initialized = false;
 
     public static void readConfig() {
-        readConfig("mainCluster");
+        if (!initialized) {
+            readConfig("mainCluster");
+            initialized = true;
+        } else {
+            logger.info("Data Cafe configurations already initialized.");
+        }
     }
 
     protected static void readConfig(String iMainCluster) {
+        logger.info("Initiating the Hazelcast Configurations");
         CoreConfigReader.readConfig();
+
         String temp = prop.getProperty("mapReduceSize");
         if (temp!= null) {
             // map-reduce executions

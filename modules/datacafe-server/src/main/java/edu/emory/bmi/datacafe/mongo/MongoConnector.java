@@ -210,8 +210,13 @@ public class MongoConnector extends AbstractDataSourceConnector {
         Set<String> keySet = collection1.findOne().keySet();
 
         for (String key: keySet) {
-            HzServer.addValueToMultiMap(executionID, key, QueryWrapper.
-                    getDestinationInDataLakeFromDrill(database, collection));
+            if ((executionID!=null) && !executionID.trim().equals("")) {
+                HzServer.addValueToMultiMap(executionID, key, QueryWrapper.
+                        getDestinationInDataLakeFromDrill(database, collection));
+            } else {
+                HzServer.addValueToMultiMap(key, QueryWrapper.
+                        getDestinationInDataLakeFromDrill(database, collection));
+            }
         }
 
         for (Object id : ids) {
