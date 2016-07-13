@@ -19,6 +19,7 @@ import edu.emory.bmi.datacafe.core.hazelcast.HzInstance;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
 /**
@@ -39,11 +40,25 @@ public class HzClient extends HzInstance {
      * @param key     the key
      * @return the value of the entry.
      */
-    public static String readValues(String mapName, String key) {
-        ConcurrentMap<String, String> map = firstInstance.getMap(mapName);
+    public static Set<String> readValues(String mapName, String key) {
+        ConcurrentMap<String, Set<String>> map = firstInstance.getMap(mapName);
         return map.get(key);
     }
 
+//
+//    /**
+//     * Reads an entry from the map
+//     * invoke: HzClient.readValues("my-distributed-map", "sample-key");
+//     *
+//     * @param mapName the name of the map
+//     * @param key     the key
+//     * @return the value of the entry.
+//     */
+//    public static String readValues(String mapName, String key) {
+//        ConcurrentMap<String, String> map = firstInstance.getMap(mapName);
+//        return map.get(key);
+//    }
+//
     /**
      * Reads and prints a value from a map.
      *
@@ -51,7 +66,9 @@ public class HzClient extends HzInstance {
      * @param key     the key
      */
     public static void printValues(String mapName, String key) {
-        String val = readValues(mapName, key);
-        logger.info("The value is: " + val);
+        Set<String> values = readValues(mapName, key);
+        for (String val: values) {
+            logger.info("The value is: " + val);
+        }
     }
 }

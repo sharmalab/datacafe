@@ -16,6 +16,7 @@
 package edu.emory.bmi.datacafe.mongo;
 
 import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;
+import edu.emory.bmi.datacafe.hazelcast.HzServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
@@ -25,6 +26,12 @@ import org.bson.Document;
  */
 public class MongoHDFSIntegrator {
     private static Logger logger = LogManager.getLogger(MongoHDFSIntegrator.class.getName());
+    private String executionId;
+
+    public MongoHDFSIntegrator(String executionId) {
+        this.executionId = executionId;
+        HzServer.init();
+    }
 
     /**
      * Write to HDFS. Parallel Execution.
@@ -34,14 +41,14 @@ public class MongoHDFSIntegrator {
      * @param documents   the Document objects as an array
      * @param attributes  the attributes to be included.
      */
-    public static void writeToHDFSInParallel(String[] databases, String[] collections, Document[] documents,
+    public void writeToHDFSInParallel(String[] databases, String[] collections, Document[] documents,
                                              String[][] attributes) {
         MongoHDFSIntegratorThread[] mongoHDFSIntegratorThreads = new MongoHDFSIntegratorThread[collections.length];
         String[] dataSourcesNames = DataSourcesRegistry.getFullNamesAsArray();
 
         for (int i = 0; i < collections.length; i++) {
             mongoHDFSIntegratorThreads[i] = new MongoHDFSIntegratorThread(databases[i], collections[i],
-                    documents[i], dataSourcesNames[i], attributes[i]);
+                    documents[i], dataSourcesNames[i], attributes[i], executionId);
             mongoHDFSIntegratorThreads[i].start();
         }
     }
@@ -53,13 +60,13 @@ public class MongoHDFSIntegrator {
      * @param collections the collections in the respective databases.
      * @param documents   the Document objects as an array
      */
-    public static void writeToHDFSInParallel(String[] databases, String[] collections, Document[] documents) {
+    public void writeToHDFSInParallel(String[] databases, String[] collections, Document[] documents) {
         MongoHDFSIntegratorThread[] mongoHDFSIntegratorThreads = new MongoHDFSIntegratorThread[collections.length];
         String[] dataSourcesNames = DataSourcesRegistry.getFullNamesAsArray();
 
         for (int i = 0; i < collections.length; i++) {
             mongoHDFSIntegratorThreads[i] = new MongoHDFSIntegratorThread(databases[i], collections[i],
-                    documents[i], dataSourcesNames[i], null);
+                    documents[i], dataSourcesNames[i], null, executionId);
             mongoHDFSIntegratorThreads[i].start();
         }
     }
