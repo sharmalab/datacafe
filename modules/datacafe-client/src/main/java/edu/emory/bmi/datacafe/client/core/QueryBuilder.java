@@ -16,11 +16,15 @@
 package edu.emory.bmi.datacafe.client.core;
 
 import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Builds an SQL query from the user provided information. Supporting schema-less queries.
  */
 public class QueryBuilder {
+    private static Logger logger = LogManager.getLogger(QueryBuilder.class.getName());
+
     private String executionID;
 
     public QueryBuilder(String executionID) {

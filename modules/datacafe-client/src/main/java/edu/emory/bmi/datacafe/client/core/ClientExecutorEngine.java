@@ -38,7 +38,7 @@ public final class ClientExecutorEngine {
         startTime = System.currentTimeMillis();
         if (clientExecutorEngine == null) {
             clientExecutorEngine = new ClientExecutorEngine();
-            HzClient.init();
+            HzClient.initClient();
         }
     }
 
