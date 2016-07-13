@@ -35,7 +35,21 @@ public class QueryBuilder {
         this.executionID = DatacafeConstants.DEFAULT_HAZELCAST_MULTI_MAP;
     }
 
+    /**
+     * Prints the tables that has the any given attribute.
+     * @param attribute the attribute to be probed.
+     */
     public void displayTablesWithAttribute(String attribute) {
         HzClient.printValuesFromMultiMap(executionID, attribute);
+    }
+
+    /**
+     * Prints the tables that has the any given attribute.
+     * @param attributes the attributes to be probed as an array.
+     */
+    public void displayTablesWithAttribute(String[] attributes) {
+        for (String attribute: attributes) {
+            HzClient.printValuesFromMultiMap(executionID, attribute);
+        }
     }
 }

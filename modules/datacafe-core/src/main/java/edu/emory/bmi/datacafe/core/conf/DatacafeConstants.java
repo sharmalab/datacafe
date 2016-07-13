@@ -38,4 +38,6 @@ public final class DatacafeConstants {
     public static final String PERIOD = ".";
 
     public static final String DEFAULT_HAZELCAST_MULTI_MAP = "default";
+
+    public static final String DATASOURCES_MAP_ENTRY_SUFFIX = "DATASOURCES";
 }

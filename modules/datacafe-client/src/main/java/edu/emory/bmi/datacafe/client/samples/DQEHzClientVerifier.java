@@ -29,6 +29,16 @@ public class DQEHzClientVerifier {
     private static Logger logger = LogManager.getLogger(DQEHzClientVerifier.class.getName());
     private static final String executionId = "PhysioNetIntegratedExecutor";
 
+    private static final String attributes[] = {"SUBJECT_ID", "DOB", "HADM_ID", "ICD9_CODE", "SHORT_TITLE", "DESCRIPTION"};
+
+    private static final String collections[] = {
+            "hdfs.root.`physionet_patients.csv`",
+            "hdfs.root.`physionet_patients.csv`",
+            "hdfs.root.`physionet_diagnosesicd.csv`",
+            "hdfs.root.`physionet_dicddiagnosis.csv`",
+            "hdfs.root.`physionet_dicddiagnosis.csv`",
+            "hdfs.root.`physionet_caregivers.csv`"};
+
     public static final String DRILL_SAMPLE_QUERY = "SELECT t1.SUBJECT_ID, t1.DOB, t2.HADM_ID, t3.ICD9_CODE, t3.SHORT_TITLE, t5.DESCRIPTION\n" +
             "FROM hdfs.root.`physionet_patients.csv` t1,\n" +
             "hdfs.root.`physionet_diagnosesicd.csv` t2,\n" +
@@ -49,18 +59,6 @@ public class DQEHzClientVerifier {
             logger.info("The derived query is: " + derivedQueryFromHazelcast);
         }
 
-//        HzClient.printValuesFromMultiMap("SUBJECT_ID");
-//        HzClient.printValuesFromMultiMap("DOB");
-//        HzClient.printValuesFromMultiMap("HADM_ID");
-//        HzClient.printValuesFromMultiMap("ICD9_CODE");
-//        HzClient.printValuesFromMultiMap("SHORT_TITLE");
-//        HzClient.printValuesFromMultiMap("DESCRIPTION");
-
-        queryBuilder.displayTablesWithAttribute("SUBJECT_ID");
-        queryBuilder.displayTablesWithAttribute("DOB");
-        queryBuilder.displayTablesWithAttribute("HADM_ID");
-        queryBuilder.displayTablesWithAttribute("ICD9_CODE");
-        queryBuilder.displayTablesWithAttribute("SHORT_TITLE");
-        queryBuilder.displayTablesWithAttribute("DESCRIPTION");
+        queryBuilder.displayTablesWithAttribute(attributes);
     }
 }
