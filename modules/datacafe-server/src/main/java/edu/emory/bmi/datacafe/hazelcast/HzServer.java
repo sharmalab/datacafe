@@ -15,6 +15,7 @@
  */
 package edu.emory.bmi.datacafe.hazelcast;
 
+import com.hazelcast.core.MultiMap;
 import edu.emory.bmi.datacafe.core.hazelcast.HzInstance;
 
 import java.util.Set;
@@ -38,6 +39,19 @@ public class HzServer extends HzInstance{
      */
     public static void addValueToMap(String mapName, String key, String value) {
         ConcurrentMap<String, String> map = firstInstance.getMap(mapName);
+        map.put(key, value);
+    }
+
+
+    /**
+     * Adds an entry to a multi-map. The beauty is, each key can have multiple value entries.
+     * invoke: HzServer.addValueToMultiMap("my-distributed-map", "sample-key", "sample-value");
+     * @param mapName the name of the map
+     * @param key the key
+     * @param value the value
+     */
+    public static void addValueToMultiMap(String mapName, String key, String value) {
+        MultiMap<String, String> map = firstInstance.getMultiMap(mapName);
         map.put(key, value);
     }
 

@@ -208,7 +208,9 @@ public class MongoConnector extends AbstractDataSourceConnector {
         List<String> dbCursors = new ArrayList<>();
         Set<String> keySet = collection1.findOne().keySet();
 
-        HzServer.addValueToMap(executionID, database+"_"+collection, keySet);
+        for (String key: keySet) {
+            HzServer.addValueToMultiMap(executionID, key, database+"_"+collection);
+        }
 
         for (Object id : ids) {
             DBCursor results = collection1.find(new BasicDBObject(idAttribute, id),

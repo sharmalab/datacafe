@@ -15,10 +15,12 @@
  */
 package edu.emory.bmi.datacafe.client.core;
 
+import com.hazelcast.core.MultiMap;
 import edu.emory.bmi.datacafe.core.hazelcast.HzInstance;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
@@ -33,6 +35,20 @@ public class HzClient extends HzInstance {
     }
 
     /**
+     * Reads an entry from the multi-map
+     * invoke: HzClient.readValuesFromMultiMap("my-distributed-map", "sample-key");
+     *
+     * @param mapName the name of the map
+     * @param key     the key
+     * @return the values of the entry.
+     */
+    public static Collection<String> readValuesFromMultiMap(String mapName, String key) {
+        MultiMap<String, String> map = firstInstance.getMultiMap(mapName);
+        return map.get(key);
+    }
+
+
+    /**
      * Reads an entry from the map
      * invoke: HzClient.readValues("my-distributed-map", "sample-key");
      *
@@ -40,35 +56,24 @@ public class HzClient extends HzInstance {
      * @param key     the key
      * @return the value of the entry.
      */
-    public static Set<String> readValues(String mapName, String key) {
-        ConcurrentMap<String, Set<String>> map = firstInstance.getMap(mapName);
+    public static String readValues(String mapName, String key) {
+        ConcurrentMap<String, String> map = firstInstance.getMap(mapName);
         return map.get(key);
     }
 
-//
-//    /**
-//     * Reads an entry from the map
-//     * invoke: HzClient.readValues("my-distributed-map", "sample-key");
-//     *
-//     * @param mapName the name of the map
-//     * @param key     the key
-//     * @return the value of the entry.
-//     */
-//    public static String readValues(String mapName, String key) {
-//        ConcurrentMap<String, String> map = firstInstance.getMap(mapName);
-//        return map.get(key);
-//    }
-//
     /**
-     * Reads and prints a value from a map.
+     * Reads and prints a value from a multi-map.
      *
      * @param mapName the name of the map
      * @param key     the key
      */
-    public static void printValues(String mapName, String key) {
-        Set<String> values = readValues(mapName, key);
+    public static void printValuesFromMultiMap(String mapName, String key) {
+        Collection<String> values = readValuesFromMultiMap(mapName, key);
         for (String val: values) {
-            logger.info("The value is: " + val);
+            logger.info("The key, value is: " + key + ", " + val);
+        }
+        if (values.size()<=0) {
+            logger.info("No entry found for the key: " + key);
         }
     }
 }

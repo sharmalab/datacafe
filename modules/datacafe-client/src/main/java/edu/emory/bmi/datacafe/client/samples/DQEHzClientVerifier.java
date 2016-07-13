@@ -48,6 +48,11 @@ public class DQEHzClientVerifier {
             logger.info("The derived query is: " + derivedQueryFromHazelcast);
         }
 
-//        HzClient.readValues()
+        HzClient.printValuesFromMultiMap(executionId, "SUBJECT_ID");
+        HzClient.printValuesFromMultiMap(executionId, "DOB");
+        HzClient.printValuesFromMultiMap(executionId, "HADM_ID");
+        HzClient.printValuesFromMultiMap(executionId, "ICD9_CODE");
+        HzClient.printValuesFromMultiMap(executionId, "SHORT_TITLE");
+        HzClient.printValuesFromMultiMap(executionId, "DESCRIPTION");
     }
 }
