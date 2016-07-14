@@ -20,6 +20,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Builds an SQL query from the user provided information. Supporting schema-less queries.
@@ -28,6 +30,7 @@ public class QueryBuilder {
     private static Logger logger = LogManager.getLogger(QueryBuilder.class.getName());
 
     private String executionID;
+    private Map<String, String> collectionIndexMap = new HashMap<>();
 
     public QueryBuilder(String executionID) {
         this.executionID = executionID;
@@ -69,5 +72,28 @@ public class QueryBuilder {
     public void displayAllDataSources() {
         Collection<String> datasources = getDataSources();
         datasources.forEach(logger::info);
+    }
+
+    /**
+     * Builds the FROM statement
+     * @return the FROM statement
+     */
+    public String buildFromStatement() {
+        Collection<String> datasources = getDataSources();
+        String out = "FROM ";
+        int i = 1;
+        String index;
+
+        for (String datasource: datasources) {
+            index = "t"+i++;
+            collectionIndexMap.put(datasource, index);
+            out += datasource + " " + index;
+            if (i < datasources.size()) {
+                out += ",\n";
+            } else {
+                out += "\n";
+            }
+        }
+        return out;
     }
 }

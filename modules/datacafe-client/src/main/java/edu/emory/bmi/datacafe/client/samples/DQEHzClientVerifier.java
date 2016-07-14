@@ -52,9 +52,9 @@ public class DQEHzClientVerifier {
     public static void main(String[] args) {
         ClientExecutorEngine.init();
         QueryBuilder queryBuilder = new QueryBuilder(executionId);
-        queryBuilder.displayAllDataSources();
+        logger.info(queryBuilder.buildFromStatement());
 
-        DrillConnector.executeQuery(DRILL_SAMPLE_QUERY, 6);
+//        DrillConnector.executeQuery(DRILL_SAMPLE_QUERY, 6);
 
         if (DRILL_SAMPLE_QUERY.trim().equals(derivedQueryFromHazelcast.trim())) {
             logger.info("The derived Query is equal to the static query");
