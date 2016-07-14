@@ -40,4 +40,6 @@ public final class DatacafeConstants {
     public static final String DEFAULT_HAZELCAST_MULTI_MAP = "default";
 
     public static final String DATASOURCES_MAP_ENTRY_KEY = "DATASOURCES";
+
+    public static final String RELATIONS_MAP_SUFFIX = "_RELATIONS";
 }

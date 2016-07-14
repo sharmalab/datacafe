@@ -143,4 +143,15 @@ public class HzClient extends HzInstance {
     public static void printValuesFromMultiMap(String key) {
         printValuesFromMultiMap(DatacafeConstants.DEFAULT_HAZELCAST_MULTI_MAP, key);
     }
+
+    /**
+     * Gets the join attributes for a given attribute.
+     * @param tenantName the execution id.
+     * @param joinAttribute the attribute
+     * @return the collection of attributes that are equal in a join with the current attribute.
+     */
+    public static Collection<String> getJoins(String tenantName, String joinAttribute) {
+        MultiMap<String, String> map = clientInstance.getMultiMap(tenantName + DatacafeConstants.RELATIONS_MAP_SUFFIX);
+        return map.get(joinAttribute);
+    }
 }

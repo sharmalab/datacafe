@@ -68,6 +68,18 @@ public class HzServer extends HzInstance{
 
 
     /**
+     * Let the data provider add joins in a separate map.
+     * @param tenantName the name of the tenant/execution.
+     * @param attribute the attribute name.
+     * @param joinedAttribute the joined attribute.
+     */
+    public static void addJoins(String tenantName, String attribute, String joinedAttribute) {
+        MultiMap<String, String> map = firstInstance.getMultiMap(tenantName + DatacafeConstants.RELATIONS_MAP_SUFFIX);
+        map.put(attribute, joinedAttribute);
+    }
+
+
+    /**
      * Adds an entry to a map
      * invoke: HzServer.addValueToMap("my-distributed-map", "sample-key", Set<"sample-value">);
      * @param mapName the name of the map
