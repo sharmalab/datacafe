@@ -15,11 +15,11 @@
   ~ limitations under the License.
   -->
 
-<hazelcast xsi:schemaLocation="http://www.hazelcast.com/schema/config hazelcast-config-3.1.xsd"
+<hazelcast xsi:schemaLocation="http://www.hazelcast.com/schema/config hazelcast-config-3.6.xsd"
            xmlns="http://www.hazelcast.com/schema/config"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <group>
-        <name>dev</name>
+        <name>datacafe</name>
         <password>dev-pass</password>
     </group>
     <management-center enabled="false">http://146.193.41.107:8080/mancenter-3.2</management-center>

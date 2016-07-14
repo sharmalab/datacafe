@@ -74,6 +74,7 @@ public class ConfigReader extends HzConfigReader {
      */
     public static void readConfig() {
 
+        logger.info("Initiating Data Cafe server from the configurations file");
         HzConfigReader.readConfig();
 
         dataServerHost = prop.getProperty("dataServerHost");

@@ -18,6 +18,7 @@ package edu.emory.bmi.datacafe.client.core;
 
 import edu.emory.bmi.datacafe.client.conf.ClientConfigReader;
 import edu.emory.bmi.datacafe.client.drill.DrillConnector;
+import edu.emory.bmi.datacafe.core.hazelcast.HzConfigReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,6 +38,17 @@ public final class ClientExecutorEngine {
         startTime = System.currentTimeMillis();
         if (clientExecutorEngine == null) {
             clientExecutorEngine = new ClientExecutorEngine();
+            HzClient.initClient();
+        }
+    }
+
+    /**
+     * Initialize the singleton object
+     */
+    public static void initDrillConnector() {
+        startTime = System.currentTimeMillis();
+        if (clientExecutorEngine == null) {
+            clientExecutorEngine = new ClientExecutorEngine();
         }
     }
 
@@ -46,6 +58,7 @@ public final class ClientExecutorEngine {
     private ClientExecutorEngine() {
         ClientConfigReader.readConfig();
         DrillConnector.initConnection();
+        HzConfigReader.readConfig();
     }
 
     /**

@@ -24,8 +24,11 @@ import com.mongodb.client.FindIterable;
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.MongoConstants;
 import edu.emory.bmi.datacafe.core.DataCafeUtil;
+import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
+import edu.emory.bmi.datacafe.core.conf.QueryWrapper;
 import edu.emory.bmi.datacafe.core.kernel.AbstractDataSourceConnector;
 import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;
+import edu.emory.bmi.datacafe.hazelcast.HzServer;
 import edu.emory.bmi.datacafe.hdfs.HiveConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -42,6 +46,13 @@ import java.util.stream.Collectors;
  */
 public class MongoConnector extends AbstractDataSourceConnector {
     private static Logger logger = LogManager.getLogger(MongoConnector.class.getName());
+    private String executionID;
+
+    public MongoConnector() {}
+
+    public MongoConnector(String executionID) {
+        this.executionID = executionID;
+    }
 
     /**
      * Gets the list of IDs. Default id, _id is used.
@@ -197,6 +208,23 @@ public class MongoConnector extends AbstractDataSourceConnector {
 
         DBCollection collection1 = mongoCollection.getCollection();
         List<String> dbCursors = new ArrayList<>();
+        Set<String> keySet = collection1.findOne().keySet();
+
+
+        HzServer.addValueToMultiMap(executionID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
+                DatacafeConstants.DATASOURCES_MAP_ENTRY_KEY, QueryWrapper.
+                getDestinationInDataLakeFromDrill(database, collection));
+
+        for (String key: keySet) {
+            if ((executionID!=null) && !executionID.trim().equals("")) {
+                HzServer.addValueToMultiMap(executionID, key, QueryWrapper.
+                        getDestinationInDataLakeFromDrill(database, collection));
+            } else {
+                HzServer.addValueToMultiMap(key, QueryWrapper.
+                        getDestinationInDataLakeFromDrill(database, collection));
+            }
+        }
+
         for (Object id : ids) {
             DBCursor results = collection1.find(new BasicDBObject(idAttribute, id),
                     MongoUtil.getDBObjFromAttributes(preferredAttributes, removedAttributes));

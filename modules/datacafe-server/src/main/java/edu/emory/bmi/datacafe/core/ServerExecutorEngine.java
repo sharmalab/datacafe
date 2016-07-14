@@ -17,6 +17,7 @@ package edu.emory.bmi.datacafe.core;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;
+import edu.emory.bmi.datacafe.hazelcast.HzServer;
 
 /**
  * The core Data Cafe executor engine singleton
@@ -41,6 +42,7 @@ public final class ServerExecutorEngine {
     private ServerExecutorEngine() {
         ConfigReader.readConfig();
         DataSourcesRegistry.init();
+        HzServer.init();
     }
 
     public static long getStartTime() {

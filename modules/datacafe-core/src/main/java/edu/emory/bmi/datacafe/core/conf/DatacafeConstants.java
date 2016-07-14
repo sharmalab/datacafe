@@ -36,4 +36,18 @@ public final class DatacafeConstants {
     public static final String SQL_WRAP_CHARACTER = "`";
 
     public static final String PERIOD = ".";
+
+    public static final String DEFAULT_HAZELCAST_MULTI_MAP = "default";
+
+    public static final String RELATIONS_MAP_SUFFIX = "_RELATIONS";
+
+    public static final String COLLECTION_INDICES_MAP_SUFFIX = "_COLLECTION_INDICES";
+
+    public static final String META_INDICES_MULTI_MAP_SUFFIX = "_MULTI_META";
+
+    public static final String META_INDICES_SINGLE_MAP_SUFFIX = "_SINGLE_META";
+
+    public static final String DATASOURCES_MAP_ENTRY_KEY = "DATASOURCES";
+
+    public static final String SQL_FROM_ENTRY_KEY = "FROM";
 }

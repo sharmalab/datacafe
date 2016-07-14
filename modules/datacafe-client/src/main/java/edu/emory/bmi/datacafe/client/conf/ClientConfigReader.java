@@ -32,27 +32,22 @@ public class ClientConfigReader extends HzConfigReader {
     private static String drillJdbc;
     private static String drillUsername;
     private static String drillPassword;
-    private static String drillHdfsNameSpace;
 
     /**
      * Initiating Data Cafe from the configuration file.
      */
     public static void readConfig() {
 
+        logger.info("Initiating Data Cafe client from the configurations file");
         HzConfigReader.readConfig();
 
         drillJdbc = prop.getProperty("drillJdbc");
         drillUsername = prop.getProperty("drillUsername");
         drillPassword = prop.getProperty("drillPassword");
-        drillHdfsNameSpace = prop.getProperty("drillHdfsNameSpace");
     }
 
     public static String getDrillJdbc() {
         return drillJdbc;
-    }
-
-    public static String getDrillHdfsNameSpace() {
-        return drillHdfsNameSpace;
     }
 
     public static String getDrillUsername() {

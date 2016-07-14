@@ -29,13 +29,14 @@ import java.util.List;
  */
 public class MongoHDFSIntegratorThread extends Thread {
     private static Logger logger = LogManager.getLogger(MongoHDFSIntegratorThread.class.getName());
-    private static MongoConnector mongoConnector = new MongoConnector();
+    private static MongoConnector mongoConnector;
 
     private String database;
     private String collection;
     private Document document;
     private String dataSourcesName;
     private String[] attributes;
+    private String executionID;
 
     public MongoHDFSIntegratorThread(String database, String collection, Document document,
                                      String dataSourcesName, String[] attributes) {
@@ -44,6 +45,14 @@ public class MongoHDFSIntegratorThread extends Thread {
         this.document = document;
         this.dataSourcesName = dataSourcesName;
         this.attributes = attributes;
+        mongoConnector = new MongoConnector();
+    }
+
+    public MongoHDFSIntegratorThread(String database, String collection, Document document,
+                                     String dataSourcesName, String[] attributes, String executionID) {
+        this(database, collection, document, dataSourcesName, attributes);
+        mongoConnector = new MongoConnector(executionID);
+        this.executionID = executionID;
     }
 
     public void run() {
