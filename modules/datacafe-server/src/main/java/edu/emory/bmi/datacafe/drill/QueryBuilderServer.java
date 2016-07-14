@@ -58,14 +58,12 @@ public class QueryBuilderServer extends HzServer {
         }
         HzServer.addValueToMap(executionID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
                 DatacafeConstants.SQL_FROM_ENTRY_KEY, from);
-        logger.info("From statement at Server: " + from);
-
         return from;
     }
 
     /**
      * Reads an entry from the multi-map
-     * invoke: HzClient.readValuesFromMultiMap("my-distributed-map", "sample-key");
+     * invoke: QueryBuilderServer.readValuesFromMultiMap("my-distributed-map", "sample-key");
      *
      * @param mapName the name of the map
      * @param key     the key
