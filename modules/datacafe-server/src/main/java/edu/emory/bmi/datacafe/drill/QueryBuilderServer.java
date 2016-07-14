@@ -99,7 +99,7 @@ public class QueryBuilderServer extends HzServer {
      * @return the Where statement
      */
     public String buildTheWhereStatement() {
-        String out = "WHERE ";
+        String where = "WHERE ";
         Collection<String> attributes = readValuesFromMultiMap(
                 executionID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
                 DatacafeConstants.ATTRIBUTES_MAP_ENTRY_KEY);
@@ -122,15 +122,16 @@ public class QueryBuilderServer extends HzServer {
                 if (beginning) {
                     beginning = false;
                 } else {
-                    out += " AND ";
+                    where += " AND ";
                 }
                 value = datasources[j] + "." + attribute;
                 HzServer.addValueToMap(executionID + DatacafeConstants.RELATIONS_MAP_SUFFIX, key, value);
-                out += key + "=" + value;
+                where += key + " = " + value;
             }
         }
 
-        logger.info("The WHERE clause is, " + out);
-        return out;
+        HzServer.addValueToMap(executionID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
+                DatacafeConstants.SQL_WHERE_ENTRY_KEY, where);
+        return where;
     }
 }
