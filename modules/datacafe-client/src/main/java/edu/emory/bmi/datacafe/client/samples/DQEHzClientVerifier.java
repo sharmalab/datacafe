@@ -17,6 +17,7 @@ package edu.emory.bmi.datacafe.client.samples;
 
 import edu.emory.bmi.datacafe.client.core.ClientExecutorEngine;
 import edu.emory.bmi.datacafe.client.core.QueryBuilder;
+import edu.emory.bmi.datacafe.client.drill.DrillConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,6 +38,22 @@ public class DQEHzClientVerifier {
             "hdfs.root.`physionet_dicddiagnosis.csv`",
             "hdfs.root.`physionet_dicddiagnosis.csv`",
             "hdfs.root.`physionet_caregivers.csv`"};
+//
+//    public static final String DRILL_SAMPLE_QUERY2 = "SELECT hdfs.root.`physionet_patients.csv`.SUBJECT_ID, " +
+//            "hdfs.root.`physionet_patients.csv`.DOB, " +
+//            "hdfs.root.`physionet_diagnosesicd.csv`.HADM_ID, " +
+//            "hdfs.root.`physionet_dicddiagnosis.csv`.ICD9_CODE, " +
+//            "hdfs.root.`physionet_dicddiagnosis.csv`.SHORT_TITLE, " +
+//            "hdfs.root.`physionet_caregivers.csv`.DESCRIPTION " +
+//            "FROM hdfs.root.`physionet_patients.csv`,\n" +
+//            "hdfs.root.`physionet_diagnosesicd.csv`,\n" +
+//            "hdfs.root.`physionet_dicddiagnosis.csv`,\n" +
+//            "hdfs.root.`physionet_datetimeevents.csv`,\n" +
+//            "hdfs.root.`physionet_caregivers.csv`\n" +
+//            "WHERE hdfs.root.`physionet_patients.csv`.SUBJECT_ID = hdfs.root.`physionet_diagnosesicd.csv`.SUBJECT_ID AND " +
+//            "hdfs.root.`physionet_diagnosesicd.csv`.ICD9_CODE = hdfs.root.`physionet_dicddiagnosis.csv`.ICD9_CODE AND " +
+//            "hdfs.root.`physionet_datetimeevents.csv`.SUBJECT_ID = hdfs.root.`physionet_patients.csv`.SUBJECT_ID AND " +
+//            "hdfs.root.`physionet_datetimeevents.csv`.CGID = hdfs.root.`physionet_caregivers.csv`.CGID";
 
     public static final String DRILL_SAMPLE_QUERY = "SELECT t1.SUBJECT_ID, t1.DOB, t2.HADM_ID, t3.ICD9_CODE, t3.SHORT_TITLE, t5.DESCRIPTION\n" +
             "FROM hdfs.root.`physionet_patients.csv` t1,\n" +
@@ -52,6 +69,8 @@ public class DQEHzClientVerifier {
         ClientExecutorEngine.init();
         QueryBuilder queryBuilder = new QueryBuilder(executionId);
         queryBuilder.displayAllDataSources();
+
+        DrillConnector.executeQuery(DRILL_SAMPLE_QUERY, 6);
 
         if (DRILL_SAMPLE_QUERY.trim().equals(derivedQueryFromHazelcast.trim())) {
             logger.info("The derived Query is equal to the static query");
