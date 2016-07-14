@@ -24,6 +24,7 @@ import com.mongodb.client.FindIterable;
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.MongoConstants;
 import edu.emory.bmi.datacafe.core.DataCafeUtil;
+import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
 import edu.emory.bmi.datacafe.core.conf.QueryWrapper;
 import edu.emory.bmi.datacafe.core.kernel.AbstractDataSourceConnector;
 import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;
@@ -208,6 +209,10 @@ public class MongoConnector extends AbstractDataSourceConnector {
         DBCollection collection1 = mongoCollection.getCollection();
         List<String> dbCursors = new ArrayList<>();
         Set<String> keySet = collection1.findOne().keySet();
+
+
+        HzServer.addValueToMultiMap(executionID, DatacafeConstants.DATASOURCES_MAP_ENTRY_KEY, QueryWrapper.
+                getDestinationInDataLakeFromDrill(database, collection));
 
         for (String key: keySet) {
             if ((executionID!=null) && !executionID.trim().equals("")) {

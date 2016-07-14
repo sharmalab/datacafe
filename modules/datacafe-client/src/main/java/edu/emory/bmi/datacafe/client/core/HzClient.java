@@ -84,20 +84,6 @@ public class HzClient extends HzInstance {
 
 
     /**
-     * Reads an entry from the multi-map
-     * invoke: HzClient.readValuesFromMultiMap("my-distributed-map", "sample-key");
-     *
-     * @param mapName the name of the map
-     * @param key     the key
-     * @return the values of the entry.
-     */
-    public static Collection<String> readValuesFromMultiMapThroughClient(String mapName, String key) {
-        MultiMap<String, String> map = clientInstance.getMultiMap(mapName);
-        return map.get(key);
-    }
-
-
-    /**
      * Reads an entry from the map
      * invoke: HzClient.readValues("my-distributed-map", "sample-key");
      *
@@ -106,19 +92,6 @@ public class HzClient extends HzInstance {
      * @return the value of the entry.
      */
     public static String readValues(String mapName, String key) {
-        ConcurrentMap<String, String> map = clientInstance.getMap(mapName);
-        return map.get(key);
-    }
-
-    /**
-     * Reads an entry from the map
-     * invoke: HzClient.readValues("my-distributed-map", "sample-key");
-     *
-     * @param mapName the name of the map
-     * @param key     the key
-     * @return the value of the entry.
-     */
-    public static String readValuesThroughClient(String mapName, String key) {
         ConcurrentMap<String, String> map = clientInstance.getMap(mapName);
         return map.get(key);
     }

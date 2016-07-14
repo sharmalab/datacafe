@@ -19,6 +19,8 @@ import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Collection;
+
 /**
  * Builds an SQL query from the user provided information. Supporting schema-less queries.
  */
@@ -51,5 +53,21 @@ public class QueryBuilder {
         for (String attribute: attributes) {
             HzClient.printValuesFromMultiMap(executionID, attribute);
         }
+    }
+
+    /**
+     * Get all the data sources in the data lake.
+     * @return the data sources in the lake.
+     */
+    public Collection<String> getDataSources() {
+        return HzClient.readValuesFromMultiMap(executionID, DatacafeConstants.DATASOURCES_MAP_ENTRY_KEY);
+    }
+
+    /**
+     * Display all the data sources in the data lake.
+     */
+    public void displayAllDataSources() {
+        Collection<String> datasources = getDataSources();
+        datasources.forEach(logger::info);
     }
 }
