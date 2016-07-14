@@ -56,6 +56,7 @@ public class MongoHDFSIntegrator {
     private void buildSQLStatements() {
         QueryBuilderServer queryBuilderServer = new QueryBuilderServer(executionId);
         queryBuilderServer.buildTheFromStatement();
+        queryBuilderServer.buildTheWhereStatement();
         logger.info("SQL Constructs Successfully Built and Stored");
     }
 

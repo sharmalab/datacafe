@@ -210,6 +210,13 @@ public class MongoConnector extends AbstractDataSourceConnector {
         List<String> dbCursors = new ArrayList<>();
         Set<String> keySet = collection1.findOne().keySet();
 
+        // Remove the mongo _id attribute.
+        if ((MongoConstants.IS_ID_ATTRIBUTE_RANDOM_GENERATED) && (keySet.contains(MongoConstants.ID_ATTRIBUTE))) {
+            keySet.remove(MongoConstants.ID_ATTRIBUTE);
+        }
+
+        HzServer.addValuesToMultiMap(executionID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
+                DatacafeConstants.ATTRIBUTES_MAP_ENTRY_KEY, keySet);
 
         HzServer.addValueToMultiMap(executionID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
                 DatacafeConstants.DATASOURCES_MAP_ENTRY_KEY, QueryWrapper.

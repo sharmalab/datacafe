@@ -27,4 +27,6 @@ public final class MongoConstants {
     }
 
     public static final String ID_ATTRIBUTE = "_id";
+
+    public static final boolean IS_ID_ATTRIBUTE_RANDOM_GENERATED = true;
 }
