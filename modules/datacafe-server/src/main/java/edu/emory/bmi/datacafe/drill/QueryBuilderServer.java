@@ -22,6 +22,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Builds and stores relationships in Hazelcast server cluster for the data sources.
@@ -33,6 +34,8 @@ public class QueryBuilderServer extends HzServer {
     public QueryBuilderServer(String executionID) {
         this.executionID = executionID;
     }
+
+
     /**
      * Builds the From statement
      *
@@ -61,6 +64,7 @@ public class QueryBuilderServer extends HzServer {
         return from;
     }
 
+
     /**
      * Reads an entry from the multi-map
      * invoke: QueryBuilderServer.readValuesFromMultiMap("my-distributed-map", "sample-key");
@@ -69,8 +73,64 @@ public class QueryBuilderServer extends HzServer {
      * @param key     the key
      * @return the values of the entry.
      */
-    public static Collection<String> readValuesFromMultiMap(String mapName, String key) {
+    public Collection<String> readValuesFromMultiMap(String mapName, String key) {
         MultiMap<String, String> map = firstInstance.getMultiMap(mapName);
         return map.get(key);
+    }
+
+
+    /**
+     * Reads an entry from the map
+     * invoke: QueryBuilderServer.readValuesFromMultiMap("my-distributed-map", "sample-key");
+     *
+     * @param mapName the name of the map
+     * @param key     the key
+     * @return the value of the entry.
+     */
+    public String readValuesFromMap(String mapName, String key) {
+        ConcurrentMap<String, String> map = firstInstance.getMap(mapName);
+        return map.get(key);
+    }
+
+
+    /**
+     * Builds the Where statement
+     *
+     * @return the Where statement
+     */
+    public String buildTheWhereStatement() {
+        String out = "WHERE ";
+        Collection<String> attributes = readValuesFromMultiMap(
+                executionID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
+                DatacafeConstants.ATTRIBUTES_MAP_ENTRY_KEY);
+
+        boolean beginning = true;
+
+        for (String attribute : attributes) {
+            Collection<String> rawDataSources = readValuesFromMultiMap(executionID, attribute);
+            String[] datasources = new String[rawDataSources.size()];
+            String key;
+            String value;
+            int i = 0;
+            for (String rawDataSource : rawDataSources) {
+                datasources[i++] = readValuesFromMap(executionID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX,
+                        rawDataSource);
+            }
+            key = datasources[0] + "." + attribute;
+
+            for (int j = 1; j < rawDataSources.size(); j++) {
+                if (beginning) {
+                    beginning = false;
+                } else {
+                    out += " AND ";
+                }
+                value = datasources[j] + "." + attribute;
+                HzServer.addValueToMap(executionID + DatacafeConstants.RELATIONS_MAP_SUFFIX, key, value);
+                out += key + "=" + value;
+            }
+        }
+
+        logger.info("The WHERE clause is, " + out);
+        return out;
     }
 }
