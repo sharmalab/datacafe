@@ -42,4 +42,8 @@ public final class DatacafeConstants {
     public static final String DATASOURCES_MAP_ENTRY_KEY = "DATASOURCES";
 
     public static final String RELATIONS_MAP_SUFFIX = "_RELATIONS";
+
+    public static final String COLLECTION_INDICES_MAP = "COLLECTION_INDICES";
+
+    public static final String SELECT_SUFFIX_FOR_COLLECTION_INDICES_MAP = "_SELECT";
 }

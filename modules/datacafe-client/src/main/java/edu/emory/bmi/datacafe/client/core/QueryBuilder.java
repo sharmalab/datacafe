@@ -30,7 +30,7 @@ public class QueryBuilder {
     private static Logger logger = LogManager.getLogger(QueryBuilder.class.getName());
 
     private String executionID;
-    private Map<String, String> collectionIndexMap = new HashMap<>();
+    private Map<String, String> COLLECTION_INDICES_MAP = new HashMap<>();
     private String[] attributes;
     private String[] collections;
 
@@ -94,8 +94,8 @@ public class QueryBuilder {
         String index;
 
         for (String datasource: datasources) {
-            index = "t"+i++;
-            collectionIndexMap.put(datasource, index);
+            index = executionID+i++;
+            COLLECTION_INDICES_MAP.put(datasource, index);
             from += datasource + " " + index;
             if (i <= datasources.size()) {
                 from += ",\n";
@@ -110,7 +110,7 @@ public class QueryBuilder {
     private String buildSelectStatement() {
         String out = "SELECT ";
         for (int i = 0; i < collections.length; i++) {
-            out += collectionIndexMap.get(collections[i]) + "." + attributes[i];
+            out += COLLECTION_INDICES_MAP.get(collections[i]) + "." + attributes[i];
             if (i < collections.length - 1) {
                 out += ", ";
             } else {
