@@ -211,7 +211,8 @@ public class MongoConnector extends AbstractDataSourceConnector {
         Set<String> keySet = collection1.findOne().keySet();
 
 
-        HzServer.addValueToMultiMap(executionID, DatacafeConstants.DATASOURCES_MAP_ENTRY_KEY, QueryWrapper.
+        HzServer.addValueToMultiMap(executionID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
+                DatacafeConstants.DATASOURCES_MAP_ENTRY_KEY, QueryWrapper.
                 getDestinationInDataLakeFromDrill(database, collection));
 
         for (String key: keySet) {

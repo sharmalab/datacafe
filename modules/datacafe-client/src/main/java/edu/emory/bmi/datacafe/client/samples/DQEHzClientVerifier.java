@@ -16,7 +16,7 @@
 package edu.emory.bmi.datacafe.client.samples;
 
 import edu.emory.bmi.datacafe.client.core.ClientExecutorEngine;
-import edu.emory.bmi.datacafe.client.core.QueryBuilder;
+import edu.emory.bmi.datacafe.client.core.QueryBuilderClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,8 +50,8 @@ public class DQEHzClientVerifier {
 
     public static void main(String[] args) {
         ClientExecutorEngine.init();
-        QueryBuilder queryBuilder = new QueryBuilder(executionId, attributes, collections);
-        derivedQueryFromHazelcast = queryBuilder.buildQueryStatement();
+        QueryBuilderClient queryBuilderClient = new QueryBuilderClient(executionId, attributes, collections);
+        derivedQueryFromHazelcast = queryBuilderClient.buildQueryStatement();
 
 //        DrillConnector.executeQuery(DRILL_SAMPLE_QUERY, 6);
 
@@ -61,6 +61,6 @@ public class DQEHzClientVerifier {
             logger.info("The derived query is: " + derivedQueryFromHazelcast);
         }
 
-        queryBuilder.displayTablesWithAttribute(attributes);
+        queryBuilderClient.displayTablesWithAttribute(attributes);
     }
 }

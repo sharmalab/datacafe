@@ -16,7 +16,7 @@
 package edu.emory.bmi.datacafe.mongo;
 
 import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;
-import edu.emory.bmi.datacafe.hazelcast.HzServer;
+import edu.emory.bmi.datacafe.drill.QueryBuilderServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
@@ -50,6 +50,13 @@ public class MongoHDFSIntegrator {
                     documents[i], dataSourcesNames[i], attributes[i], executionId);
             mongoHDFSIntegratorThreads[i].start();
         }
+        buildAfterThreadCompletion(collections, mongoHDFSIntegratorThreads);
+    }
+
+    private void buildSQLStatements() {
+        QueryBuilderServer queryBuilderServer = new QueryBuilderServer(executionId);
+        queryBuilderServer.buildTheFromStatement();
+        logger.info("SQL Constructs Successfully Built and Stored");
     }
 
     /**
@@ -68,5 +75,17 @@ public class MongoHDFSIntegrator {
                     documents[i], dataSourcesNames[i], null, executionId);
             mongoHDFSIntegratorThreads[i].start();
         }
+        buildAfterThreadCompletion(collections, mongoHDFSIntegratorThreads);
+    }
+
+    private void buildAfterThreadCompletion(String[] collections, MongoHDFSIntegratorThread[] mongoHDFSIntegratorThreads) {
+        for (int i = 0; i < collections.length; i++) {
+            try {
+                mongoHDFSIntegratorThreads[i].join();
+            } catch (InterruptedException e) {
+                logger.error("The thread join has been interrupted.", e);
+            }
+        }
+        buildSQLStatements();
     }
 }
