@@ -17,7 +17,6 @@ package edu.emory.bmi.datacafe.client.samples;
 
 import edu.emory.bmi.datacafe.client.core.ClientExecutorEngine;
 import edu.emory.bmi.datacafe.client.core.QueryBuilder;
-import edu.emory.bmi.datacafe.client.drill.DrillConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,12 +46,12 @@ public class DQEHzClientVerifier {
             "hdfs.root.`physionet_caregivers.csv` t5\n" +
             "WHERE t1.SUBJECT_ID = t2.SUBJECT_ID AND t2.ICD9_CODE = t3.ICD9_CODE AND t4.SUBJECT_ID = t1.SUBJECT_ID AND t4.CGID = t5.CGID";
 
-    public static String derivedQueryFromHazelcast = "";
+    public static String derivedQueryFromHazelcast;
 
     public static void main(String[] args) {
         ClientExecutorEngine.init();
-        QueryBuilder queryBuilder = new QueryBuilder(executionId);
-        logger.info(queryBuilder.buildFromStatement());
+        QueryBuilder queryBuilder = new QueryBuilder(executionId, attributes, collections);
+        derivedQueryFromHazelcast = queryBuilder.buildQueryStatement();
 
 //        DrillConnector.executeQuery(DRILL_SAMPLE_QUERY, 6);
 

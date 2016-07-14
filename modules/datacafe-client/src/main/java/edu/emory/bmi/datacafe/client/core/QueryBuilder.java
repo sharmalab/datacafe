@@ -31,6 +31,14 @@ public class QueryBuilder {
 
     private String executionID;
     private Map<String, String> collectionIndexMap = new HashMap<>();
+    private String[] attributes;
+    private String[] collections;
+
+    public QueryBuilder(String executionID, String[] attributes, String[] collections) {
+        this.executionID = executionID;
+        this.attributes = attributes;
+        this.collections = collections;
+    }
 
     public QueryBuilder(String executionID) {
         this.executionID = executionID;
@@ -75,21 +83,36 @@ public class QueryBuilder {
     }
 
     /**
-     * Builds the FROM statement
-     * @return the FROM statement
+     * Builds the Query statement
+     * @return the Query statement
      */
-    public String buildFromStatement() {
+    public String buildQueryStatement() {
         Collection<String> datasources = getDataSources();
-        String out = "FROM ";
+        String out;
+        String from = "FROM ";
         int i = 1;
         String index;
 
         for (String datasource: datasources) {
             index = "t"+i++;
             collectionIndexMap.put(datasource, index);
-            out += datasource + " " + index;
-            if (i < datasources.size()) {
-                out += ",\n";
+            from += datasource + " " + index;
+            if (i <= datasources.size()) {
+                from += ",\n";
+            } else {
+                from += "\n";
+            }
+        }
+        out = buildSelectStatement() + from;
+        return out;
+    }
+
+    private String buildSelectStatement() {
+        String out = "SELECT ";
+        for (int i = 0; i < collections.length; i++) {
+            out += collectionIndexMap.get(collections[i]) + "." + attributes[i];
+            if (i < collections.length - 1) {
+                out += ", ";
             } else {
                 out += "\n";
             }
