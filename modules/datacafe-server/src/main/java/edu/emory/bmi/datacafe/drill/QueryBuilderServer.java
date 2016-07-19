@@ -197,6 +197,8 @@ public class QueryBuilderServer extends HzServer {
                 where += collection + "." + attribute + " = "  + secondaryCollection + "." + attribute;
             }
         }
+        HzServer.addValueToMap(executionID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
+                DatacafeConstants.SQL_WHERE_ENTRY_KEY, where);
         return where;
     }
 }

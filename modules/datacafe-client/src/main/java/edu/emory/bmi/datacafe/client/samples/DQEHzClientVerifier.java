@@ -54,14 +54,6 @@ public class DQEHzClientVerifier {
         QueryBuilderClient queryBuilderClient = new QueryBuilderClient(executionId, attributes, collections);
         derivedQueryFromHazelcast = queryBuilderClient.buildQueryStatement();
 
-        derivedQueryFromHazelcast = "SELECT PhysioNetIntegratedExecutor6.SUBJECT_ID, PhysioNetIntegratedExecutor6.DOB, PhysioNetIntegratedExecutor5.HADM_ID, PhysioNetIntegratedExecutor4.ICD9_CODE, PhysioNetIntegratedExecutor4.SHORT_TITLE, PhysioNetIntegratedExecutor1.DESCRIPTION\n" +
-                "FROM hdfs.root.`physionet_caregivers.csv` PhysioNetIntegratedExecutor1,\n" +
-                "hdfs.root.`physionet_datetimeevents.csv` PhysioNetIntegratedExecutor2,\n" +
-                "hdfs.root.`physionet_dlabitems.csv` PhysioNetIntegratedExecutor3,\n" +
-                "hdfs.root.`physionet_dicddiagnosis.csv` PhysioNetIntegratedExecutor4,\n" +
-                "hdfs.root.`physionet_diagnosesicd.csv` PhysioNetIntegratedExecutor5,\n" +
-                "hdfs.root.`physionet_patients.csv` PhysioNetIntegratedExecutor6\n" +
-                "WHERE PhysioNetIntegratedExecutor5.SUBJECT_ID = PhysioNetIntegratedExecutor2.SUBJECT_ID AND PhysioNetIntegratedExecutor5.SUBJECT_ID = PhysioNetIntegratedExecutor6.SUBJECT_ID AND PhysioNetIntegratedExecutor1.LABEL = PhysioNetIntegratedExecutor3.LABEL AND PhysioNetIntegratedExecutor1.CGID = PhysioNetIntegratedExecutor2.CGID AND PhysioNetIntegratedExecutor5.ICD9_CODE = PhysioNetIntegratedExecutor4.ICD9_CODE AND PhysioNetIntegratedExecutor1.ROW_ID = PhysioNetIntegratedExecutor2.ROW_ID AND PhysioNetIntegratedExecutor1.ROW_ID = PhysioNetIntegratedExecutor3.ROW_ID AND PhysioNetIntegratedExecutor1.ROW_ID = PhysioNetIntegratedExecutor4.ROW_ID AND PhysioNetIntegratedExecutor1.ROW_ID = PhysioNetIntegratedExecutor5.ROW_ID AND PhysioNetIntegratedExecutor1.ROW_ID = PhysioNetIntegratedExecutor6.ROW_ID AND PhysioNetIntegratedExecutor5.HADM_ID = PhysioNetIntegratedExecutor2.HADM_ID AND PhysioNetIntegratedExecutor2.ITEMID = PhysioNetIntegratedExecutor3.ITEMID";
 
 //        DrillConnector.executeQuery(DRILL_SAMPLE_QUERY, 6);
         DrillConnector.executeQuery(derivedQueryFromHazelcast, 6);
@@ -69,7 +61,7 @@ public class DQEHzClientVerifier {
         if (DRILL_SAMPLE_QUERY.trim().equals(derivedQueryFromHazelcast.trim())) {
             logger.info("The derived Query is equal to the static query");
         } else {
-            logger.info("The derived query is: " + derivedQueryFromHazelcast);
+            logger.info("The derived query is: \n" + derivedQueryFromHazelcast);
         }
     }
 }
