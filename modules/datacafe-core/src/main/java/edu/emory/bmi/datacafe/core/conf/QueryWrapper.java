@@ -39,4 +39,15 @@ public final class QueryWrapper {
                 DataSourcesRegistry.sqlWrapTheDataSource(
                         DataSourcesRegistry.getFullDSNameWithExtension(database, collection));
     }
+
+    /**
+     * Get the destination from drill, if the original data sources are known.
+     *
+     * @param dataSource   the source: database_collection.
+     * @return the destination, complete reference.
+     */
+    public static String getDestinationInDataLakeFromDrill(String dataSource) {
+        return HzConfigReader.getDrillHdfsNameSpace() + DatacafeConstants.PERIOD +
+                DataSourcesRegistry.sqlWrapTheDataSource(DataSourcesRegistry.getFullDSNameWithExtension(dataSource));
+    }
 }

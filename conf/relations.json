@@ -1,0 +1,13 @@
+{
+	"physionet_dicddiagnosis": {
+		"physionet_diagnosesicd": "ICD9_CODE"
+	},
+	"physionet_datetimeevents": {
+		"physionet_patients": "SUBJECT_ID",
+		"physionet_caregivers": "CGID"
+	},
+	"physionet_diagnosesicd": {
+		"physionet_patients": "SUBJECT_ID",
+		"physionet_dicddiagnosis": "ICD9_CODE"
+	}
+}

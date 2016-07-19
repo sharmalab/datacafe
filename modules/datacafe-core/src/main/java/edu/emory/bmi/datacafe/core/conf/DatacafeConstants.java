@@ -33,6 +33,11 @@ public final class DatacafeConstants {
 
     public static final String DATACAFE_PROPERTIES_FILE = "conf/datacafe.properties";
 
+    public static final String RELATIONS_DATA_FILE = "conf/relations.json";
+
+    public static final String RELATIONS_DATA_FILE_ALT = new File(".").getAbsolutePath() +
+            "/../../conf/relations.json";
+
     public static final String SQL_WRAP_CHARACTER = "`";
 
     public static final String PERIOD = ".";
@@ -40,6 +45,8 @@ public final class DatacafeConstants {
     public static final String DEFAULT_HAZELCAST_MULTI_MAP = "default";
 
     public static final String RELATIONS_MAP_SUFFIX = "_RELATIONS";
+
+    public static final String LINKS_TO_MAP_SUFFIX = "_LINKS_TO_";
 
     public static final String COLLECTION_INDICES_MAP_SUFFIX = "_COLLECTION_INDICES";
 
