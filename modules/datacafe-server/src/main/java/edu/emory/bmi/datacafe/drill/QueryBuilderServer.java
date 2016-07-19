@@ -189,9 +189,6 @@ public class QueryBuilderServer extends HzServer {
                 HzServer.addValueToMultiMap(executionID + DatacafeConstants.LINKS_TO_MAP_SUFFIX + collection,
                         secondaryCollection, attribute);
 
-                logger.info("Collection: " + collection + " . Secondary Collection: " + secondaryCollection +
-                        " . Attribute: " + attribute);
-
                 if (firstInTheWhere) {
                     firstInTheWhere = false;
                 } else {
