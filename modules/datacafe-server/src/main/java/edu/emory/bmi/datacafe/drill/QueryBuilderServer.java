@@ -38,6 +38,7 @@ import javax.json.JsonReader;
 public class QueryBuilderServer extends HzServer {
     private static Logger logger = LogManager.getLogger(QueryBuilderServer.class.getName());
     private String executionID;
+    private boolean firstInTheWhere = true;
 
     public QueryBuilderServer(String executionID) {
         this.executionID = executionID;
@@ -143,58 +144,13 @@ public class QueryBuilderServer extends HzServer {
         return where;
     }
 
+
     /**
      * Builds the Where statement.
      *
      * @return the Where statement
      */
     public String buildTheWhereStatement() {
-        parse();
-
-        //todo: remove.
-
-        String where = "WHERE ";
-        Collection<String> attributes = readValuesFromMultiMap(
-                executionID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
-                DatacafeConstants.ATTRIBUTES_MAP_ENTRY_KEY);
-
-        boolean beginning = true;
-
-        for (String attribute : attributes) {
-            Collection<String> rawDataSources = readValuesFromMultiMap(executionID, attribute);
-            String[] datasources = new String[rawDataSources.size()];
-            String key;
-            String value;
-            int i = 0;
-            for (String rawDataSource : rawDataSources) {
-                datasources[i++] = readValuesFromMap(executionID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX,
-                        rawDataSource);
-            }
-            key = datasources[0] + "." + attribute;
-
-            for (int j = 1; j < rawDataSources.size(); j++) {
-                if (beginning) {
-                    beginning = false;
-                } else {
-                    where += " AND ";
-                }
-                value = datasources[j] + "." + attribute;
-                HzServer.addValueToMap(executionID + DatacafeConstants.RELATIONS_MAP_SUFFIX, key, value);
-                where += key + " = " + value;
-            }
-        }
-
-        HzServer.addValueToMap(executionID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
-                DatacafeConstants.SQL_WHERE_ENTRY_KEY, where);
-        return where;
-    }
-
-    /**
-     * Parses the JSON file to the Hazelcast maps.
-     *
-     * @return true if successfully parses the JSON into the in-memory data grid.
-     */
-    public void parse() {
         String where = "WHERE ";
 
         InputStream input = null;
@@ -228,13 +184,22 @@ public class QueryBuilderServer extends HzServer {
                 String secondaryCollection = readValuesFromMap(executionID +
                                 DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX, rawSecondaryDataSource);
 
+                String attribute = secondaryCollectionObject.getString(secondaryRawCollection);
+
                 HzServer.addValueToMultiMap(executionID + DatacafeConstants.LINKS_TO_MAP_SUFFIX + collection,
-                        secondaryCollection, String.valueOf(secondaryCollectionObject.get(secondaryRawCollection)));
+                        secondaryCollection, attribute);
 
                 logger.info("Collection: " + collection + " . Secondary Collection: " + secondaryCollection +
-                        " . Attribute: " + String.valueOf(secondaryCollectionObject.get(secondaryRawCollection)));
+                        " . Attribute: " + attribute);
+
+                if (firstInTheWhere) {
+                    firstInTheWhere = false;
+                } else {
+                    where += " AND ";
+                }
+                where += collection + "." + attribute + " = "  + secondaryCollection + "." + attribute;
             }
         }
+        return where;
     }
-
 }
