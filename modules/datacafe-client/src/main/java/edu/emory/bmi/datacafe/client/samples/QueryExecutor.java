@@ -25,8 +25,8 @@ import org.apache.logging.log4j.Logger;
 /**
  * A sample drill query executor.
  */
-public class DQEHzClientVerifier {
-    private static Logger logger = LogManager.getLogger(DQEHzClientVerifier.class.getName());
+public class QueryExecutor {
+    private static Logger logger = LogManager.getLogger(QueryExecutor.class.getName());
     private static final String executionId = "PhysioNetIntegratedExecutor";
 
     private static final String attributes[] = {"SUBJECT_ID", "DOB", "HADM_ID", "ICD9_CODE", "SHORT_TITLE", "DESCRIPTION"};
@@ -39,14 +39,6 @@ public class DQEHzClientVerifier {
             "hdfs.root.`physionet_dicddiagnosis.csv`",
             "hdfs.root.`physionet_caregivers.csv`"};
 
-    public static final String DRILL_SAMPLE_QUERY = "SELECT PhysioNetIntegratedExecutor1.SUBJECT_ID, PhysioNetIntegratedExecutor1.DOB, PhysioNetIntegratedExecutor2.HADM_ID, PhysioNetIntegratedExecutor3.ICD9_CODE, PhysioNetIntegratedExecutor3.SHORT_TITLE, PhysioNetIntegratedExecutor5.DESCRIPTION " +
-            "FROM hdfs.root.`physionet_patients.csv` PhysioNetIntegratedExecutor1,\n" +
-            "hdfs.root.`physionet_diagnosesicd.csv` PhysioNetIntegratedExecutor2,\n" +
-            "hdfs.root.`physionet_dicddiagnosis.csv` PhysioNetIntegratedExecutor3,\n" +
-            "hdfs.root.`physionet_datetimeevents.csv` PhysioNetIntegratedExecutor4,\n" +
-            "hdfs.root.`physionet_caregivers.csv` PhysioNetIntegratedExecutor5\n" +
-            "WHERE PhysioNetIntegratedExecutor3.ICD9_CODE = PhysioNetIntegratedExecutor2.ICD9_CODE AND PhysioNetIntegratedExecutor4.SUBJECT_ID = PhysioNetIntegratedExecutor1.SUBJECT_ID AND PhysioNetIntegratedExecutor4.CGID = PhysioNetIntegratedExecutor5.CGID AND PhysioNetIntegratedExecutor2.SUBJECT_ID = PhysioNetIntegratedExecutor1.SUBJECT_ID AND PhysioNetIntegratedExecutor2.ICD9_CODE = PhysioNetIntegratedExecutor3.ICD9_CODE";
-
     public static String derivedQueryFromHazelcast;
 
     public static void main(String[] args) {
@@ -54,13 +46,6 @@ public class DQEHzClientVerifier {
         QueryBuilderClient queryBuilderClient = new QueryBuilderClient(executionId, attributes, collections);
         derivedQueryFromHazelcast = queryBuilderClient.buildQueryStatement();
 
-
         DrillConnector.executeQuery(derivedQueryFromHazelcast, 6);
-
-        if (DRILL_SAMPLE_QUERY.trim().equals(derivedQueryFromHazelcast.trim())) {
-            logger.info("The derived Query is equal to the static query");
-        } else {
-            logger.info("The derived query is: \n" + derivedQueryFromHazelcast);
-        }
     }
 }
