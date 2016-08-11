@@ -46,6 +46,46 @@ public class HzServer extends HzInstance{
 
 
     /**
+     * Reads an entry from the multi-map
+     * invoke: QueryBuilderServer.readValuesFromMultiMap("my-distributed-map", "sample-key");
+     *
+     * @param mapName the name of the map
+     * @param key     the key
+     * @return the values of the entry.
+     */
+    public Collection<String> readValuesFromMultiMap(String mapName, String key) {
+        MultiMap<String, String> map = firstInstance.getMultiMap(mapName);
+        return map.get(key);
+    }
+
+
+    /**
+     * Reads an entry from the map
+     * invoke: QueryBuilderServer.readValuesFromMultiMap("my-distributed-map", "sample-key");
+     *
+     * @param mapName the name of the map
+     * @param key     the key
+     * @return the value of the entry.
+     */
+    public String readValuesFromMap(String mapName, String key) {
+        ConcurrentMap<String, String> map = firstInstance.getMap(mapName);
+        return map.get(key);
+    }
+
+
+    /**
+     * Get keys from a map.
+     *
+     * @param mapName the name of the map
+     * @return the collection of keys.
+     */
+    public Collection<String> getKeysFromMap(String mapName) {
+        ConcurrentMap<String, String> map = firstInstance.getMap(mapName);
+        return map.keySet();
+    }
+
+
+    /**
      * Adds an entry to a multi-map. The beauty is, each key can have multiple value entries.
      * invoke: HzServer.addValueToMultiMap("my-distributed-map", "sample-key", "sample-value");
      * @param mapName the name of the map

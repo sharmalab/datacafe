@@ -50,6 +50,8 @@ public final class DatacafeConstants {
 
     public static final String COLLECTION_INDICES_MAP_SUFFIX = "_COLLECTION_INDICES";
 
+    public static final String CHOSEN_COLLECTIONS_MAP_SUFFIX = "_CHOSEN_COLLECTIONS";
+
     public static final String META_INDICES_MULTI_MAP_SUFFIX = "_MULTI_META";
 
     public static final String META_INDICES_SINGLE_MAP_SUFFIX = "_SINGLE_META";

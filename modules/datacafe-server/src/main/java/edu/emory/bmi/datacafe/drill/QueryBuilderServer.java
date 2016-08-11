@@ -46,102 +46,31 @@ public class QueryBuilderServer extends HzServer {
 
 
     /**
+     * Build the from and where statements. Execution order matters. Do not change it. As of now, the construction of
+     * From statement has a dependency on the construction of the where statement.
+     */
+    public void buildStatements() {
+        populateDataSourceIndicesMap();
+        buildTheWhereStatement();
+        buildTheFromStatement();
+    }
+
+
+    /**
      * Builds the From statement
      *
-     * @return the From statement
      */
-    public String buildTheFromStatement() {
+    private void populateDataSourceIndicesMap() {
         Collection<String> datasources = readValuesFromMultiMap(
                 executionID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
                 DatacafeConstants.DATASOURCES_MAP_ENTRY_KEY);
-        String from = "FROM ";
         int i = 1;
         String index;
 
         for (String datasource : datasources) {
             index = executionID + i++;
             addValueToMap(executionID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX, datasource, index);
-            from += datasource + " " + index;
-            if (i <= datasources.size()) {
-                from += ",\n";
-            } else {
-                from += "\n";
-            }
         }
-        HzServer.addValueToMap(executionID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
-                DatacafeConstants.SQL_FROM_ENTRY_KEY, from);
-        return from;
-    }
-
-
-    /**
-     * Reads an entry from the multi-map
-     * invoke: QueryBuilderServer.readValuesFromMultiMap("my-distributed-map", "sample-key");
-     *
-     * @param mapName the name of the map
-     * @param key     the key
-     * @return the values of the entry.
-     */
-    public Collection<String> readValuesFromMultiMap(String mapName, String key) {
-        MultiMap<String, String> map = firstInstance.getMultiMap(mapName);
-        return map.get(key);
-    }
-
-
-    /**
-     * Reads an entry from the map
-     * invoke: QueryBuilderServer.readValuesFromMultiMap("my-distributed-map", "sample-key");
-     *
-     * @param mapName the name of the map
-     * @param key     the key
-     * @return the value of the entry.
-     */
-    public String readValuesFromMap(String mapName, String key) {
-        ConcurrentMap<String, String> map = firstInstance.getMap(mapName);
-        return map.get(key);
-    }
-
-
-    /**
-     * Builds the Where statement when no relations.json was present.
-     *
-     * @return the Where statement
-     */
-    public String buildTheWhereStatementNoJSON() {
-        String where = "WHERE ";
-        Collection<String> attributes = readValuesFromMultiMap(
-                executionID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
-                DatacafeConstants.ATTRIBUTES_MAP_ENTRY_KEY);
-
-        boolean beginning = true;
-
-        for (String attribute : attributes) {
-            Collection<String> rawDataSources = readValuesFromMultiMap(executionID, attribute);
-            String[] datasources = new String[rawDataSources.size()];
-            String key;
-            String value;
-            int i = 0;
-            for (String rawDataSource : rawDataSources) {
-                datasources[i++] = readValuesFromMap(executionID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX,
-                        rawDataSource);
-            }
-            key = datasources[0] + "." + attribute;
-
-            for (int j = 1; j < rawDataSources.size(); j++) {
-                if (beginning) {
-                    beginning = false;
-                } else {
-                    where += " AND ";
-                }
-                value = datasources[j] + "." + attribute;
-                HzServer.addValueToMap(executionID + DatacafeConstants.RELATIONS_MAP_SUFFIX, key, value);
-                where += key + " = " + value;
-            }
-        }
-
-        HzServer.addValueToMap(executionID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
-                DatacafeConstants.SQL_WHERE_ENTRY_KEY, where);
-        return where;
     }
 
 
@@ -150,7 +79,7 @@ public class QueryBuilderServer extends HzServer {
      *
      * @return the Where statement
      */
-    public String buildTheWhereStatement() {
+    private String buildTheWhereStatement() {
         String where = "WHERE ";
 
         InputStream input = null;
@@ -176,6 +105,8 @@ public class QueryBuilderServer extends HzServer {
             String collection = readValuesFromMap(executionID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX,
                     rawDataSource);
 
+            addValueToMap(executionID + DatacafeConstants.CHOSEN_COLLECTIONS_MAP_SUFFIX, rawDataSource, collection);
+
             JsonObject secondaryCollectionObject = jsonObject.getJsonObject(rawCollection);
 
             Set<String> secondaryCollections = secondaryCollectionObject.keySet();
@@ -183,6 +114,9 @@ public class QueryBuilderServer extends HzServer {
                 String rawSecondaryDataSource = QueryWrapper.getDestinationInDataLakeFromDrill(secondaryRawCollection);
                 String secondaryCollection = readValuesFromMap(executionID +
                                 DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX, rawSecondaryDataSource);
+
+                addValueToMap(executionID + DatacafeConstants.CHOSEN_COLLECTIONS_MAP_SUFFIX, rawSecondaryDataSource,
+                        secondaryCollection);
 
                 String attribute = secondaryCollectionObject.getString(secondaryRawCollection);
 
@@ -200,5 +134,31 @@ public class QueryBuilderServer extends HzServer {
         HzServer.addValueToMap(executionID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
                 DatacafeConstants.SQL_WHERE_ENTRY_KEY, where);
         return where;
+    }
+
+    /**
+     * Builds the From statement
+     *
+     * @return the From statement
+     */
+    private String buildTheFromStatement() {
+        Collection<String> rawDataSources = getKeysFromMap(executionID + DatacafeConstants.CHOSEN_COLLECTIONS_MAP_SUFFIX);
+        String from = "FROM ";
+        int i = 1;
+        String index;
+
+        for (String rawDataSource : rawDataSources) {
+            i++;
+            index = readValuesFromMap(executionID + DatacafeConstants.CHOSEN_COLLECTIONS_MAP_SUFFIX, rawDataSource);
+            from += rawDataSource + " " + index;
+            if (i <= rawDataSources.size()) {
+                from += ",\n";
+            } else {
+                from += "\n";
+            }
+        }
+        HzServer.addValueToMap(executionID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
+                DatacafeConstants.SQL_FROM_ENTRY_KEY, from);
+        return from;
     }
 }
