@@ -8,6 +8,15 @@ Refer to the relevant files in documentation for detailed instructions on each o
 
 ## Configure the original data sources.
 
+* Start MongoDB.
+
+ $ sudo systemctl start mongodb
+
+
+* You may choose to configure MongoDB to start at the system start-up time.
+
+ $ sudo systemctl enable mongodb
+
 
 ## Configure Hadoop 
 
@@ -82,6 +91,25 @@ Samples are provided in the datacafe-samples module.
 For example, to execute the clinical-1 sample,
 
  $ java -classpath lib/datacafe-samples-1.0-SNAPSHOT.jar:lib/*:conf/ main.java.edu.emory.bmi.datacafe.impl.clinical1.main.Initiator
+
+
+## Dependencies
+
+This project depends on the below major projects.
+
+* Hazelcast
+
+* MongoDB
+
+* Apache Hadoop
+
+* Apache Hive
+
+* Apache Drill
+
+* Apache Log4j2
+
+* MySQL
 
 
 ## Using Data Cafe in your research
