@@ -93,6 +93,10 @@ For example, to execute the clinical-1 sample,
  $ java -classpath lib/datacafe-samples-1.0-SNAPSHOT.jar:lib/*:conf/ main.java.edu.emory.bmi.datacafe.impl.clinical1.main.Initiator
 
 
+PhysioNetIntegratedExecutor offers a server sample with Mongo as the original data source and HDFS as the integrated 
+data source. DrillQueryExecutor and DQEHzClientVerifier on the other hand, offer the client implementations.
+
+
 ## Dependencies
 
 This project depends on the below major projects.
