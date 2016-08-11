@@ -87,7 +87,10 @@ public class QueryBuilderClient {
     public String buildQueryStatement() {
         String from = HzClient.readValues(executionID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
                 DatacafeConstants.SQL_FROM_ENTRY_KEY);
-        return buildSelectStatement() + from;
+        String where = HzClient.readValues(executionID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
+                DatacafeConstants.SQL_WHERE_ENTRY_KEY);
+
+        return buildSelectStatement() + from + where;
     }
 
     private String buildSelectStatement() {

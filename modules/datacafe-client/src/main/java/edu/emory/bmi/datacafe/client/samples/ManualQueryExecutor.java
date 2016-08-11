@@ -16,27 +16,16 @@
 package edu.emory.bmi.datacafe.client.samples;
 
 import edu.emory.bmi.datacafe.client.core.ClientExecutorEngine;
-import edu.emory.bmi.datacafe.client.core.QueryBuilderClient;
+import edu.emory.bmi.datacafe.client.drill.DrillConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
 /**
- * A sample drill query executor.
- */
-public class DQEHzClientVerifier {
-    private static Logger logger = LogManager.getLogger(DQEHzClientVerifier.class.getName());
-    private static final String executionId = "PhysioNetIntegratedExecutor";
-
-    private static final String attributes[] = {"SUBJECT_ID", "DOB", "HADM_ID", "ICD9_CODE", "SHORT_TITLE", "DESCRIPTION"};
-
-    private static final String collections[] = {
-            "hdfs.root.`physionet_patients.csv`",
-            "hdfs.root.`physionet_patients.csv`",
-            "hdfs.root.`physionet_diagnosesicd.csv`",
-            "hdfs.root.`physionet_dicddiagnosis.csv`",
-            "hdfs.root.`physionet_dicddiagnosis.csv`",
-            "hdfs.root.`physionet_caregivers.csv`"};
+* A sample drill query executor.
+*/
+public class ManualQueryExecutor {
+    private static Logger logger = LogManager.getLogger(ManualQueryExecutor.class.getName());
 
     public static final String DRILL_SAMPLE_QUERY = "SELECT t1.SUBJECT_ID, t1.DOB, t2.HADM_ID, t3.ICD9_CODE, t3.SHORT_TITLE, t5.DESCRIPTION\n" +
             "FROM hdfs.root.`physionet_patients.csv` t1,\n" +
@@ -46,21 +35,8 @@ public class DQEHzClientVerifier {
             "hdfs.root.`physionet_caregivers.csv` t5\n" +
             "WHERE t1.SUBJECT_ID = t2.SUBJECT_ID AND t2.ICD9_CODE = t3.ICD9_CODE AND t4.SUBJECT_ID = t1.SUBJECT_ID AND t4.CGID = t5.CGID";
 
-    public static String derivedQueryFromHazelcast;
-
     public static void main(String[] args) {
         ClientExecutorEngine.init();
-        QueryBuilderClient queryBuilderClient = new QueryBuilderClient(executionId, attributes, collections);
-        derivedQueryFromHazelcast = queryBuilderClient.buildQueryStatement();
-
-//        DrillConnector.executeQuery(DRILL_SAMPLE_QUERY, 6);
-
-        if (DRILL_SAMPLE_QUERY.trim().equals(derivedQueryFromHazelcast.trim())) {
-            logger.info("The derived Query is equal to the static query");
-        } else {
-            logger.info("The derived query is: " + derivedQueryFromHazelcast);
-        }
-
-        queryBuilderClient.displayTablesWithAttribute(attributes);
+        DrillConnector.executeQuery(DRILL_SAMPLE_QUERY, 6);
     }
 }

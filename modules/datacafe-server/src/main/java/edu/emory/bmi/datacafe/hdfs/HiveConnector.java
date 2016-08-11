@@ -56,8 +56,11 @@ public class HiveConnector {
                 stmt.execute("drop table if exists " + hiveTable);
 
                 stmt.execute("create table " + hiveTable + " " + query);
-                logger.info(String.format("Successfully executed the query [%s] metadata for " +
-                        "Hive Table: %s", query, hiveTable));
+
+                if(logger.isDebugEnabled()) {
+                    logger.debug(String.format("Executed the query [%s] metadata for " +
+                            "Hive Table: %s", query, hiveTable));
+                }
 
             } catch (SQLException e) {
                 logger.error("SQLException in executing the Hive query for the data source, " + hiveTable, e);
