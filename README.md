@@ -94,7 +94,7 @@ For example, to execute the clinical-1 sample,
 
 
 PhysioNetIntegratedExecutor offers a server sample with Mongo as the original data source and HDFS as the integrated 
-data source. DrillQueryExecutor and DQEHzClientVerifier on the other hand, offer the client implementations.
+data source. QueryExecutor on the other hand, offers a sample client implementation with queries partially auto-generated.
 
 
 ## Dependencies

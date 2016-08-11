@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
 
 
 /**
- * A sample drill query executor.
+ * A sample drill query executor with queries partially auto-generated.
  */
 public class QueryExecutor {
     private static Logger logger = LogManager.getLogger(QueryExecutor.class.getName());
