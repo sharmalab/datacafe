@@ -73,6 +73,7 @@ Configure Drill
    :maxdepth: 1
 
    src/main/resources/Configure-Drill.rst
+
    src/main/resources/Enable-Drill-Security.rst
 
 
