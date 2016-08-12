@@ -89,7 +89,7 @@ Configure Drill
 * Browse the web interface of Drill - http://localhost:8047/
 
 
-Make sure to set extractHeader element appropriately in the Drill storage according to your data sources.
+* Make sure to set extractHeader element appropriately in the Drill storage according to your data sources.
 
        "extractHeader": true,
 
