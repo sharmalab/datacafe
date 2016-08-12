@@ -28,6 +28,13 @@ Configure the original data sources.
 Configure and Execute Hadoop
 ############################
 
+
+.. toctree::
+   :maxdepth: 1
+
+   src/main/resources/Configure-Hadoop.rst
+
+
 * Start Hadoop NameNode daemon and DataNode daemon
 
  $HADOOP_HOME/sbin/start-dfs.sh
@@ -39,14 +46,15 @@ Configure and Execute Hadoop
  $HADOOP_HOME/sbin/stop-dfs.sh
 
 
-.. toctree::
-   :maxdepth: 1
-
-   src/main/resources/Configure-Hadoop.rst
-
 
 Configure and Execute Hive
 ##########################
+
+.. toctree::
+   :maxdepth: 1
+
+   src/main/resources/Configure-Hive.rst
+
 
 * Run Hive Metastore and Hive
 
@@ -55,11 +63,6 @@ Configure and Execute Hive
 * Start HiveServer2
 
  $HIVE_HOME/bin/hiveserver2
-
-.. toctree::
-   :maxdepth: 1
-
-   src/main/resources/Configure-Hive.rst
 
 
 
