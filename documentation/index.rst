@@ -7,8 +7,7 @@
 Data Cafe - A Dynamic Data Warehousing System
 *********************************************
 
-Data Cafe can be used to construct data lakes in Hadoop HDFS from heterogeneous data sources, and query the data lakes
-efficiently by leveraging Apache Drill.
+Data Cafe can be used to construct data lakes in Hadoop HDFS from heterogeneous data sources, and query the data lakes efficiently by leveraging Apache Drill.
 
 The steps are outlined below:
 
