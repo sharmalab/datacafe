@@ -69,6 +69,12 @@ Configure and Execute Hive
 Configure Drill
 ###############
 
+.. toctree::
+   :maxdepth: 1
+
+   src/main/resources/Configure-Drill.rst
+
+
 * Launch Drill in Embedded mode
 
  $DRILL_HOME/bin/drill-embedded

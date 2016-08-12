@@ -1,6 +1,10 @@
-# Initial Configuration
+***************
+Configure Drill
+***************
 
-* To ensure that the name node configuration persists even after a reboot.
+
+*To ensure that the name node configuration persists even after a reboot.*
+
  /apache-drill-1.6.0/conf/drill-override.conf
 
  drill.exec: {
@@ -11,7 +15,7 @@
 
 
 
-Configure and enable storage plugin for HDFS in Drill through its web user interface.
+**Configure and enable storage plugin for HDFS in Drill through its web user interface.**
 
  {
    "type": "file",
