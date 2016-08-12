@@ -1,6 +1,6 @@
-*****************************
-Hadoop Initial Configurations
-*****************************
+****************
+Configure Hadoop
+****************
 
  /hadoop-2.7.2/etc/hadoop/hdfs-site.xml
 
