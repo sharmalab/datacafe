@@ -1,5 +1,9 @@
-# Hadoop Initial Configurations
+*****************************
+Hadoop Initial Configurations
+*****************************
+
  /hadoop-2.7.2/etc/hadoop/hdfs-site.xml
+
 * To ensure that the name node configuration persists even after a reboot.
 
  <?xml version="1.0" encoding="UTF-8"?>
@@ -43,9 +47,13 @@
 
 
 
-# Format the name node before the initial execution.
+Format the name node before the initial execution
+#################################################
+
   $HADOOP_HOME/bin/hdfs namenode -format
 
 
-* Create a directory in hdfs for Data Cafe
+Create a directory in hdfs for Data Cafe
+########################################
+
  $HADOOP_HOME/bin/hadoop fs -mkdir       /user/hdfs

@@ -39,6 +39,30 @@ Configure and Execute Hadoop
  $HADOOP_HOME/sbin/stop-dfs.sh
 
 
+.. toctree::
+   :maxdepth: 1
+
+   src/main/resources/Configure-Hadoop.rst
+
+
+Configure and Execute Hive
+##########################
+
+* Run Hive Metastore and Hive
+
+ $HIVE_HOME/bin/hive --service metastore &
+
+* Start HiveServer2
+
+ $HIVE_HOME/bin/hiveserver2
+
+.. toctree::
+   :maxdepth: 1
+
+   src/main/resources/Configure-Hive.rst
+
+
+
 Configure Drill
 ###############
 
@@ -58,25 +82,6 @@ Make sure to set extractHeader element appropriately in the Drill storage accord
 
        "extractHeader": true,
 
-
-Configure Hive
-##############
-
-Optional.
-
-
-Execute Hive
-############
-
-Optional.
-
-* Run Hive Metastore and Hive
-
- $HIVE_HOME/bin/hive --service metastore &
-
-* Start HiveServer2
-
- $HIVE_HOME/bin/hiveserver2
 
 
 Building Data Cafe
