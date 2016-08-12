@@ -1,11 +1,20 @@
-# Data Café — <br/> A Platform For Creating Biomedical Data Lakes
+.. DataCafe documentation master file, created by
+   sphinx-quickstart on Thursday July 21, 2016.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+*********************************************
+Data Cafe - A Dynamic Data Warehousing System
+*********************************************
 
 Data Cafe can be used to construct data lakes in Hadoop HDFS from heterogeneous data sources, and query the data lakes
 efficiently by leveraging Apache Drill.
 
 The steps are outlined below:
 
-## Configure the original data sources.
+
+Configure the original data sources.
+####################################
 
 * Start MongoDB.
 
@@ -17,12 +26,10 @@ The steps are outlined below:
  $ sudo systemctl enable mongodb
 
 
-## Configure Hadoop 
+Configure and Execute Hadoop
+############################
 
-
-## Execute Hadoop
-
-* Start Hadoop NameNode daemon and DataNode daemon 
+* Start Hadoop NameNode daemon and DataNode daemon
 
  $HADOOP_HOME/sbin/start-dfs.sh
 
@@ -33,11 +40,12 @@ The steps are outlined below:
  $HADOOP_HOME/sbin/stop-dfs.sh
 
 
-## Configure Drill
+Configure Drill
+###############
 
-* Launch Drill in Embedded mode 
+* Launch Drill in Embedded mode
 
- $DRILL_HOME/bin/drill-embedded 
+ $DRILL_HOME/bin/drill-embedded
 
 * If Drill is secured, log in with the credentials.
 
@@ -52,12 +60,14 @@ Make sure to set extractHeader element appropriately in the Drill storage accord
        "extractHeader": true,
 
 
-## Configure Hive
+Configure Hive
+##############
 
 Optional.
 
 
-## Execute Hive
+Execute Hive
+############
 
 Optional.
 
@@ -79,7 +89,8 @@ Data Cafe can be built using Apache Maven 3.x and Java 1.8.x or higher.
 Built and tested with Apache Maven 3.1.1 and Oracle Java 1.8.0.
 
 
-## Executing Data Cafe
+Executing Data Cafe
+###################
 
 You may execute Data Cafe by writing a client to it.
 
@@ -92,11 +103,12 @@ For example, to execute the clinical-1 sample,
  $ java -classpath lib/datacafe-samples-1.0-SNAPSHOT.jar:lib/*:conf/ main.java.edu.emory.bmi.datacafe.impl.clinical1.main.Initiator
 
 
-PhysioNetIntegratedExecutor offers a server sample with Mongo as the original data source and HDFS as the integrated 
+PhysioNetIntegratedExecutor offers a server sample with Mongo as the original data source and HDFS as the integrated
 data source. QueryExecutor on the other hand, offers a sample client implementation with queries partially auto-generated.
 
 
-## Dependencies
+Dependencies
+############
 
 This project depends on the below major projects.
 
@@ -115,13 +127,16 @@ This project depends on the below major projects.
 * MySQL
 
 
-## Using Data Cafe in your research
+Using Data Cafe in your research
+################################
 
 Please cite the below, if you use Data Cafe in your research.
- [1] Kathiravelu, P. & Sharma, A. (2016). A Dynamic Data Warehousing Platform for Creating and Accessing
-     Biomedical Data Lakes. In Second International Workshop on Data Management and Analytics for Medicine
-     and Healthcare (DMAH'16), co-located with 42 nd International Conference on Very Large Data Bases (VLDB
-     2016). Sep. 2016. LNCS. 18 pages. To Appear.
 
- [2] Kathiravelu, P., Kazerouni, A., & Sharma, A. (2016). Data Café — A Platform For Creating Biomedical Data Lakes. 
-In AMIA 2016 Joint Summits on Translational Science. Mar. 2016.
+ [1] Kathiravelu, P. & Sharma, A. (2016). **A Dynamic Data Warehousing Platform for Creating and Accessing Biomedical Data Lakes**.
+ In *Second International Workshop on Data Management and Analytics for Medicine and Healthcare (DMAH'16), co-located with 42 nd International Conference on Very Large Data Bases (VLDB 2016)*.
+ Sep. 2016. LNCS. 18 pages. To Appear.
+
+ [2] Kathiravelu, P., Kazerouni, A., & Sharma, A. (2016). **Data Café — A Platform For Creating Biomedical Data Lakes.**
+In *AMIA 2016 Joint Summits on Translational Science*. Mar. 2016.
+
+
