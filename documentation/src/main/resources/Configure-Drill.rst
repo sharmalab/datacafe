@@ -42,11 +42,34 @@ Configure Drill
  }
 
 
+Drill Interfaces
+################
 
 .. toctree::
    :maxdepth: 1
 
    src/main/resources/Drill-REST.rst
-   src/main/resources/Drill-with-MySQL-JDBC.rst
    src/main/resources/Drill-Output-to-CSV.rst
    src/main/resources/Drill-Node.rst
+
+
+Query various data sources with Drill
+#####################################
+
+.. toctree::
+   :maxdepth: 1
+
+   src/main/resources/Drill-with-MySQL-JDBC.rst
+   src/main/resources/Drill-with-S3.rst
+
+
+Sample Drill Queries
+####################
+
+.. toctree::
+   :maxdepth: 1
+
+   src/main/resources/Sample-Drill-Queries.rst
+   src/main/resources/Drill-PhysioNet-Queries.rst
+
+

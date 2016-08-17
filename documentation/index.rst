@@ -25,7 +25,7 @@ Configure the origin data sources.
  $ sudo systemctl enable mongodb
 
 
-* For the evaluation, We first create the sample data bases in Mongo if they do not exist already.
+* For the evaluation, We first create the sample databases in Mongo if they do not exist already.
 
 .. toctree::
    :maxdepth: 1

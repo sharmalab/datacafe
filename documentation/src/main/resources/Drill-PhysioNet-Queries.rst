@@ -1,3 +1,7 @@
+***********************************************************
+Query Integrated Data Source from MIMIC-III data with Drill
+***********************************************************
+
 SELECT t1.SUBJECT_ID, t1.DOB
 FROM hdfs.root.`physionet_patients.csv` t1
 
