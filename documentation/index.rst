@@ -185,6 +185,6 @@ Please cite the below, if you use Data Cafe in your research.
  Sep. 2016. LNCS. 18 pages. To Appear.
 
  [2] Kathiravelu, P., Kazerouni, A., & Sharma, A. (2016). **Data Café — A Platform For Creating Biomedical Data Lakes.**
-In *AMIA 2016 Joint Summits on Translational Science*. Mar. 2016.
+ In *AMIA 2016 Joint Summits on Translational Science*. Mar. 2016.
 
 
