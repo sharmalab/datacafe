@@ -1,4 +1,8 @@
-# Query S3 using Drill
+********************
+Query S3 using Drill
+********************
+
+Files and folders in Amazon S3 buckets can be queried using Drill.
 
 Follow the below documentation to get the dependencies and configurations to your local Drill installation.
 

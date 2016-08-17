@@ -1,4 +1,12 @@
-# In different data bases.
+**********************************************
+Deploy PhysioNet MIMIC-III data bases in Mongo
+**********************************************
+
+PhysioNet MIMIC-III is representative of the medical data landscape. So we use it as a sample data source for Data Cafe.
+We may import the MIMIC-III data into Mongo as multiple data bases or a set of collections in a single data base.
+
+
+* In different data bases.
 
  mongoimport --db admissions --collection admissionsData --type csv --headerline --file ADMISSIONS_DATA_TABLE.csv
 
@@ -9,7 +17,7 @@
  mongoimport --db patients --collection patientsData --type csv --headerline --file PATIENTS_DATA_TABLE.csv
 
 
-# In a single data base.
+* In a single data base.
 
  mongoimport --db physionet --collection caregivers --type csv --headerline --file CAREGIVERS_DATA_TABLE.csv
 

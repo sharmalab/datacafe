@@ -1,3 +1,9 @@
+********************
+Sample Drill Queries
+********************
+
+Here we list a few sample Drill queries used in the preliminary evaluations.
+
  SELECT * FROM hdfs.root.`patients.csv` WHERE Gender='MALE'
 
 

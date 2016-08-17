@@ -1,4 +1,7 @@
-# Configure Hive
+**************
+Configure Hive
+**************
+
 Hive is optional to Data Cafe. It can be configured following the below steps once Hadoop is configured.
 
  $HADOOP_HOME/bin/hadoop fs -mkdir       /tmp
@@ -15,12 +18,11 @@ Hive is optional to Data Cafe. It can be configured following the below steps on
 
 
 
-* Configure Hive Metastore with MySQL.
+Configure Hive Metastore with MySQL
+###################################
 
+**Configure and enable Storage Plugin for Hive in Drill**
 
-
-
-## Configure and enable Storage Plugin for Hive in Drill
 
  {
 
@@ -39,7 +41,8 @@ Hive is optional to Data Cafe. It can be configured following the below steps on
  }
 
 
-## Query Hive from Drill.
+**Query Hive from Drill**
+
 
  SELECT firstname,lastname FROM hive.`customers`
 

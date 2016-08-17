@@ -1,11 +1,19 @@
-# Make sure to include the driver to the modules' classpath.
+*********************************
+Configure MySQL Data Data Sources
+*********************************
 
-# Install csvkit for easy conversion and creation of SQL databases from CSV files.
+Data Cafe can be used to leverage MySQL data sources. Here we will look into a sample MySQL data base configuration for
+integration and querying with Data Cafe.
+
+
+* Make sure to include the driver to the modules' classpath.
+
+ Install csvkit for easy conversion and creation of SQL databases from CSV files.
 
  https://csvkit.readthedocs.org/en/540/
 
 
-# Create the data bases.
+* Create the data bases.
 
  mysql> create database pathology;
 
@@ -14,12 +22,12 @@
  csvsql --dialect mysql pathology.csv > pathology.sql
 
 
-# Start MySQL server console with load from local file flag.
+* Start MySQL server console with load from local file flag.
 
  mysql --local-infile -u root -p
 
 
-# Create the Tables
+* Create the Tables
 
  * Table 1
 

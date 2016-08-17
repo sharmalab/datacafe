@@ -12,8 +12,8 @@ Data Cafe can be used to construct data lakes in Hadoop HDFS from heterogeneous 
 The steps are outlined below:
 
 
-Configure the original data sources.
-####################################
+Configure the origin data sources.
+##################################
 
 * Start MongoDB.
 
@@ -25,8 +25,31 @@ Configure the original data sources.
  $ sudo systemctl enable mongodb
 
 
+* For the evaluation, We first create the sample databases in Mongo if they do not exist already.
+
+.. toctree::
+   :maxdepth: 1
+
+   src/main/resources/mongo/Configure-Sample-Mongo-Datasources.rst
+   src/main/resources/mongo/PhysioNet-in-Mongo.rst
+
+
+You may also have MySQL or other SQL and NoSQL data sources as the origin data sources.
+
+.. toctree::
+   :maxdepth: 1
+
+   src/main/resources/Configure-MySql.rst
+
 Configure and Execute Hadoop
 ############################
+
+
+.. toctree::
+   :maxdepth: 1
+
+   src/main/resources/Configure-Hadoop.rst
+
 
 * Start Hadoop NameNode daemon and DataNode daemon
 
@@ -39,8 +62,37 @@ Configure and Execute Hadoop
  $HADOOP_HOME/sbin/stop-dfs.sh
 
 
+
+Configure and Execute Hive
+##########################
+
+.. toctree::
+   :maxdepth: 1
+
+   src/main/resources/Configure-Hive.rst
+
+
+* Run Hive Metastore and Hive
+
+ $HIVE_HOME/bin/hive --service metastore &
+
+* Start HiveServer2
+
+ $HIVE_HOME/bin/hiveserver2
+
+
+
 Configure Drill
 ###############
+
+Make sure Java is installed in order to start Drill.
+
+.. toctree::
+   :maxdepth: 1
+
+   src/main/resources/Configure-Drill.rst
+
+   src/main/resources/Enable-Drill-Security.rst
 
 * Launch Drill in Embedded mode
 
@@ -54,32 +106,14 @@ Configure Drill
 * Browse the web interface of Drill - http://localhost:8047/
 
 
-Make sure to set extractHeader element appropriately in the Drill storage according to your data sources.
+* Make sure to set extractHeader element appropriately in the Drill storage according to your data sources.
 
        "extractHeader": true,
 
 
-Configure Hive
-##############
 
-Optional.
-
-
-Execute Hive
-############
-
-Optional.
-
-* Run Hive Metastore and Hive
-
- $HIVE_HOME/bin/hive --service metastore &
-
-* Start HiveServer2
-
- $HIVE_HOME/bin/hiveserver2
-
-
-## Building Data Cafe
+Building Data Cafe
+##################
 
 Data Cafe can be built using Apache Maven 3.x and Java 1.8.x or higher.
 
@@ -124,6 +158,21 @@ This project depends on the below major projects.
 * Apache Log4j2
 
 * MySQL
+
+
+Current and Future Evaluations
+##############################
+
+Data Cafe has been evaluated with various preliminary data sources, and there are on going and future evaluations.
+
+
+.. toctree::
+   :maxdepth: 1
+
+   src/main/resources/AWS-Execution.rst
+
+   src/main/resources/Future-Work.rst
+
 
 
 Using Data Cafe in your research

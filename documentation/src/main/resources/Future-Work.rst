@@ -1,22 +1,16 @@
+****************************************
 Further Extension Points and Future Work
-========================================
+****************************************
 
-Evaluation of
-
->> Apache Accumulo https://accumulo.apache.org/
-
->> Tyk https://tyk.io/
+A few action items were identified as future work for Data Cafe.
 
 
+* Evaluation of Apache Accumulo https://accumulo.apache.org/
 
+* API Guide
 
+ Defining the Public facing interfaces and APIs of DataCafe.
 
-API Guide
-=========
-
-API for Datacafe
-
-Public facing interface of DataCafe.
 
 CreateDatacafe/
 
@@ -57,7 +51,7 @@ Warehouse of following DS.
 
 
 
-TODO:
+**TODO:**
 
 2.1 Add/remove data sources from data cafe.
 
