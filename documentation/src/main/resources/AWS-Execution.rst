@@ -1,10 +1,10 @@
-******************************
-Deploy Data Cafe in Amazon EC2
-******************************
+*************************************************
+Data Cafe Deployment and Evaluation in Amazon EC2
+*************************************************
 
 Data Cafe is deployed in Amazon EC2 along with the data sources and tools such as Drill for its evaluation.
 
-Current AWS Deployment
+Current EC2 Deployment
 ######################
 
 1 node for Mongo.

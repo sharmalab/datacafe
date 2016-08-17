@@ -94,7 +94,6 @@ Make sure Java is installed in order to start Drill.
 
    src/main/resources/Enable-Drill-Security.rst
 
-
 * Launch Drill in Embedded mode
 
  $DRILL_HOME/bin/drill-embedded
@@ -159,6 +158,21 @@ This project depends on the below major projects.
 * Apache Log4j2
 
 * MySQL
+
+
+Current and Future Evaluations
+##############################
+
+Data Cafe has been evaluated with various preliminary data sources, and there are on going and future evaluations.
+
+
+.. toctree::
+   :maxdepth: 1
+
+   src/main/resources/AWS-Execution.rst
+
+   src/main/resources/Future-Work.rst
+
 
 
 Using Data Cafe in your research
