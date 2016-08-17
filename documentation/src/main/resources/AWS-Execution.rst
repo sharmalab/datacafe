@@ -4,6 +4,7 @@ Data Cafe Deployment and Evaluation in Amazon EC2
 
 Data Cafe is deployed in Amazon EC2 along with the data sources and tools such as Drill for its evaluation.
 
+
 Current EC2 Deployment
 ######################
 
