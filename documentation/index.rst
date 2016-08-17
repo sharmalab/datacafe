@@ -25,12 +25,21 @@ Configure the origin data sources.
  $ sudo systemctl enable mongodb
 
 
+* For the evaluation, We first create the sample data bases in Mongo if they do not exist already.
+
+.. toctree::
+   :maxdepth: 1
+
+   src/main/resources/mongo/Configure-Sample-Mongo-Datasources.rst
+   src/main/resources/mongo/PhysioNet-in-Mongo.rst
+
+
 You may also have MySQL or other SQL and NoSQL data sources as the origin data sources.
 
 .. toctree::
    :maxdepth: 1
 
-   src/main/resources/Configure-MySQL.rst
+   src/main/resources/Configure-MySql.rst
 
 Configure and Execute Hadoop
 ############################
