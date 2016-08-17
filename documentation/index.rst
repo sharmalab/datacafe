@@ -112,8 +112,8 @@ Make sure Java is installed in order to start Drill.
 
 
 
-Building Data Cafe
-##################
+Build Data Cafe
+###############
 
 Data Cafe can be built using Apache Maven 3.x and Java 1.8.x or higher.
 
@@ -122,8 +122,8 @@ Data Cafe can be built using Apache Maven 3.x and Java 1.8.x or higher.
 Built and tested with Apache Maven 3.1.1 and Oracle Java 1.8.0.
 
 
-Executing Data Cafe
-###################
+Execute Data Cafe
+#################
 
 You may execute Data Cafe by writing a client to it.
 
