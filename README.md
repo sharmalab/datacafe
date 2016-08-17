@@ -5,7 +5,7 @@ efficiently by leveraging Apache Drill.
 
 The steps are outlined below:
 
-## Configure the original data sources.
+## Configure the Origin Data Sources
 
 * Start MongoDB.
 

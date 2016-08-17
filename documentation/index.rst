@@ -12,8 +12,8 @@ Data Cafe can be used to construct data lakes in Hadoop HDFS from heterogeneous 
 The steps are outlined below:
 
 
-Configure the origin data sources.
-##################################
+Configure the Origin Data Sources
+#################################
 
 * Start MongoDB.
 
