@@ -40,3 +40,13 @@ Configure Drill
      }
    }
  }
+
+
+
+.. toctree::
+   :maxdepth: 1
+
+   src/main/resources/Drill-REST.rst
+   src/main/resources/Drill-with-MySQL-JDBC.rst
+   src/main/resources/Drill-Output-to-CSV.rst
+   src/main/resources/Drill-Node.rst

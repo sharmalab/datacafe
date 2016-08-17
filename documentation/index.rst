@@ -12,8 +12,8 @@ Data Cafe can be used to construct data lakes in Hadoop HDFS from heterogeneous 
 The steps are outlined below:
 
 
-Configure the original data sources.
-####################################
+Configure the origin data sources.
+##################################
 
 * Start MongoDB.
 
@@ -24,6 +24,13 @@ Configure the original data sources.
 
  $ sudo systemctl enable mongodb
 
+
+You may also have MySQL or other SQL and NoSQL data sources as the origin data sources.
+
+.. toctree::
+   :maxdepth: 1
+
+   src/main/resources/Configure-MySQL.rst
 
 Configure and Execute Hadoop
 ############################
@@ -68,6 +75,8 @@ Configure and Execute Hive
 
 Configure Drill
 ###############
+
+Make sure Java is installed in order to start Drill.
 
 .. toctree::
    :maxdepth: 1

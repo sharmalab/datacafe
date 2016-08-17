@@ -1,10 +1,16 @@
-# Download MySQL JDBC connector
+******************************
+Configure Drill to Query MySQL
+******************************
+
+Drill can be configured to query MySQL data sources.
+
+* Download MySQL JDBC connector
 
 https://dev.mysql.com/downloads/connector/j/
 
-# Extract and copy mysql-connector-java-<version>-bin.jar to apache-drill/jars/3rdparty folder.
+* Extract and copy mysql-connector-java-<version>-bin.jar to apache-drill/jars/3rdparty folder.
 
-# Configure Storage Plugin for mysql
+* Configure Storage Plugin for mysql
 
  {
   "type": "jdbc",
@@ -15,6 +21,6 @@ https://dev.mysql.com/downloads/connector/j/
   "enabled": true
  }
 
- # Sample queries
+* Sample queries
 
   SELECT * FROM mysql.`CDS`;

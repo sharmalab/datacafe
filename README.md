@@ -35,6 +35,8 @@ The steps are outlined below:
 
 ## Configure Drill
 
+Make sure Java is installed in order to start Drill.
+
 * Launch Drill in Embedded mode 
 
  $DRILL_HOME/bin/drill-embedded 
