@@ -12,8 +12,8 @@ Data Cafe can be used to construct data lakes in Hadoop HDFS from heterogeneous 
 The steps are outlined below:
 
 
-Configure the origin data sources.
-##################################
+Configure the Origin Data Sources
+#################################
 
 * Start MongoDB.
 
@@ -112,8 +112,8 @@ Make sure Java is installed in order to start Drill.
 
 
 
-Building Data Cafe
-##################
+Build Data Cafe
+###############
 
 Data Cafe can be built using Apache Maven 3.x and Java 1.8.x or higher.
 
@@ -122,8 +122,8 @@ Data Cafe can be built using Apache Maven 3.x and Java 1.8.x or higher.
 Built and tested with Apache Maven 3.1.1 and Oracle Java 1.8.0.
 
 
-Executing Data Cafe
-###################
+Execute Data Cafe
+#################
 
 You may execute Data Cafe by writing a client to it.
 
@@ -185,6 +185,6 @@ Please cite the below, if you use Data Cafe in your research.
  Sep. 2016. LNCS. 18 pages. To Appear.
 
  [2] Kathiravelu, P., Kazerouni, A., & Sharma, A. (2016). **Data Café — A Platform For Creating Biomedical Data Lakes.**
-In *AMIA 2016 Joint Summits on Translational Science*. Mar. 2016.
+ In *AMIA 2016 Joint Summits on Translational Science*. Mar. 2016.
 
 
