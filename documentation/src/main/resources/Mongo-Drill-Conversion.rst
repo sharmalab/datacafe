@@ -14,13 +14,26 @@ For example consider the below Mongo query.
 
 
 This can be expressed as the below in Drill:
+// Not working
+ select camic._id, camic.type, camic.parent_id, camic.randval, camic.creation_date, camic.object_type, camic.x, camic.y, camic.normalized, camic.bbox, camic.geometry, camic.footprint, camic.properties, camic.provenance, camic.submit_date from mongo.CAMICROSCOPE.`testUAIM2` as camic WHERE ((camic.provenance.image.case_id = 'TCGA-02-0001-01Z-00-DX1') AND (camic.provenance.analysis.execution_id  = 'tammy-test:7') AND (camic.footprint >= 800) AND (camic.x >= 0) AND (camic.x <=1) AND (camic.y >= 0) AND (camic.y <= 1));
 
-select * from mongo.CAMICROSCOPE.`testUAIM2` as camic WHERE ((camic.provenance.image.case_id = 'TCGA-02-0001-01Z-00-DX1') AND (camic.provenance.analysis.execution_id  = 'tammy-test:7') AND (camic.footprint >= 800) AND (camic.x >= 0) AND (camic.x <=1) AND (camic.y >= 0) AND (camic.y <= 1));
+, camic.geometry (fails with geometry)
+
+
+// Working
+ select camic._id, camic.type, camic.parent_id, camic.randval, camic.creation_date, camic.object_type, camic.x, camic.y, camic.normalized, camic.bbox, camic.footprint, camic.properties, camic.provenance, camic.submit_date
+ from mongo.CAMICROSCOPE.`testUAIM2` as camic WHERE ((camic.provenance.image.case_id = 'TCGA-02-0001-01Z-00-DX1') AND (camic.provenance.analysis.execution_id  = 'tammy-test:7') AND (camic.footprint >= 800) AND (camic.x >= 0) AND (camic.x <=1) AND (camic.y >= 0) AND (camic.y <= 1));
+
+
+// Working
+ select camic._id, camic.type, camic.parent_id, camic.randval, camic.creation_date, camic.object_type, camic.x, camic.y, camic.normalized, camic.bbox
+ from mongo.CAMICROSCOPE.`testUAIM2` as camic WHERE ((camic.provenance.image.case_id = 'TCGA-02-0001-01Z-00-DX1') AND (camic.provenance.analysis.execution_id  = 'tammy-test:7') AND (camic.footprint >= 800) AND (camic.x >= 0) AND (camic.x <=1) AND (camic.y >= 0) AND (camic.y <= 1));
+
 
 
 or just a few attributes:
 
-select camic._id, camic.type, camic.parent_id,camic.provenance.image.case_id as caseid, camic.provenance.analysis.execution_id as executionid from mongo.CAMICROSCOPE.`testUAIM2` as camic WHERE ((camic.provenance.image.case_id = 'TCGA-02-0001-01Z-00-DX1') AND (camic.provenance.analysis.execution_id  = 'tammy-test:7') AND (camic.footprint >= 800) AND (camic.x >= 0) AND (camic.x <=1) AND (camic.y >= 0) AND (camic.y <= 1));
+ select camic._id, camic.type, camic.parent_id,camic.provenance.image.case_id as caseid, camic.provenance.analysis.execution_id as executionid from mongo.CAMICROSCOPE.`testUAIM2` as camic WHERE ((camic.provenance.image.case_id = 'TCGA-02-0001-01Z-00-DX1') AND (camic.provenance.analysis.execution_id  = 'tammy-test:7') AND (camic.footprint >= 800) AND (camic.x >= 0) AND (camic.x <=1) AND (camic.y >= 0) AND (camic.y <= 1));
 
 
 
