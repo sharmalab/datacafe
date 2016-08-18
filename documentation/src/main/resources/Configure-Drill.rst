@@ -71,5 +71,6 @@ Sample Drill Queries
 
    src/main/resources/Sample-Drill-Queries.rst
    src/main/resources/Drill-PhysioNet-Queries.rst
+   src/main/resources/Mongo-Drill-Conversion.rst
 
 
