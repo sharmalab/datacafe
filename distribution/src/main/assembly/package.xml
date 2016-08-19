@@ -16,6 +16,8 @@
 				<include>${project.groupId}:datacafe-client:jar:sources</include>
 				<include>${project.groupId}:datacafe-samples:jar</include>
 				<include>${project.groupId}:datacafe-samples:jar:sources</include>
+				<include>${project.groupId}:datacafe-client-samples:jar</include>
+				<include>${project.groupId}:datacafe-client-samples:jar:sources</include>
 			</includes>
 		</dependencySet>
 		<dependencySet>
@@ -31,6 +33,7 @@
 				<include>${project.groupId}:datacafe-server:jar:sources</include>
 				<include>${project.groupId}:datacafe-client:jar:sources</include>
 				<include>${project.groupId}:datacafe-samples:jar:sources</include>
+				<include>${project.groupId}:datacafe-client-samples:jar:sources</include>
 			</includes>
 		</dependencySet>
 		<dependencySet>
