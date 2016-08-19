@@ -27,7 +27,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class QueryExecutor {
     private static Logger logger = LogManager.getLogger(QueryExecutor.class.getName());
-    private static final String executionId = "PhysioNetIntegratedExecutor";
+    private static final String datalakeID = "PhysioNetIntegratedExecutor";
 
     private static final String attributes[] = {"SUBJECT_ID", "DOB", "HADM_ID", "ICD9_CODE", "SHORT_TITLE", "DESCRIPTION"};
 
@@ -43,7 +43,7 @@ public class QueryExecutor {
 
     public static void main(String[] args) {
         ClientExecutorEngine.init();
-        QueryBuilderClient queryBuilderClient = new QueryBuilderClient(executionId, attributes, collections);
+        QueryBuilderClient queryBuilderClient = new QueryBuilderClient(datalakeID, attributes, collections);
         derivedQueryFromHazelcast = queryBuilderClient.buildQueryStatement();
 
         DrillConnector.executeQuery(derivedQueryFromHazelcast, 6);
