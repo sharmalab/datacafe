@@ -138,11 +138,4 @@ public class HiveConnector {
             logger.error("Exception in finding the Hive driver: " + ConfigReader.getHiveDriver(), e);
         }
     }
-
-    public static void main(String[] args) {
-        HiveConnector hiveConnector = new HiveConnector("PhysioNetSampleExecutor");
-        ServerExecutorEngine.init();
-
-        List<String> temp = hiveConnector.readFromHive();
-    }
 }
