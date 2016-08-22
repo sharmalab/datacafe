@@ -41,6 +41,8 @@ public class QueryExecutor {
 
     public static String derivedQueryFromHazelcast;
 
+    public static String when = "ICD9_CODE < 100";
+
     public static void main(String[] args) {
         ClientExecutorEngine.init();
         QueryBuilderClient queryBuilderClient = new QueryBuilderClient(datalakeID, attributes, collections);
