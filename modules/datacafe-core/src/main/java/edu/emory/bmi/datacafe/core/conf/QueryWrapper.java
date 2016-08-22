@@ -41,7 +41,8 @@ public final class QueryWrapper {
     }
 
     /**
-     * Get the destination from drill, if the original data sources are known.
+     * Find the (long) fully qualified location of the data lake from the
+     * shorter human-friendly data source names of the format database_collection.
      *
      * @param dataSource   the source: database_collection.
      * @return the destination, complete reference.

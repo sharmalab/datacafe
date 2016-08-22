@@ -33,7 +33,7 @@ public class ManualQueryExecutor {
             "hdfs.root.`physionet_dicddiagnosis.csv` t3,\n" +
             "hdfs.root.`physionet_datetimeevents.csv` t4,\n" +
             "hdfs.root.`physionet_caregivers.csv` t5\n" +
-            "WHERE t1.SUBJECT_ID = t2.SUBJECT_ID AND t2.ICD9_CODE = t3.ICD9_CODE AND t4.SUBJECT_ID = t1.SUBJECT_ID AND t4.CGID = t5.CGID AND t3.ICD9_CODE < 100";
+            "WHERE t1.SUBJECT_ID = t2.SUBJECT_ID AND t2.ICD9_CODE = t3.ICD9_CODE AND t4.SUBJECT_ID = t1.SUBJECT_ID AND t4.CGID = t5.CGID AND t5.DESCRIPTION='RN'";
 
     public static void main(String[] args) {
         ClientExecutorEngine.init();

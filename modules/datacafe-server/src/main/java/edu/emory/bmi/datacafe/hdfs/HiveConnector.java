@@ -19,6 +19,8 @@ import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.HDFSConstants;
 import edu.emory.bmi.datacafe.core.ServerExecutorEngine;
 import edu.emory.bmi.datacafe.core.conf.CoreConfigReader;
+import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
+import edu.emory.bmi.datacafe.hazelcast.HzServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,6 +38,11 @@ import java.util.List;
 public class HiveConnector {
 
     private static Logger logger = LogManager.getLogger(HiveConnector.class.getName());
+    private String datalakeID;
+
+    public HiveConnector(String datalakeID) {
+        this.datalakeID = datalakeID;
+    }
 
     /**
      * Writes to Hive. Only when the hive server is defined in the properties.
@@ -43,11 +50,11 @@ public class HiveConnector {
      * @param hiveTable, the table name in Hive
      * @param query,     query to execute
      */
-    public static void writeToHive(String hiveTable, String query) {
+    public void writeToHive(String hiveTable, String query) {
         if (!(ConfigReader.getHiveServer().equals("") || (ConfigReader.getHiveServer() == null))) {
             getDriver();
+            List<String> tablesInDataLake = new ArrayList<>();
 
-            Connection con = null;
             try {
                 Statement stmt = getStatement();
 
@@ -60,13 +67,17 @@ public class HiveConnector {
                             "Hive Table: %s", query, hiveTable));
                 }
 
-            } catch (SQLException e) {
-                logger.error("SQLException in executing the Hive query for the data source, " + hiveTable, e);
+                retrieveStoredValuesIntoGrid(tablesInDataLake, stmt);
+
+            } catch (SQLException ignored) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("SQLException in executing the Hive query for the data source, " + hiveTable, ignored);
+                }
             }
         }
     }
 
-    private static Statement getStatement() throws SQLException {
+    private Statement getStatement() throws SQLException {
         Connection con;
         con = DriverManager.getConnection(HDFSConstants.HIVE_CONNECTION_URI,
                 ConfigReader.getHiveUserName(), ConfigReader.getHivePassword());
@@ -81,29 +92,17 @@ public class HiveConnector {
      * @return the list of tables.
      */
     @SuppressWarnings("Ignored")
-    public static List<String> readFromHive() {
+    public List<String> readFromHive() {
 
         List<String> tablesInDataLake = new ArrayList<>();
 
         if (!(ConfigReader.getHiveServer().equals("") || (ConfigReader.getHiveServer() == null))) {
             getDriver();
 
-            Connection con = null;
             try {
                 Statement stmt = getStatement();
 
-                ResultSet resultSet = stmt.executeQuery("show tables");
-
-                while (resultSet.next()) {
-                    String table = resultSet.getString(1);
-                    String tableFull = table + CoreConfigReader.getFileExtension(); //get Full Name
-                    tablesInDataLake.add(tableFull);
-
-                    ResultSet resultSet2 = stmt.executeQuery("SHOW COLUMNS FROM " + table);
-                    while (resultSet2.next()) {
-                        logger.info(tableFull + ": " + resultSet2.getString(1));
-                    }
-                }
+                retrieveStoredValuesIntoGrid(tablesInDataLake, stmt);
 
             } catch (SQLException ignored) {
                 if (logger.isDebugEnabled()) {
@@ -112,6 +111,24 @@ public class HiveConnector {
             }
         }
         return tablesInDataLake;
+    }
+
+    private void retrieveStoredValuesIntoGrid(List<String> tablesInDataLake, Statement stmt) throws SQLException {
+        ResultSet resultSet = stmt.executeQuery("show tables");
+
+        while (resultSet.next()) {
+            String table = resultSet.getString(1);
+            tablesInDataLake.add(table);
+
+            ResultSet resultSet2 = stmt.executeQuery("SHOW COLUMNS FROM " + table);
+            while (resultSet2.next()) {
+                String attribute = resultSet2.getString(1);
+                HzServer.addValueToMultiMap(datalakeID + DatacafeConstants.ATTRIBUTES_TABLES_MAP_SUFFIX, attribute, table);
+                if (logger.isDebugEnabled()) {
+                    logger.debug(table + ": " + attribute);
+                }
+            }
+        }
     }
 
     private static void getDriver() {
@@ -123,8 +140,9 @@ public class HiveConnector {
     }
 
     public static void main(String[] args) {
+        HiveConnector hiveConnector = new HiveConnector("PhysioNetSampleExecutor");
         ServerExecutorEngine.init();
 
-        List<String> temp = readFromHive();
+        List<String> temp = hiveConnector.readFromHive();
     }
 }
