@@ -27,22 +27,22 @@ import java.util.Collection;
 public class QueryBuilderClient {
     private static Logger logger = LogManager.getLogger(QueryBuilderClient.class.getName());
 
-    private String executionID;
+    private String datalakeID;
     private String[] attributes;
     private String[] collections;
 
-    public QueryBuilderClient(String executionID, String[] attributes, String[] collections) {
-        this.executionID = executionID;
+    public QueryBuilderClient(String datalakeID, String[] attributes, String[] collections) {
+        this.datalakeID = datalakeID;
         this.attributes = attributes;
         this.collections = collections;
     }
 
-    public QueryBuilderClient(String executionID) {
-        this.executionID = executionID;
+    public QueryBuilderClient(String datalakeID) {
+        this.datalakeID = datalakeID;
     }
 
     public QueryBuilderClient() {
-        this.executionID = DatacafeConstants.DEFAULT_HAZELCAST_MULTI_MAP;
+        this.datalakeID = DatacafeConstants.DEFAULT_HAZELCAST_MULTI_MAP;
     }
 
     /**
@@ -50,7 +50,7 @@ public class QueryBuilderClient {
      * @param attribute the attribute to be probed.
      */
     public void displayTablesWithAttribute(String attribute) {
-        HzClient.printValuesFromMultiMap(executionID, attribute);
+        HzClient.printValuesFromMultiMap(datalakeID, attribute);
     }
 
     /**
@@ -59,7 +59,7 @@ public class QueryBuilderClient {
      */
     public void displayTablesWithAttribute(String[] attributes) {
         for (String attribute: attributes) {
-            HzClient.printValuesFromMultiMap(executionID, attribute);
+            HzClient.printValuesFromMultiMap(datalakeID, attribute);
         }
     }
 
@@ -68,7 +68,7 @@ public class QueryBuilderClient {
      * @return the data sources in the lake.
      */
     public Collection<String> getDataSources() {
-        return HzClient.readValuesFromMultiMap(executionID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
+        return HzClient.readValuesFromMultiMap(datalakeID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
                 DatacafeConstants.DATASOURCES_MAP_ENTRY_KEY);
     }
 
@@ -85,9 +85,9 @@ public class QueryBuilderClient {
      * @return the Query statement
      */
     public String buildQueryStatement() {
-        String from = HzClient.readValues(executionID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
+        String from = HzClient.readValues(datalakeID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
                 DatacafeConstants.SQL_FROM_ENTRY_KEY);
-        String where = HzClient.readValues(executionID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
+        String where = HzClient.readValues(datalakeID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
                 DatacafeConstants.SQL_WHERE_ENTRY_KEY);
 
         return buildSelectStatement() + from + where;
@@ -96,7 +96,7 @@ public class QueryBuilderClient {
     private String buildSelectStatement() {
         String out = "SELECT ";
         for (int i = 0; i < collections.length; i++) {
-            out += HzClient.readValues(executionID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX, collections[i]) +
+            out += HzClient.readValues(datalakeID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX, collections[i]) +
                     "." + attributes[i];
             if (i < collections.length - 1) {
                 out += ", ";

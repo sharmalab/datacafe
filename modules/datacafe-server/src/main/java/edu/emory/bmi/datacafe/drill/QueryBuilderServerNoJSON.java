@@ -30,10 +30,10 @@ import java.util.Collection;
 public class QueryBuilderServerNoJSON extends HzServer {
 
     private static Logger logger = LogManager.getLogger(QueryBuilderServerNoJSON.class.getName());
-    private String executionID;
+    private String datalakeID;
 
-    public QueryBuilderServerNoJSON(String executionID) {
-        this.executionID = executionID;
+    public QueryBuilderServerNoJSON(String datalakeID) {
+        this.datalakeID = datalakeID;
     }
 
     /**
@@ -51,15 +51,15 @@ public class QueryBuilderServerNoJSON extends HzServer {
      */
     private String buildTheFromStatement() {
         Collection<String> datasources = readValuesFromMultiMap(
-                executionID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
+                datalakeID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
                 DatacafeConstants.DATASOURCES_MAP_ENTRY_KEY);
         String from = "FROM ";
         int i = 1;
         String index;
 
         for (String datasource : datasources) {
-            index = executionID + i++;
-            addValueToMap(executionID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX, datasource, index);
+            index = datalakeID + i++;
+            addValueToMap(datalakeID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX, datasource, index);
             from += datasource + " " + index;
             if (i <= datasources.size()) {
                 from += ",\n";
@@ -67,7 +67,7 @@ public class QueryBuilderServerNoJSON extends HzServer {
                 from += "\n";
             }
         }
-        HzServer.addValueToMap(executionID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
+        HzServer.addValueToMap(datalakeID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
                 DatacafeConstants.SQL_FROM_ENTRY_KEY, from);
         return from;
     }
@@ -81,19 +81,19 @@ public class QueryBuilderServerNoJSON extends HzServer {
     private String buildTheWhereStatement() {
         String where = "WHERE ";
         Collection<String> attributes = readValuesFromMultiMap(
-                executionID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
+                datalakeID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
                 DatacafeConstants.ATTRIBUTES_MAP_ENTRY_KEY);
 
         boolean beginning = true;
 
         for (String attribute : attributes) {
-            Collection<String> rawDataSources = readValuesFromMultiMap(executionID, attribute);
+            Collection<String> rawDataSources = readValuesFromMultiMap(datalakeID, attribute);
             String[] datasources = new String[rawDataSources.size()];
             String key;
             String value;
             int i = 0;
             for (String rawDataSource : rawDataSources) {
-                datasources[i++] = readValuesFromMap(executionID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX,
+                datasources[i++] = readValuesFromMap(datalakeID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX,
                         rawDataSource);
             }
             key = datasources[0] + "." + attribute;
@@ -105,12 +105,12 @@ public class QueryBuilderServerNoJSON extends HzServer {
                     where += " AND ";
                 }
                 value = datasources[j] + "." + attribute;
-                HzServer.addValueToMap(executionID + DatacafeConstants.RELATIONS_MAP_SUFFIX, key, value);
+                HzServer.addValueToMap(datalakeID + DatacafeConstants.RELATIONS_MAP_SUFFIX, key, value);
                 where += key + " = " + value;
             }
         }
 
-        HzServer.addValueToMap(executionID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
+        HzServer.addValueToMap(datalakeID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
                 DatacafeConstants.SQL_WHERE_ENTRY_KEY, where);
         return where;
     }

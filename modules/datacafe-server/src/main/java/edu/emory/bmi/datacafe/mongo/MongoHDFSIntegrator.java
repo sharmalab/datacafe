@@ -26,10 +26,10 @@ import org.bson.Document;
  */
 public class MongoHDFSIntegrator {
     private static Logger logger = LogManager.getLogger(MongoHDFSIntegrator.class.getName());
-    private String executionId;
+    private String datalakeID;
 
-    public MongoHDFSIntegrator(String executionId) {
-        this.executionId = executionId;
+    public MongoHDFSIntegrator(String datalakeID) {
+        this.datalakeID = datalakeID;
     }
 
     /**
@@ -47,14 +47,14 @@ public class MongoHDFSIntegrator {
 
         for (int i = 0; i < collections.length; i++) {
             mongoHDFSIntegratorThreads[i] = new MongoHDFSIntegratorThread(databases[i], collections[i],
-                    documents[i], dataSourcesNames[i], attributes[i], executionId);
+                    documents[i], dataSourcesNames[i], attributes[i], datalakeID);
             mongoHDFSIntegratorThreads[i].start();
         }
         buildAfterThreadCompletion(collections, mongoHDFSIntegratorThreads);
     }
 
     private void buildSQLStatements() {
-        QueryBuilderServer queryBuilderServer = new QueryBuilderServer(executionId);
+        QueryBuilderServer queryBuilderServer = new QueryBuilderServer(datalakeID);
         queryBuilderServer.buildStatements();
         logger.info("SQL Constructs Successfully Built and Stored");
     }
@@ -72,7 +72,7 @@ public class MongoHDFSIntegrator {
 
         for (int i = 0; i < collections.length; i++) {
             mongoHDFSIntegratorThreads[i] = new MongoHDFSIntegratorThread(databases[i], collections[i],
-                    documents[i], dataSourcesNames[i], null, executionId);
+                    documents[i], dataSourcesNames[i], null, datalakeID);
             mongoHDFSIntegratorThreads[i].start();
         }
         buildAfterThreadCompletion(collections, mongoHDFSIntegratorThreads);

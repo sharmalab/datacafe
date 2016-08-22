@@ -46,12 +46,12 @@ import java.util.stream.Collectors;
  */
 public class MongoConnector extends AbstractDataSourceConnector {
     private static Logger logger = LogManager.getLogger(MongoConnector.class.getName());
-    private String executionID;
+    private String datalakeID;
 
     public MongoConnector() {}
 
-    public MongoConnector(String executionID) {
-        this.executionID = executionID;
+    public MongoConnector(String datalakeID) {
+        this.datalakeID = datalakeID;
     }
 
     /**
@@ -215,16 +215,16 @@ public class MongoConnector extends AbstractDataSourceConnector {
             keySet.remove(MongoConstants.ID_ATTRIBUTE);
         }
 
-        HzServer.addValuesToMultiMap(executionID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
+        HzServer.addValuesToMultiMap(datalakeID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
                 DatacafeConstants.ATTRIBUTES_MAP_ENTRY_KEY, keySet);
 
-        HzServer.addValueToMultiMap(executionID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
+        HzServer.addValueToMultiMap(datalakeID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
                 DatacafeConstants.DATASOURCES_MAP_ENTRY_KEY, QueryWrapper.
                 getDestinationInDataLakeFromDrill(database, collection));
 
         for (String key: keySet) {
-            if ((executionID!=null) && !executionID.trim().equals("")) {
-                HzServer.addValueToMultiMap(executionID, key, QueryWrapper.
+            if ((datalakeID !=null) && !datalakeID.trim().equals("")) {
+                HzServer.addValueToMultiMap(datalakeID, key, QueryWrapper.
                         getDestinationInDataLakeFromDrill(database, collection));
             } else {
                 HzServer.addValueToMultiMap(key, QueryWrapper.

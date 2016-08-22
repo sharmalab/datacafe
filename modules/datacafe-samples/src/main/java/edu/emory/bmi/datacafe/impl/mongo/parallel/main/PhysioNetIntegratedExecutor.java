@@ -28,7 +28,7 @@ import org.bson.Document;
  */
 public class PhysioNetIntegratedExecutor {
     private static Logger logger = LogManager.getLogger(ExecutorRandomID.class.getName());
-    private static final String executionId = "PhysioNetIntegratedExecutor";
+    private static final String datalakeID = "PhysioNetIntegratedExecutor";
 
     public static void main(String[] args) {
         ServerExecutorEngine.init();
@@ -50,7 +50,7 @@ public class PhysioNetIntegratedExecutor {
         documents[4] = new Document("GENDER", "M");
         documents[5] = new Document();
 
-        MongoHDFSIntegrator mongoHDFSIntegrator = new MongoHDFSIntegrator(executionId);
+        MongoHDFSIntegrator mongoHDFSIntegrator = new MongoHDFSIntegrator(datalakeID);
         mongoHDFSIntegrator.writeToHDFSInParallel(databases, collections, documents, attributes);
     }
 }

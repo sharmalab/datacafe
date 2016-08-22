@@ -36,7 +36,7 @@ public class MongoHDFSIntegratorThread extends Thread {
     private Document document;
     private String dataSourcesName;
     private String[] attributes;
-    private String executionID;
+    private String datalakeID;
 
     public MongoHDFSIntegratorThread(String database, String collection, Document document,
                                      String dataSourcesName, String[] attributes) {
@@ -49,10 +49,10 @@ public class MongoHDFSIntegratorThread extends Thread {
     }
 
     public MongoHDFSIntegratorThread(String database, String collection, Document document,
-                                     String dataSourcesName, String[] attributes, String executionID) {
+                                     String dataSourcesName, String[] attributes, String datalakeID) {
         this(database, collection, document, dataSourcesName, attributes);
-        mongoConnector = new MongoConnector(executionID);
-        this.executionID = executionID;
+        mongoConnector = new MongoConnector(datalakeID);
+        this.datalakeID = datalakeID;
     }
 
     public void run() {

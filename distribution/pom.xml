@@ -95,6 +95,19 @@
   	</dependency>
   	<dependency>
   		<groupId>${project.groupId}</groupId>
+		<artifactId>datacafe-client-samples</artifactId>
+		<version>${project.version}</version>
+		<type>jar</type>
+  	</dependency>
+  	<dependency>
+  		<groupId>${project.groupId}</groupId>
+		<artifactId>datacafe-client-samples</artifactId>
+		<version>${project.version}</version>
+		<type>jar</type>
+		<classifier>sources</classifier>
+  	</dependency>
+  	<dependency>
+  		<groupId>${project.groupId}</groupId>
 		<artifactId>documentation</artifactId>
 		<version>${project.version}</version>
 		<type>jar</type>

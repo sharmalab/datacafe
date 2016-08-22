@@ -102,6 +102,14 @@ Make sure Java is installed in order to start Drill.
 
  $DRILL_HOME/bin/drill-embedded -n username -p password
 
+   or
+
+ $DRILL_HOME/bin/sqlline
+
+  !connect jdbc:drill:zk=local
+
+   Enter the credentials now.
+
 
 * Browse the web interface of Drill - http://localhost:8047/
 
