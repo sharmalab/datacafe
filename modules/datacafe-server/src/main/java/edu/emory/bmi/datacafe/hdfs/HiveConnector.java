@@ -17,8 +17,6 @@ package edu.emory.bmi.datacafe.hdfs;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.HDFSConstants;
-import edu.emory.bmi.datacafe.core.ServerExecutorEngine;
-import edu.emory.bmi.datacafe.core.conf.CoreConfigReader;
 import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
 import edu.emory.bmi.datacafe.hazelcast.HzServer;
 import org.apache.logging.log4j.LogManager;
