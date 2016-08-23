@@ -116,6 +116,8 @@ This project depends on the below major projects.
 
 * MySQL
 
+* SparkJava
+
 
 ## Using Data Cafe in your research
 
