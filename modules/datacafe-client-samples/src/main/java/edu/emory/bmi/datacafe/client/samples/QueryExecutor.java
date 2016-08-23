@@ -38,7 +38,7 @@ public class QueryExecutor {
     public static void main(String[] args) {
         ClientExecutorEngine.init();
         QueryBuilderClient queryBuilderClient = new QueryBuilderClient(datalakeID, attributes);
-        derivedQueryFromHazelcast = queryBuilderClient.buildQueryStatement("DESCRIPTION", " = 'RN'");
+        derivedQueryFromHazelcast = queryBuilderClient.buildQueryStatement("SUBJECT_ID", " < 100");
 
         DrillConnector.executeQuery(derivedQueryFromHazelcast, 6);
     }
