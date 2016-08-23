@@ -274,7 +274,8 @@ public class MongoConnector extends AbstractDataSourceConnector {
                     if (!(ConfigReader.getHiveServer().equals("") || (ConfigReader.getHiveServer() == null))) {
                         //start doing the Hive Things
                         String query = DataCafeUtil.wrapTheQuery(DataCafeUtil.constructQueryFromCollection(resultNames));
-                        HiveConnector.writeToHive(fullDataSourceName, query);
+                        HiveConnector hiveConnector = new HiveConnector(datalakeID);
+                        hiveConnector.writeToHive(fullDataSourceName, query);
                     }
                     outValue += "\n";
                 }

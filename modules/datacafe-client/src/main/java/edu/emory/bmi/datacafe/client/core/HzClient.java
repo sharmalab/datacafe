@@ -82,6 +82,47 @@ public class HzClient extends HzInstance {
         return map.get(key);
     }
 
+    /**
+     * Return a value for a given key from the multi-map
+     * invoke: HzClient.readValuesFromMultiMap("my-distributed-map", "sample-key");
+     *
+     * @param mapName the name of the map
+     * @param key     the key
+     * @return a value of the entry.
+     */
+    private static String getAValueFromMultiMap(String mapName, String key) {
+        MultiMap<String, String> map = clientInstance.getMultiMap(mapName);
+        Collection<String> entries = map.get(key);
+        Object[] anEntry = entries.toArray();
+        return anEntry[0].toString();
+    }
+
+    /**
+     * Return an attribute for a given key from the multi-map
+     * invoke: HzClient.getAnAttributeFromMultiMap("my-distributed-map", "sample-key");
+     *
+     * @param mapName the name of the map
+     * @param attributeName     the key
+     * @return a value of the entry.
+     */
+    public static String getAnAttributeFromMultiMap(String mapName, String attributeName) {
+        MultiMap<String, String> map = clientInstance.getMultiMap(mapName);
+        Collection<String> entries = map.get(attributeName.toLowerCase());
+        Object[] anEntry = entries.toArray();
+        return anEntry[0].toString();
+    }
+
+
+    /**
+     * Reads an entry from the default multi-map
+     * invoke: HzClient.readValuesFromMultiMap("sample-key");
+     *
+     * @param key the key
+     * @return the values of the entry.
+     */
+    public static Collection<String> readValuesFromDefaultMultiMap(String key) {
+        return readValuesFromMultiMap(DatacafeConstants.DEFAULT_HAZELCAST_MULTI_MAP, key);
+    }
 
     /**
      * Reads an entry from the map
@@ -112,16 +153,6 @@ public class HzClient extends HzInstance {
         }
     }
 
-    /**
-     * Reads an entry from the default multi-map
-     * invoke: HzClient.readValuesFromMultiMap("sample-key");
-     *
-     * @param key the key
-     * @return the values of the entry.
-     */
-    public static Collection<String> readValuesFromMultiMap(String key) {
-        return readValuesFromMultiMap(DatacafeConstants.DEFAULT_HAZELCAST_MULTI_MAP, key);
-    }
 
 
     /**

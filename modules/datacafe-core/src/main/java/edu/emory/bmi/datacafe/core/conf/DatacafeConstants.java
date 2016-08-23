@@ -63,4 +63,6 @@ public final class DatacafeConstants {
     public static final String SQL_FROM_ENTRY_KEY = "FROM";
 
     public static final String SQL_WHERE_ENTRY_KEY = "WHERE";
+
+    public static final String ATTRIBUTES_TABLES_MAP_SUFFIX = "_ATTRIBUTE_TABLE";
 }

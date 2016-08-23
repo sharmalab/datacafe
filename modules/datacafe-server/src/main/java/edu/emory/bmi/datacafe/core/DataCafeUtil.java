@@ -16,6 +16,8 @@
 package edu.emory.bmi.datacafe.core;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
  * Utility methods of Data Cafe
  */
 public final class DataCafeUtil {
+    private static Logger logger = LogManager.getLogger(DataCafeUtil.class.getName());
 
     /**
      * Double quotes mess up with the CSV parsing. First double the double quote before wrapping the entire thing in

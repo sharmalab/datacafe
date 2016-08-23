@@ -16,8 +16,10 @@
 package edu.emory.bmi.datacafe.client.samples;
 
 import edu.emory.bmi.datacafe.client.core.ClientExecutorEngine;
+import edu.emory.bmi.datacafe.client.core.HzClient;
 import edu.emory.bmi.datacafe.client.core.QueryBuilderClient;
 import edu.emory.bmi.datacafe.client.drill.DrillConnector;
+import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,22 +33,12 @@ public class QueryExecutor {
 
     private static final String attributes[] = {"SUBJECT_ID", "DOB", "HADM_ID", "ICD9_CODE", "SHORT_TITLE", "DESCRIPTION"};
 
-    private static final String collections[] = {
-            "hdfs.root.`physionet_patients.csv`",
-            "hdfs.root.`physionet_patients.csv`",
-            "hdfs.root.`physionet_diagnosesicd.csv`",
-            "hdfs.root.`physionet_dicddiagnosis.csv`",
-            "hdfs.root.`physionet_dicddiagnosis.csv`",
-            "hdfs.root.`physionet_caregivers.csv`"};
-
     public static String derivedQueryFromHazelcast;
-
-    public static String when = "ICD9_CODE < 100";
 
     public static void main(String[] args) {
         ClientExecutorEngine.init();
-        QueryBuilderClient queryBuilderClient = new QueryBuilderClient(datalakeID, attributes, collections);
-        derivedQueryFromHazelcast = queryBuilderClient.buildQueryStatement();
+        QueryBuilderClient queryBuilderClient = new QueryBuilderClient(datalakeID, attributes);
+        derivedQueryFromHazelcast = queryBuilderClient.buildQueryStatement("SUBJECT_ID", " < 100");
 
         DrillConnector.executeQuery(derivedQueryFromHazelcast, 6);
     }
