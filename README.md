@@ -5,7 +5,23 @@ efficiently by leveraging Apache Drill.
 
 The steps are outlined below:
 
-## Configure the Origin Data Sources
+
+## Data Cafe Data Sources
+
+Data cafe is implemented for, and tested with the origin data sources:
+
+1. MongoDB.
+
+2. MySQL.
+
+
+Data lake in:
+
+* Hadoop HDFS and Hive.
+
+
+
+## Configure Mongo
 
 * Start MongoDB.
 
@@ -15,6 +31,7 @@ The steps are outlined below:
 * You may choose to configure MongoDB to start at the system start-up time.
 
  $ sudo systemctl enable mongodb
+
 
 
 ## Configure Hadoop 
