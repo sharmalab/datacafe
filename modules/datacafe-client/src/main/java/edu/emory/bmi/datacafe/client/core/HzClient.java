@@ -18,6 +18,7 @@ package edu.emory.bmi.datacafe.client.core;
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.config.Config;
+import com.hazelcast.core.DistributedObject;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.MultiMap;
@@ -80,6 +81,21 @@ public class HzClient extends HzInstance {
     public static Collection<String> readValuesFromMultiMap(String mapName, String key) {
         MultiMap<String, String> map = clientInstance.getMultiMap(mapName);
         return map.get(key);
+    }
+
+    /**
+     * Reads an entry from the multi-map
+     * invoke: HzClient.readValuesFromMultiMap("my-distributed-map", "sample-key");
+     *
+     * @return the values of the entry.
+     */
+    public static Collection<DistributedObject> getDistributedObjects() {
+        Collection<DistributedObject> distributedObjects = clientInstance.getDistributedObjects();
+
+        for (DistributedObject distributedObject: distributedObjects) {
+            logger.info(distributedObject.getName());
+        }
+        return distributedObjects;
     }
 
     /**
@@ -177,12 +193,12 @@ public class HzClient extends HzInstance {
 
     /**
      * Gets the join attributes for a given attribute.
-     * @param tenantName the execution id.
+     * @param datalakeID the datalake id.
      * @param joinAttribute the attribute
      * @return the collection of attributes that are equal in a join with the current attribute.
      */
-    public static Collection<String> getJoins(String tenantName, String joinAttribute) {
-        MultiMap<String, String> map = clientInstance.getMultiMap(tenantName + DatacafeConstants.RELATIONS_MAP_SUFFIX);
+    public static Collection<String> getJoins(String datalakeID, String joinAttribute) {
+        MultiMap<String, String> map = clientInstance.getMultiMap(datalakeID + DatacafeConstants.RELATIONS_MAP_SUFFIX);
         return map.get(joinAttribute);
     }
 }
