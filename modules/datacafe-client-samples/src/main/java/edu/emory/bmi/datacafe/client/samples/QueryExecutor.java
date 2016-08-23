@@ -41,6 +41,6 @@ public class QueryExecutor {
         derivedQueryFromHazelcast = queryBuilderClient.buildQueryStatement("SUBJECT_ID", " < 100");
 
         DrillConnector.executeQuery(derivedQueryFromHazelcast, 6);
-        logger.info("Completed Execution");
+        ClientExecutorEngine.printExecutionTime();
     }
 }
