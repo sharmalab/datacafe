@@ -14,7 +14,8 @@
     <module>datacafe-core</module>
     <module>datacafe-server</module>
     <module>datacafe-client</module>
-    <module>datacafe-samples</module>
+    <module>datacafe-rest</module>
+    <module>datacafe-server-samples</module>
     <module>datacafe-client-samples</module>
   </modules>
 
