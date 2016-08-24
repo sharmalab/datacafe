@@ -40,12 +40,8 @@ public class HzClient extends HzInstance {
     private static Logger logger = LogManager.getLogger(HzClient.class.getName());
     private static HazelcastInstance clientInstance;
 
-    public static void main(String[] args) {
-        initClient();
-    }
-
     /**
-     * Initializes a Hazelcast client instance.
+     * Initializes a Hazelcast client instance. Core of the Data Cafe Client Instance.
      */
     public static void initClient() {
         logger.info("Initiating a Hazelcast Client instance.");
@@ -81,6 +77,16 @@ public class HzClient extends HzInstance {
     public static Collection<String> readValuesFromMultiMap(String mapName, String key) {
         MultiMap<String, String> map = clientInstance.getMultiMap(mapName);
         return map.get(key);
+    }
+
+    /**
+     * Gets all the datalakes in the cluster.
+     *
+     * @return the datalakes.
+     */
+    public static Collection<String> getDataLakeNames() {
+        return readValuesFromMultiMap(DatacafeConstants.DATALAKES_META_MAP,
+                DatacafeConstants.DATALAKES_NAMES);
     }
 
     /**

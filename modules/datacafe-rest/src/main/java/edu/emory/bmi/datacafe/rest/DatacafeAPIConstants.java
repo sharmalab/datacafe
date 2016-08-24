@@ -13,21 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.core.hazelcast;
-
-import com.hazelcast.core.HazelcastInstance;
+package edu.emory.bmi.datacafe.rest;
 
 /**
- * A simple Hazelcast instance.
+ * Common constants in exposing the Data Cafe API.
  */
-public class HzInstance {
-    protected static HazelcastInstance firstInstance;
-
+public class DatacafeAPIConstants {
     /**
-     * Initializes the Hazelcast Instance
+     * The port that exposes the RESTful API of Data Cafe. Do not conflict with the other open ports.
      */
-    public static void init() {
-        HzInitiator.initInstance();
-        firstInstance = HazelSim.getHazelSim().getFirstInstance();
-    }
+    public static final int REST_PORT = 9090;
 }

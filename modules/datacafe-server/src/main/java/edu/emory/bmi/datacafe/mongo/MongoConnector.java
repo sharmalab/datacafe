@@ -51,6 +51,8 @@ public class MongoConnector extends AbstractDataSourceConnector {
     public MongoConnector() {}
 
     public MongoConnector(String datalakeID) {
+        HzServer.addValueToMultiMap(DatacafeConstants.DATALAKES_META_MAP,
+                DatacafeConstants.DATALAKES_NAMES, datalakeID);
         this.datalakeID = datalakeID;
     }
 
