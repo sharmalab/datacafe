@@ -16,10 +16,8 @@
 package edu.emory.bmi.datacafe.client.samples;
 
 import edu.emory.bmi.datacafe.client.core.ClientExecutorEngine;
-import edu.emory.bmi.datacafe.client.core.HzClient;
 import edu.emory.bmi.datacafe.client.core.QueryBuilderClient;
 import edu.emory.bmi.datacafe.client.drill.DrillConnector;
-import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,7 +27,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class QueryExecutor {
     private static Logger logger = LogManager.getLogger(QueryExecutor.class.getName());
-    private static final String datalakeID = "PhysioNetIntegratedExecutor";
+    private static final String datalakeID = "PhysioNetExecutor";
 
     private static final String attributes[] = {"SUBJECT_ID", "DOB", "HADM_ID", "ICD9_CODE", "SHORT_TITLE", "DESCRIPTION"};
 
