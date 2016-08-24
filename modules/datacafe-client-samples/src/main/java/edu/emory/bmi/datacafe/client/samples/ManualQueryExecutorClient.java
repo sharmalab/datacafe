@@ -16,29 +16,27 @@
 package edu.emory.bmi.datacafe.client.samples;
 
 import edu.emory.bmi.datacafe.client.core.ClientExecutorEngine;
-import edu.emory.bmi.datacafe.client.core.QueryBuilderClient;
 import edu.emory.bmi.datacafe.client.drill.DrillConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
 /**
- * A sample drill query executor with queries partially auto-generated.
- */
-public class QueryExecutor {
-    private static Logger logger = LogManager.getLogger(QueryExecutor.class.getName());
-    private static final String datalakeID = "PhysioNetExecutor";
+* A sample drill query executor.
+*/
+public class ManualQueryExecutorClient {
+    private static Logger logger = LogManager.getLogger(ManualQueryExecutorClient.class.getName());
 
-    private static final String attributes[] = {"SUBJECT_ID", "DOB", "HADM_ID", "ICD9_CODE", "SHORT_TITLE", "DESCRIPTION"};
-
-    public static String derivedQueryFromHazelcast;
+    public static final String DRILL_SAMPLE_QUERY = "SELECT t1.SUBJECT_ID, t1.DOB, t2.HADM_ID, t3.ICD9_CODE, t3.SHORT_TITLE, t5.DESCRIPTION\n" +
+            "FROM hdfs.root.`physionet_patients.csv` t1,\n" +
+            "hdfs.root.`physionet_diagnosesicd.csv` t2,\n" +
+            "hdfs.root.`physionet_dicddiagnosis.csv` t3,\n" +
+            "hdfs.root.`physionet_datetimeevents.csv` t4,\n" +
+            "hdfs.root.`physionet_caregivers.csv` t5\n" +
+            "WHERE t1.SUBJECT_ID = t2.SUBJECT_ID AND t2.ICD9_CODE = t3.ICD9_CODE AND t4.SUBJECT_ID = t1.SUBJECT_ID AND t4.CGID = t5.CGID AND t5.DESCRIPTION='RN'";
 
     public static void main(String[] args) {
         ClientExecutorEngine.init();
-        QueryBuilderClient queryBuilderClient = new QueryBuilderClient(datalakeID, attributes);
-        derivedQueryFromHazelcast = queryBuilderClient.buildQueryStatement("SUBJECT_ID", " < 100");
-
-        DrillConnector.executeQuery(derivedQueryFromHazelcast, 6);
-        ClientExecutorEngine.printExecutionTime();
+        DrillConnector.executeQuery(DRILL_SAMPLE_QUERY, 6);
     }
 }

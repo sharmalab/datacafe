@@ -104,15 +104,33 @@ You may execute Data Cafe by writing a client to it.
 
 Make sure to include log4j2-test.xml into your class path to be able to configure and view the logs. Default log level is [WARN].
 
-Samples are provided in the datacafe-samples module.
-
-For example, to execute the clinical-1 sample,
-
- $ java -classpath lib/datacafe-samples-1.0-SNAPSHOT.jar:lib/*:conf/ main.java.edu.emory.bmi.datacafe.impl.clinical1.main.Initiator
+Server and client samples are provided in the datacafe-server-samples and datacafe-client-samples module.
 
 
-PhysioNetIntegratedExecutor offers a server sample with Mongo as the original data source and HDFS as the integrated 
-data source. QueryExecutor on the other hand, offers a sample client implementation with queries partially auto-generated.
+# Executor Sample in datacafe-server-samples module.
+
+Executor offers a server sample with Mongo as the original data source and HDFS as the integrated data source. 
+
+To execute the Executor sample,
+
+ $ java -classpath lib/datacafe-server-samples-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi.datacafe.server.samples.mongo.physionet.Executor
+
+
+# ExecutorClient Sample in datacafe-client-samples module.
+
+ExecutorClient on the other hand, offers a sample client implementation with queries partially auto-generated.
+
+
+To execute the ExecutorClient sample,
+
+ $ java -classpath lib/datacafe-client-samples-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi.datacafe.client.samples.ExecutorClient
+
+
+# HzServer in datacafe-server module.
+
+HzServer may be executed to create more Hazelcast members to join the Hazelcast cluster created by the Executor.
+
+ $ java -classpath lib/datacafe-server-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi.datacafe.hazelcast.HzServer
 
 
 ## Dependencies
