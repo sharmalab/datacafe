@@ -71,14 +71,7 @@ Make sure to set extractHeader element appropriately in the Drill storage accord
        "extractHeader": true,
 
 
-## Configure Hive
-
-Optional.
-
-
-## Execute Hive
-
-Optional.
+## Configure and Execute Hive
 
 * Run Hive Metastore and Hive
 
