@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.impl.mysql.clinical.main;
+package edu.emory.bmi.datacafe.server.samples.mysql;
 
 import edu.emory.bmi.datacafe.core.ServerExecutorEngine;
 import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;

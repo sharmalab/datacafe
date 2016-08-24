@@ -13,33 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.impl.mongo.clinical.main;
+package edu.emory.bmi.datacafe.server.samples.mongo.clinical;
 
-import edu.emory.bmi.datacafe.constants.MongoConstants;
 import edu.emory.bmi.datacafe.core.ServerExecutorEngine;
 import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;
 import edu.emory.bmi.datacafe.hdfs.HdfsConnector;
 import edu.emory.bmi.datacafe.mongo.MongoConnector;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.bson.Document;
 
 import java.util.List;
-
 /**
- * The _id is Mongo-generated Random string. Ignore it.
+ * A sample executor for Mongo, where the _id is considered as part of the original data.
  */
-public class ExecutorRandomID {
-    private static Logger logger = LogManager.getLogger(ExecutorRandomID.class.getName());
-
+public class Executor {
     public static void main(String[] args) {
+
         ServerExecutorEngine.init();
 
-        String database1 = "patients";
-        String collection1 = "patientsData";
+        String database1 = "clinical";
+        String collection1 = "clinicalData";
 
-        String database2 = "admissions";
-        String collection2 = "admissionsData";
+        String database2 = "pathology";
+        String collection2 = "pathologyData";
 
         DataSourcesRegistry.addDataSource(database1, collection1);
         DataSourcesRegistry.addDataSource(database2, collection2);
@@ -47,33 +42,22 @@ public class ExecutorRandomID {
         MongoConnector mongoConnector = new MongoConnector();
 
         // Get the list of IDs from the first data source
-        Document document1 = new Document("GENDER", "M");
+        Document document1 = new Document("Age_at_Initial_Diagnosis", new Document("$gt", 60)).append("Laterality", "Left");
         List ids1 = mongoConnector.getIDs(database1, collection1, document1);
 
-        if(logger.isDebugEnabled()) {
-            logger.debug("First list of IDs retrieved with ids, " + ids1.size());
-        }
-
         // Get the list of IDs from the second data source
-        Document document2 = new Document("ADMISSION_TYPE", "EMERGENCY");
+        Document document2 = new Document("Tumor_Nuclei_Percentage", new Document("$gt", 65));
         List ids2 = mongoConnector.getIDs(database2, collection2, document2);
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Second list of IDs retrieved with ids, " + ids2.size());
-        }
+        // Interested Attributes: "patientID", "gender", "laterality"
+        List chosenAttributes1 = mongoConnector.getAttributeValues(database1, collection1, ids1, new String[]{"Gender", "Laterality"});
 
-        // ID: "SUBJECT_ID". Other Interested Attributes: "ROW_ID", "GENDER"
-        List chosenAttributes1 = mongoConnector.getAttributesWithHeader(database1, collection1, ids1,
-                MongoConstants.ID_ATTRIBUTE,
-                new String[]{"SUBJECT_ID", "ROW_ID", "GENDER"});
-
-        // ID: "HADM_ID". Other Interested Attributes: "SUBJECT_ID", "DISCHARGE_LOCATION", "MARITAL_STATUS"
-        List chosenAttributes2 = mongoConnector.getAttributesWithHeader(database2, collection2, ids2,
-                MongoConstants.ID_ATTRIBUTE,
-                new String[]{"HADM_ID", "SUBJECT_ID", "DISCHARGE_LOCATION", "MARITAL_STATUS"});
+        // Interested Attributes: "sliceID", "patientID", "slideBarCode"
+        List chosenAttributes2 = mongoConnector.getAttributeValues(database2, collection2, ids2, new String[]{"BCR_Patient_UID_From_Pathology", "Slide_Barcode"});
 
         // Write to the Data Lake
         HdfsConnector.composeDataLake(chosenAttributes1, chosenAttributes2);
         mongoConnector.closeConnections();
     }
 }
+

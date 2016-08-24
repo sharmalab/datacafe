@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.impl.mongo.parallel.main;
+package edu.emory.bmi.datacafe.server.samples.mongo.physionet;
 
 import edu.emory.bmi.datacafe.core.ServerExecutorEngine;
 import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;
 import edu.emory.bmi.datacafe.hdfs.HdfsConnector;
-import edu.emory.bmi.datacafe.impl.mongo.clinical.main.ExecutorRandomID;import edu.emory.bmi.datacafe.mongo.MongoConnector;
+import edu.emory.bmi.datacafe.mongo.MongoConnector;
 import edu.emory.bmi.datacafe.mongo.MongoIntegratedConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,8 +29,8 @@ import java.lang.String;import java.util.List;
 /**
  * A larger scale example with PhysioNet executed sequentially as a benchmark to the default parallel execution.
  */
-public class PhysioNetSeqBenchmark {
-    private static Logger logger = LogManager.getLogger(ExecutorRandomID.class.getName());
+public class SeqBenchmark {
+    private static Logger logger = LogManager.getLogger(SeqBenchmark.class.getName());
 
     public static void main(String[] args) {
         ServerExecutorEngine.init();

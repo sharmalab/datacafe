@@ -13,22 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.impl.mongo.parallel.main;
+package edu.emory.bmi.datacafe.server.samples.mongo.physionet;
 
 import edu.emory.bmi.datacafe.core.ServerExecutorEngine;
 import edu.emory.bmi.datacafe.core.kernel.DataSourcesRegistry;
-import edu.emory.bmi.datacafe.impl.mongo.clinical.main.ExecutorRandomID;
 import edu.emory.bmi.datacafe.mongo.MongoHDFSIntegrator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
 
 /**
- * A larger scale example with PhysioNet.
+ * Data Cafe Server Sample with PhysioNet MIMIC-III data sources
  */
-public class PhysioNetIntegratedExecutor {
-    private static Logger logger = LogManager.getLogger(ExecutorRandomID.class.getName());
-    private static final String datalakeID = "PhysioNetIntegratedExecutor";
+public class Executor {
+    private static Logger logger = LogManager.getLogger(Executor.class.getName());
+    private static final String datalakeID = "PhysioNetExecutor";
 
     public static void main(String[] args) {
         ServerExecutorEngine.init();

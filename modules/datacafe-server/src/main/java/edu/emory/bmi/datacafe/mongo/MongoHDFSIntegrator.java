@@ -33,7 +33,7 @@ public class MongoHDFSIntegrator {
     }
 
     /**
-     * Write to HDFS. Parallel Execution.
+     * Write to HDFS. Parallel Execution, with the chosen attributes.
      *
      * @param databases   the databases as an array
      * @param collections the collections in the respective databases.
@@ -60,7 +60,7 @@ public class MongoHDFSIntegrator {
     }
 
     /**
-     * Write to HDFS. Parallel Execution.
+     * Write to HDFS. Parallel Execution. All the attributes assumed.
      *
      * @param databases   the databases as an array
      * @param collections the collections in the respective databases.

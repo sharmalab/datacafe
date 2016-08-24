@@ -24,8 +24,8 @@ import org.apache.logging.log4j.Logger;
 /**
 * A sample drill query executor.
 */
-public class ManualQueryExecutor {
-    private static Logger logger = LogManager.getLogger(ManualQueryExecutor.class.getName());
+public class ManualQueryExecutorClient {
+    private static Logger logger = LogManager.getLogger(ManualQueryExecutorClient.class.getName());
 
     public static final String DRILL_SAMPLE_QUERY = "SELECT t1.SUBJECT_ID, t1.DOB, t2.HADM_ID, t3.ICD9_CODE, t3.SHORT_TITLE, t5.DESCRIPTION\n" +
             "FROM hdfs.root.`physionet_patients.csv` t1,\n" +
