@@ -91,7 +91,7 @@ Data Cafe can be built using Apache Maven 3.x and Java 1.8.x or higher.
 Built and tested with Apache Maven 3.1.1 and Oracle Java 1.8.0.
 
 
-## Executing Data Cafe
+# Executing Data Cafe
 
 You may execute Data Cafe by writing a server application on top of the Data Cafe Server as well as a client application
 by extending the Data Cafe Client.
@@ -103,7 +103,7 @@ Make sure to include log4j2-test.xml into your class path to be able to configur
 The samples described below are PhysioNet MIMIC-III data sources downloaded and configured as MongoDB data bases.
 
 
-# Executor Sample in datacafe-server-samples module.
+## Executor Sample in datacafe-server-samples module.
 
 Executor offers a server sample with Mongo as the origin data source and HDFS as the integrated data source. 
 
@@ -112,7 +112,7 @@ To execute the Executor sample,
  $ java -classpath lib/datacafe-server-samples-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi.datacafe.server.samples.mongo.physionet.Executor
 
 
-# ExecutorClient Sample in datacafe-client-samples module.
+## ExecutorClient Sample in datacafe-client-samples module.
 
 ExecutorClient on the other hand, offers a sample client implementation with queries partially auto-generated.
 
@@ -122,14 +122,14 @@ To execute the ExecutorClient sample,
  $ java -classpath lib/datacafe-client-samples-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi.datacafe.client.samples.ExecutorClient
 
 
-# HzServer in datacafe-server module.
+## HzServer in datacafe-server module.
 
 HzServer may be executed to create more Hazelcast members to join the Hazelcast cluster created by the Executor.
 
  $ java -classpath lib/datacafe-server-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi.datacafe.hazelcast.HzServer
 
 
-## Dependencies
+# Dependencies
 
 This project depends on the below major projects.
 
@@ -150,7 +150,7 @@ This project depends on the below major projects.
 * SparkJava
 
 
-## Using Data Cafe in your research
+# Using Data Cafe in your research
 
 Please cite the below, if you use Data Cafe in your research.
 
