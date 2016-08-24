@@ -6,7 +6,7 @@ efficiently by leveraging Apache Drill.
 The steps are outlined below:
 
 
-## Data Cafe Data Sources
+# Data Cafe Data Sources
 
 Data cafe is implemented for, and tested with the origin data sources:
 
@@ -34,10 +34,7 @@ Data lake in:
 
 
 
-## Configure Hadoop 
-
-
-## Execute Hadoop
+## Configure and Execute Hadoop
 
 * Start Hadoop NameNode daemon and DataNode daemon 
 
@@ -82,7 +79,7 @@ Make sure to set extractHeader element appropriately in the Drill storage accord
  $HIVE_HOME/bin/hiveserver2
 
 
-## Building Data Cafe
+# Building Data Cafe
 
 Data Cafe can be built using Apache Maven 3.x and Java 1.8.x or higher.
 
