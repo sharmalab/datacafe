@@ -100,16 +100,19 @@ Built and tested with Apache Maven 3.1.1 and Oracle Java 1.8.0.
 
 ## Executing Data Cafe
 
-You may execute Data Cafe by writing a client to it.
+You may execute Data Cafe by writing a server application on top of the Data Cafe Server as well as a client application
+by extending the Data Cafe Client.
+
+Server and client samples are provided in the datacafe-server-samples and datacafe-client-samples modules.
 
 Make sure to include log4j2-test.xml into your class path to be able to configure and view the logs. Default log level is [WARN].
 
-Server and client samples are provided in the datacafe-server-samples and datacafe-client-samples module.
+The samples described below are PhysioNet MIMIC-III data sources downloaded and configured as MongoDB data bases.
 
 
 # Executor Sample in datacafe-server-samples module.
 
-Executor offers a server sample with Mongo as the original data source and HDFS as the integrated data source. 
+Executor offers a server sample with Mongo as the origin data source and HDFS as the integrated data source. 
 
 To execute the Executor sample,
 
