@@ -47,6 +47,17 @@ Data lake in:
  $HADOOP_HOME/sbin/stop-dfs.sh
 
 
+## Configure and Execute Hive
+
+* Run Hive Metastore and Hive
+
+ $HIVE_HOME/bin/hive --service metastore &
+
+* Start HiveServer2
+
+ $HIVE_HOME/bin/hiveserver2
+
+
 ## Configure Drill
 
 Make sure Java is installed in order to start Drill.
@@ -66,17 +77,6 @@ Make sure Java is installed in order to start Drill.
 Make sure to set extractHeader element appropriately in the Drill storage according to your data sources.
 
        "extractHeader": true,
-
-
-## Configure and Execute Hive
-
-* Run Hive Metastore and Hive
-
- $HIVE_HOME/bin/hive --service metastore &
-
-* Start HiveServer2
-
- $HIVE_HOME/bin/hiveserver2
 
 
 # Building Data Cafe
