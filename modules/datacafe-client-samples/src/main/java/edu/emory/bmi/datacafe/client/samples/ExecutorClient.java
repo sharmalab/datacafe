@@ -40,15 +40,6 @@ public class ExecutorClient {
         ClientExecutorEngine.init();
         QueryBuilderClient queryBuilderClient = new QueryBuilderClient(datalakeID, attributes);
 
-
-        /**
-         * todo: remove.
-         */
-        Collection<String> datalakes = HzClient.getDataLakeNames();
-        for (String datalake: datalakes) {
-            logger.info("Datalake: " + datalake);
-        }
-
         derivedQueryFromHazelcast = queryBuilderClient.buildQueryStatement("SUBJECT_ID", " < 100");
 
         DrillConnector.executeQuery(derivedQueryFromHazelcast, 6);

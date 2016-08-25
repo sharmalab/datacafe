@@ -25,13 +25,5 @@
             <groupId>edu.emory.bmi</groupId>
             <artifactId>datacafe-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.apache.drill.exec</groupId>
-            <artifactId>drill-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
     </dependencies>
 </project>
