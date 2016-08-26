@@ -15,6 +15,8 @@
  */
 package edu.emory.bmi.datacafe.core.hazelcast;
 
+import edu.emory.bmi.datacafe.core.hazelcast.config.HzConfigLoader;
+import edu.emory.bmi.datacafe.core.hazelcast.config.HzConfigReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,8 +32,8 @@ public class HzInitiator {
     public static void initInstance() {
         logger.info("Initiating a Hazelcast instance.");
         HzConfigReader.readConfig();
-        HazelSim.spawnInstance(HazelSimCore.getCfg());
-        int size = HazelSim.getHazelSim().getFirstInstance().getCluster().getMembers().size();
+        HzIntegrator.spawnInstance(HzConfigLoader.getCfg());
+        int size = HzIntegrator.getHzIntegrator().getFirstInstance().getCluster().getMembers().size();
         logger.info("Number of instances in this cluster: " + size);
     }
 
@@ -41,8 +43,8 @@ public class HzInitiator {
     public static void initInstance(String clusterName) {
         logger.info("Initiating a Hazelcast instance with cluster name, " + clusterName);
         HzConfigReader.readConfig();
-        HazelSim.spawnInstance(HazelSimCore.getCfg(clusterName));
-        int size = HazelSim.getHazelSim().getFirstInstance().getCluster().getMembers().size();
+        HzIntegrator.spawnInstance(HzConfigLoader.getCfg(clusterName));
+        int size = HzIntegrator.getHzIntegrator().getFirstInstance().getCluster().getMembers().size();
         logger.info(String.format("Number of instances in the cluster %s is, %d", clusterName, size));
     }
 }

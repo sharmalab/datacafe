@@ -13,21 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.core.hazelcast;
+package edu.emory.bmi.datacafe.rest;
 
-import com.hazelcast.core.HazelcastInstance;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import static spark.Spark.port;
 
 /**
- * A simple Hazelcast instance.
+ * Exposing the server and client APIs of Data Cafe..
  */
-public class HzInstance {
-    protected static HazelcastInstance firstInstance;
+public class DatacafeEngine {
+    private static Logger logger = LogManager.getLogger(DatacafeEngine.class.getName());
 
-    /**
-     * Initializes the Hazelcast Instance
-     */
-    public static void init() {
-        HzInitiator.initInstance();
-        firstInstance = HzIntegrator.getHzIntegrator().getFirstInstance();
+    public static void main(String[] args) {
+
+        logger.info("Initializing the Data Cafe RESTful Interfaces");
+        port(DatacafeAPIConstants.REST_PORT);
+        DataLakeManager.initialize();
     }
 }

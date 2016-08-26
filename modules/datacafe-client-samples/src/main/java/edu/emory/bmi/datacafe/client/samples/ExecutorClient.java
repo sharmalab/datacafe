@@ -16,11 +16,10 @@
 package edu.emory.bmi.datacafe.client.samples;
 
 import edu.emory.bmi.datacafe.client.core.ClientExecutorEngine;
-import edu.emory.bmi.datacafe.client.core.QueryBuilderClient;
+import edu.emory.bmi.datacafe.client.query_builder.QueryBuilderClient;
 import edu.emory.bmi.datacafe.client.drill.DrillConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 
 /**
  * A sample drill query executor client with queries partially auto-generated.
@@ -36,9 +35,11 @@ public class ExecutorClient {
     public static void main(String[] args) {
         ClientExecutorEngine.init();
         QueryBuilderClient queryBuilderClient = new QueryBuilderClient(datalakeID, attributes);
-        derivedQueryFromHazelcast = queryBuilderClient.buildQueryStatement("SUBJECT_ID", " < 100");
 
-        DrillConnector.executeQuery(derivedQueryFromHazelcast, 6);
+        derivedQueryFromHazelcast = queryBuilderClient.reformatAndBuildQueryStatement("SUBJECT_ID < 100 OR SUBJECT_ID = 120");
+
+        DrillConnector.executeQueryAndPrintOutput(derivedQueryFromHazelcast, attributes.length);
         ClientExecutorEngine.printExecutionTime();
+
     }
 }

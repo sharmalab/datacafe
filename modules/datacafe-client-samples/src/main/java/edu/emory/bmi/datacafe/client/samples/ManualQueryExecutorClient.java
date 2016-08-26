@@ -37,6 +37,6 @@ public class ManualQueryExecutorClient {
 
     public static void main(String[] args) {
         ClientExecutorEngine.init();
-        DrillConnector.executeQuery(DRILL_SAMPLE_QUERY, 6);
+        DrillConnector.executeQueryAndPrintOutput(DRILL_SAMPLE_QUERY, 6);
     }
 }

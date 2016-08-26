@@ -13,28 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.core.hazelcast;
+package edu.emory.bmi.datacafe.core.hazelcast.config;
 
 import com.hazelcast.config.Config;
 import com.hazelcast.config.FileSystemXmlConfig;
 import com.hazelcast.config.GroupConfig;
+import edu.emory.bmi.datacafe.core.hazelcast.HzIntegrator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.FileNotFoundException;
 
 /**
- * The singleton base class integrating hazelcast into Data Cafe, with its configurations
+ * The singleton base class loading hazelcast configurations for Data Cafe.
  */
-public class HazelSimCore {
-    private static HazelSimCore hazelSimCore = null;
+public class HzConfigLoader {
+    private static HzConfigLoader hzConfigLoader = null;
     private static String clusterGroup = HzConstants.MAIN_HZ_CLUSTER;
-    private static Logger logger = LogManager.getLogger(HazelSimCore.class.getName());
+    private static Logger logger = LogManager.getLogger(HzConfigLoader.class.getName());
 
 
-    private HazelSimCore(int noOfSimultaneousInstances) {
+    private HzConfigLoader(int noOfSimultaneousInstances) {
         Config cfg = getCfg();
-        HazelSim.spawnInstances(cfg, noOfSimultaneousInstances);
+        HzIntegrator.spawnInstances(cfg, noOfSimultaneousInstances);
     }
 
     /**
@@ -66,18 +67,18 @@ public class HazelSimCore {
 
 
 
-    public static HazelSimCore getHazelSimCore(int noOfSimultaneousInstances, String _clusterGroup) {
-        if (hazelSimCore == null) {
+    public static HzConfigLoader getHzConfigLoader(int noOfSimultaneousInstances, String _clusterGroup) {
+        if (hzConfigLoader == null) {
             clusterGroup = _clusterGroup;
-            hazelSimCore = new HazelSimCore(noOfSimultaneousInstances);
+            hzConfigLoader = new HzConfigLoader(noOfSimultaneousInstances);
         }
-        return hazelSimCore;
+        return hzConfigLoader;
     }
 
-    public static HazelSimCore getHazelSimCore(int noOfSimultaneousInstances) {
-        if (hazelSimCore == null) {
-            hazelSimCore = new HazelSimCore(noOfSimultaneousInstances);
+    public static HzConfigLoader getHzConfigLoader(int noOfSimultaneousInstances) {
+        if (hzConfigLoader == null) {
+            hzConfigLoader = new HzConfigLoader(noOfSimultaneousInstances);
         }
-        return hazelSimCore;
+        return hzConfigLoader;
     }
 }

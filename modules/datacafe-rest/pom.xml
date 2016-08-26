@@ -29,13 +29,5 @@
             <groupId>edu.emory.bmi</groupId>
             <artifactId>datacafe-client</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.mashape.unirest</groupId>
-            <artifactId>unirest-java</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.sparkjava</groupId>
-            <artifactId>spark-core</artifactId>
-        </dependency>
     </dependencies>
 </project>

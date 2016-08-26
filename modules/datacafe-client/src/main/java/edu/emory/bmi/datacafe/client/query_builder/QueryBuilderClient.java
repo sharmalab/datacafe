@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.client.core;
+package edu.emory.bmi.datacafe.client.query_builder;
 
+import edu.emory.bmi.datacafe.client.core.HzClient;
 import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
 import edu.emory.bmi.datacafe.core.conf.QueryWrapper;
 import org.apache.logging.log4j.LogManager;
@@ -76,26 +77,6 @@ public class QueryBuilderClient {
     }
 
     /**
-     * Prints the tables that has the any given attribute.
-     *
-     * @param attribute the attribute to be probed.
-     */
-    public void displayTablesWithAttribute(String attribute) {
-        HzClient.printValuesFromMultiMap(datalakeID, attribute);
-    }
-
-    /**
-     * Prints the tables that has the any given attribute.
-     *
-     * @param attributes the attributes to be probed as an array.
-     */
-    public void displayTablesWithAttribute(String[] attributes) {
-        for (String attribute : attributes) {
-            HzClient.printValuesFromMultiMap(datalakeID, attribute);
-        }
-    }
-
-    /**
      * Get all the data sources in the data lake.
      *
      * @return the data sources in the lake.
@@ -114,36 +95,59 @@ public class QueryBuilderClient {
     }
 
     /**
-     * Builds the Query statement
-     * queryBuilderClient.buildQueryStatement("AGE", " < 10");
+     * Builds the Query statement after reformatting
+     * queryBuilderClient.buildQueryStatement("SUBJECT_ID < 100 OR SUBJECT_ID = 120");
      *
-     * @param attribute, the attribute in question
-     * @param condition, the condition
+     * @param whenQueryFromUser the user given when query
      * @return the Query statement
      */
-    public String buildQueryStatement(String attribute, String condition) {
-
-
-        String table = HzClient.getAnAttributeFromMultiMap(
-                datalakeID + DatacafeConstants.ATTRIBUTES_TABLES_MAP_SUFFIX, attribute);
-
-        String tableFullURI = QueryWrapper.getDestinationInDataLakeFromDrill(table);
-
-        String tableIndex = HzClient.readValues(
-                datalakeID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX, tableFullURI);
-
-        String whenQuerySuffix = " AND " + tableIndex + "." + attribute + " " + condition;
-        return buildQueryStatement() + whenQuerySuffix;
+    public String reformatAndBuildQueryStatement(String whenQueryFromUser) {
+        String whenQueryReformatted = reformatQueryStatement(whenQueryFromUser);
+        return buildQueryStatement("( " + whenQueryReformatted + " )");
     }
 
     /**
      * Builds the Query statement
      *
-     * @param whenQueryFromUser the user given when query
+     * @param fullyFormattedWhenQueryFromUser the user given when query
      * @return the Query statement
      */
-    public String buildQueryStatement(String whenQueryFromUser) {
-        return buildQueryStatement() + whenQueryFromUser;
+    public String buildQueryStatement(String fullyFormattedWhenQueryFromUser) {
+        return buildQueryStatement() + " AND " + fullyFormattedWhenQueryFromUser;
+    }
+
+    /**
+     * Reformat the query statement to include the table indices.
+     *
+     * @param whenQueryFromUser the user given when query
+     * @return the reformatted when query.
+     */
+    public String reformatQueryStatement(String whenQueryFromUser) {
+        String out = whenQueryFromUser;
+        for (String attribute : attributes) {
+            out = out.replace(attribute, getFullyQualifiedAttributeName(attribute));
+        }
+        return out;
+    }
+
+
+    private String getFullyQualifiedAttributeName(String attribute) {
+        String tableIndex = getTableIndex(attribute);
+        return getFullyQualifiedAttributeName(attribute, tableIndex);
+    }
+
+    private String getFullyQualifiedAttributeName(String attribute, String tableIndex) {
+        return tableIndex + "." + attribute;
+    }
+
+    private String getTableIndex(String attribute) {
+        String table = HzClient.getAnAttributeFromMultiMap(
+                datalakeID + DatacafeConstants.ATTRIBUTES_TABLES_MAP_SUFFIX, attribute);
+
+        String tableFullURI = QueryWrapper.getDestinationInDataLakeFromDrill(table);
+
+        return HzClient.readValues(
+                datalakeID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX, tableFullURI);
     }
 
     /**
@@ -163,8 +167,7 @@ public class QueryBuilderClient {
     private String buildSelectStatement() {
         String out = "SELECT ";
         for (int i = 0; i < collections.length; i++) {
-            out += HzClient.readValues(datalakeID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX, collections[i]) +
-                    "." + attributes[i];
+            out += getFullyQualifiedAttributeName(attributes[i], HzClient.readValues(datalakeID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX, collections[i]));
             if (i < collections.length - 1) {
                 out += ", ";
             } else {

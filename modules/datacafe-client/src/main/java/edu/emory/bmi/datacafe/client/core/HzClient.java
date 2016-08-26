@@ -23,9 +23,9 @@ import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.MultiMap;
 import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
-import edu.emory.bmi.datacafe.core.hazelcast.HazelSim;
-import edu.emory.bmi.datacafe.core.hazelcast.HazelSimCore;
-import edu.emory.bmi.datacafe.core.hazelcast.HzConfigReader;
+import edu.emory.bmi.datacafe.core.hazelcast.HzIntegrator;
+import edu.emory.bmi.datacafe.core.hazelcast.config.HzConfigLoader;
+import edu.emory.bmi.datacafe.core.hazelcast.config.HzConfigReader;
 import edu.emory.bmi.datacafe.core.hazelcast.HzInstance;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,12 +40,8 @@ public class HzClient extends HzInstance {
     private static Logger logger = LogManager.getLogger(HzClient.class.getName());
     private static HazelcastInstance clientInstance;
 
-    public static void main(String[] args) {
-        initClient();
-    }
-
     /**
-     * Initializes a Hazelcast client instance.
+     * Initializes a Hazelcast client instance. Core of the Data Cafe Client Instance.
      */
     public static void initClient() {
         logger.info("Initiating a Hazelcast Client instance.");
@@ -63,10 +59,10 @@ public class HzClient extends HzInstance {
     public static void initLite() {
         logger.info("Initiating a Hazelcast Lite instance.");
         HzConfigReader.readConfig();
-        Config config = HazelSimCore.getCfg();
+        Config config = HzConfigLoader.getCfg();
         config.setLiteMember(true);
         clientInstance = Hazelcast.newHazelcastInstance(config);
-        int size = HazelSim.getHazelSim().getFirstInstance().getCluster().getMembers().size();
+        int size = HzIntegrator.getHzIntegrator().getFirstInstance().getCluster().getMembers().size();
         logger.info("Number of instances in this cluster: " + size);
     }
 
@@ -81,6 +77,16 @@ public class HzClient extends HzInstance {
     public static Collection<String> readValuesFromMultiMap(String mapName, String key) {
         MultiMap<String, String> map = clientInstance.getMultiMap(mapName);
         return map.get(key);
+    }
+
+    /**
+     * Gets all the datalakes in the cluster.
+     *
+     * @return the datalakes.
+     */
+    public static Collection<String> getDataLakeNames() {
+        return readValuesFromMultiMap(DatacafeConstants.DATALAKES_META_MAP,
+                DatacafeConstants.DATALAKES_NAMES);
     }
 
     /**

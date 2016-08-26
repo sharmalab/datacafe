@@ -51,6 +51,8 @@ public class MongoConnector extends AbstractDataSourceConnector {
     public MongoConnector() {}
 
     public MongoConnector(String datalakeID) {
+        HzServer.addValueToMultiMap(DatacafeConstants.DATALAKES_META_MAP,
+                DatacafeConstants.DATALAKES_NAMES, datalakeID);
         this.datalakeID = datalakeID;
     }
 
@@ -71,17 +73,12 @@ public class MongoConnector extends AbstractDataSourceConnector {
      * @return the list of IDs.
      */
     public List<Object> getAllIDs(FindIterable<Document> iterable, String idAttribute) {
-        List<Object> idList = new ArrayList<Object>();
-        iterable.forEach(new Block<Document>() {
-            @Override
-            public void apply(final Document document) {
-                idList.add(document.get(idAttribute));
-            }
+        List<Object> idList = new ArrayList<>();
+        iterable.forEach((Block<Document>) document -> {
+            idList.add(document.get(idAttribute));
         });
         if (logger.isDebugEnabled()) {
-            for (Object anIdList : idList) {
-                logger.debug(anIdList);
-            }
+            idList.forEach(logger::debug);
         }
         return idList;
     }
@@ -164,10 +161,10 @@ public class MongoConnector extends AbstractDataSourceConnector {
 
 
     @Override
-    public List<String> getAttributeValues(String database, String collection, List ids, String idAttribute,
-                                           String[] preferredAttributes) {
+    public List<String> getAttributeValues(String database, String table, List ids, String idAttribute,
+                                   String[] preferredAttributes) {
 
-        return getAttributeValues(database, collection, ids, idAttribute, preferredAttributes, null);
+        return getAttributeValues(database, table, ids, idAttribute, preferredAttributes, null);
     }
 
 

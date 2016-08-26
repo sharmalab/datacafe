@@ -47,6 +47,17 @@ Data lake in:
  $HADOOP_HOME/sbin/stop-dfs.sh
 
 
+## Configure and Execute Hive
+
+* Run Hive Metastore and Hive
+
+ $HIVE_HOME/bin/hive --service metastore &
+
+* Start HiveServer2
+
+ $HIVE_HOME/bin/hiveserver2
+
+
 ## Configure Drill
 
 Make sure Java is installed in order to start Drill.
@@ -66,17 +77,6 @@ Make sure Java is installed in order to start Drill.
 Make sure to set extractHeader element appropriately in the Drill storage according to your data sources.
 
        "extractHeader": true,
-
-
-## Configure and Execute Hive
-
-* Run Hive Metastore and Hive
-
- $HIVE_HOME/bin/hive --service metastore &
-
-* Start HiveServer2
-
- $HIVE_HOME/bin/hiveserver2
 
 
 # Building Data Cafe
@@ -124,6 +124,14 @@ To execute the ExecutorClient sample,
 HzServer may be executed to create more Hazelcast members to join the Hazelcast cluster created by the Executor.
 
  $ java -classpath lib/datacafe-server-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi.datacafe.hazelcast.HzServer
+
+
+## DatacafeEngine in datacafe-rest module.
+
+DatacafeEngine exposes the RESTful APIs to data lake creation and access. It exposes the Data Cafe server and client
+methods as RESTful APIs.
+
+ $ java -classpath lib/datacafe-rest-1.0-SNAPSHOT.jar:lib/*:conf/ edu.emory.bmi.datacafe.rest.DatacafeEngine
 
 
 # Dependencies

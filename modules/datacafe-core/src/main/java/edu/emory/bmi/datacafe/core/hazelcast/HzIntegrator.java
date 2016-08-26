@@ -18,6 +18,7 @@ package edu.emory.bmi.datacafe.core.hazelcast;
 import com.hazelcast.config.Config;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
+import edu.emory.bmi.datacafe.core.hazelcast.config.HzConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +27,8 @@ import java.util.Map;
 /**
  * A singleton that integrates Hazelcast into Data Cafe and initiates Hazelcast.
  */
-public class HazelSim {
-    private static HazelSim hazelSim = null;
+public class HzIntegrator {
+    private static HzIntegrator hzIntegrator = null;
     protected static List<HazelcastInstance> instances = new ArrayList<>();
 
     protected static Map<String, List<HazelcastInstance>> instancesMap;
@@ -36,7 +37,7 @@ public class HazelSim {
     /**
      * Protected constructor to avoid instantiation of the singleton class
      */
-    protected HazelSim() {
+    protected HzIntegrator() {
         if (multiTenanted) {
             for (String key : instancesMap.keySet()) {
                 List<HazelcastInstance> instances = new ArrayList<>();
@@ -54,15 +55,15 @@ public class HazelSim {
     }
 
     /**
-     * Creates a HazelSim object and initializes an array of Hazelcast instances.
+     * Creates a HzIntegrator object and initializes an array of Hazelcast instances.
      *
      * @return the hazelsim object.
      */
-    public static HazelSim getHazelSim() {
-        if (hazelSim == null) {
-            hazelSim = new HazelSim();
+    public static HzIntegrator getHzIntegrator() {
+        if (hzIntegrator == null) {
+            hzIntegrator = new HzIntegrator();
         }
-        return hazelSim;
+        return hzIntegrator;
     }
 
     /**

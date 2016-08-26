@@ -29,8 +29,9 @@ import java.lang.String;import java.util.List;
 /**
  * A larger scale example with PhysioNet executed sequentially as a benchmark to the default parallel execution.
  */
-public class SeqBenchmark {
-    private static Logger logger = LogManager.getLogger(SeqBenchmark.class.getName());
+@Deprecated
+public class SeqExecutor {
+    private static Logger logger = LogManager.getLogger(SeqExecutor.class.getName());
 
     public static void main(String[] args) {
         ServerExecutorEngine.init();

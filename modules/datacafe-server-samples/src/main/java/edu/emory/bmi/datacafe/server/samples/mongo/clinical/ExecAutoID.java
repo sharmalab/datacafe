@@ -29,8 +29,8 @@ import java.util.List;
 /**
  * The _id is Mongo-generated Random string. Ignore it.
  */
-public class ExecutorRandomID {
-    private static Logger logger = LogManager.getLogger(ExecutorRandomID.class.getName());
+public class ExecAutoID {
+    private static Logger logger = LogManager.getLogger(ExecAutoID.class.getName());
 
     public static void main(String[] args) {
         ServerExecutorEngine.init();

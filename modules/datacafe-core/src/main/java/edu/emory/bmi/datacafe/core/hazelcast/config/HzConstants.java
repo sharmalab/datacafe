@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.core.hazelcast;
+package edu.emory.bmi.datacafe.core.hazelcast.config;
 
 /**
  * Constants specific to Hazelcast
@@ -38,5 +38,4 @@ public final class HzConstants {
     public static final int LAST = HAZELCAST_INSTANCES_STARTED_SIMULTANEOUSLY - 1;
 
     public static final String MAIN_HZ_CLUSTER = HzConfigReader.getMainClusterName();
-    public static final String SUB_HZ_CLUSTER = HzConfigReader.getSubClusterName();
 }
