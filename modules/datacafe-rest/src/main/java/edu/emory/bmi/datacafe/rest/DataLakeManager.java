@@ -17,6 +17,8 @@ package edu.emory.bmi.datacafe.rest;
 
 import edu.emory.bmi.datacafe.client.core.ClientExecutorEngine;
 import edu.emory.bmi.datacafe.client.core.HzClient;
+import edu.emory.bmi.datacafe.client.core.QueryBuilderClient;
+import edu.emory.bmi.datacafe.client.drill.DrillConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -66,29 +68,26 @@ public class DataLakeManager {
         });
 
         /**
-         * R Replica Set:
+         * Retrieving a specific data lake:
          /POST
-         http://localhost:9090/datalakes?datalakeID=PhysioNetExecutor&attributes=SUBJECT_ID,DOB,HADM_ID,ICD9_CODE,SHORT_TITLE,DESCRIPTION
-
-         TCGA-GBM&iPatientID=TCGA-06-6701%2CTCGA-08-0831&iStudyInstanceUID=1.3.6.1.4.1.14519.5.2.1.4591.4001.151679082681232740021018262895&iSeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.4591.4001.179004339156422100336233996679
+         http://localhost:9090/datalakes?datalakeID=PhysioNetExecutor&attributes=SUBJECT_ID,DOB,HADM_ID,ICD9_CODE,SHORT_TITLE,DESCRIPTION&query=SUBJECT_ID<100 OR SUBJECT_ID=120
 
          Response:
-         (replicaSetID).
-         -4764762120292626164
+         or
+         <html>
+         <body>
+         <h2>404 Not found</h2>
+         </body>
+         </html>
+
          */
         post("/datalake", (request, response) -> {
             String datalakeID = request.queryParams("datalakeID");
             String[] attributes = (request.queryParams("attributes") != null) ? request.queryParams("attributes").split(",") : new String[0];
-
-//            String[] patientId = (request.queryParams("iPatientID") != null) ? request.queryParams("iPatientID").split(",") : new String[0];
-//            String[] studyInstanceUID = (request.queryParams("iStudyInstanceUID") != null) ? request.queryParams("iStudyInstanceUID").split(",") : new String[0];
-//            String[] seriesInstanceUID = (request.queryParams("iSeriesInstanceUID") != null) ? request.queryParams("iSeriesInstanceUID").split(",") : new String[0];
-//            long replicaSetID = tciaReplicaSetHandler.createNewReplicaSet(userId, collection, patientId, studyInstanceUID, seriesInstanceUID);
-//            RsIntegratorCore.updateExistenceInDataSource(replicaSetID, DataSourcesConstants.TCIA_META_POSITION, true);
-//            response.status(201); // 201 Created
+            QueryBuilderClient queryBuilderClient = new QueryBuilderClient(datalakeID, attributes);
+            String derivedQueryFromHazelcast = queryBuilderClient.reformatAndBuildQueryStatement("SUBJECT_ID < 100 OR SUBJECT_ID = 120");
+            DrillConnector.executeQueryAndReturn(derivedQueryFromHazelcast, attributes.length);
             return datalakeID;
         });
-
-
     }
 }
