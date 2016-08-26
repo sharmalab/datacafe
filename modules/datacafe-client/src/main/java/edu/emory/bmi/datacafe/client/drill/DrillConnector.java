@@ -125,11 +125,11 @@ public class DrillConnector extends AbstractDataSourceConnector {
         List<String> responseList = new ArrayList<>();
         try {
             rs = executeQuery(query);
-        while (rs.next()) {
-            for (int i = 1; i <= noOfAttributes; i++) {
-                responseList.add(rs.getString(i));
+            while (rs.next()) {
+                for (int i = 1; i <= noOfAttributes; i++) {
+                    responseList.add(rs.getString(i));
+                }
             }
-        }
         } catch (SQLException e) {
             logger.error("SQL Exception in executing the query.", e);
         }
@@ -137,21 +137,43 @@ public class DrillConnector extends AbstractDataSourceConnector {
     }
 
     /**
-     * Execute a query
+     * Execute a query and print the output
      *
      * @param query the query to be executed
      */
-    public static void executeQuery(String query, int noOfAttributes) {
+    public static void executeQueryAndPrintOutput(String query, int noOfAttributes) {
         ResultSet rs;
         try {
             rs = executeQuery(query);
-        while (rs.next()) {
-            for (int i = 1; i <= noOfAttributes; i++) {
-                logger.info(rs.getString(i));
+            while (rs.next()) {
+                for (int i = 1; i <= noOfAttributes; i++) {
+                    logger.info(rs.getString(i));
+                }
             }
-        }
         } catch (SQLException e) {
             logger.error("SQL Exception in executing the query.", e);
         }
+    }
+
+    /**
+     * Execute a query and return results
+     *
+     * @param query the query to be executed
+     * @return the query output as a String.
+     */
+    public static String executeQueryAndReturn(String query, int noOfAttributes) {
+        ResultSet rs;
+        String out = "";
+        try {
+            rs = executeQuery(query);
+            while (rs.next()) {
+                for (int i = 1; i <= noOfAttributes; i++) {
+                    out += rs.getString(i) + " ";
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("SQL Exception in executing the query.", e);
+        }
+        return out;
     }
 }
