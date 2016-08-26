@@ -36,7 +36,7 @@ public class CoreConfigReader {
 
     private static boolean loadProperties() {
         prop = new Properties();
-        InputStream input = null;
+        InputStream input;
         try {
             input = new FileInputStream(DatacafeConstants.DATACAFE_PROPERTIES_FILE);
         } catch (FileNotFoundException ex) {
@@ -54,12 +54,10 @@ public class CoreConfigReader {
             logger.error("IOException in opening the file", e);
             return false;
         } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            try {
+                input.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

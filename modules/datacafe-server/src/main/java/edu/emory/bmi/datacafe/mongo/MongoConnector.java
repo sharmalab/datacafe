@@ -166,10 +166,10 @@ public class MongoConnector extends AbstractDataSourceConnector {
 
 
     @Override
-    public List<String> getAttributeValues(String database, String collection, List ids, String idAttribute,
-                                           String[] preferredAttributes) {
+    public List getAttributeValues(String database, String table, List ids, String idAttribute,
+                                   String[] preferredAttributes) {
 
-        return getAttributeValues(database, collection, ids, idAttribute, preferredAttributes, null);
+        return getAttributeValues(database, table, ids, idAttribute, preferredAttributes, null);
     }
 
 

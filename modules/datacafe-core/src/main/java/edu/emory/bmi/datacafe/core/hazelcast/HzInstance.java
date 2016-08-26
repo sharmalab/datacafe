@@ -28,6 +28,6 @@ public class HzInstance {
      */
     public static void init() {
         HzInitiator.initInstance();
-        firstInstance = HazelSim.getHazelSim().getFirstInstance();
+        firstInstance = HzIntegrator.getHzIntegrator().getFirstInstance();
     }
 }

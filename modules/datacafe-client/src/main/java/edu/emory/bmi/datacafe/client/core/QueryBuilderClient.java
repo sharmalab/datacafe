@@ -76,26 +76,6 @@ public class QueryBuilderClient {
     }
 
     /**
-     * Prints the tables that has the any given attribute.
-     *
-     * @param attribute the attribute to be probed.
-     */
-    public void displayTablesWithAttribute(String attribute) {
-        HzClient.printValuesFromMultiMap(datalakeID, attribute);
-    }
-
-    /**
-     * Prints the tables that has the any given attribute.
-     *
-     * @param attributes the attributes to be probed as an array.
-     */
-    public void displayTablesWithAttribute(String[] attributes) {
-        for (String attribute : attributes) {
-            HzClient.printValuesFromMultiMap(datalakeID, attribute);
-        }
-    }
-
-    /**
      * Get all the data sources in the data lake.
      *
      * @return the data sources in the lake.

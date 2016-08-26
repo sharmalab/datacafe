@@ -18,7 +18,7 @@ package edu.emory.bmi.datacafe.client.core;
 
 import edu.emory.bmi.datacafe.client.conf.ClientConfigReader;
 import edu.emory.bmi.datacafe.client.drill.DrillConnector;
-import edu.emory.bmi.datacafe.core.hazelcast.HzConfigReader;
+import edu.emory.bmi.datacafe.core.hazelcast.config.HzConfigReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
