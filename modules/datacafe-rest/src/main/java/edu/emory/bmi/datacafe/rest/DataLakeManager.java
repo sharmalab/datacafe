@@ -17,7 +17,7 @@ package edu.emory.bmi.datacafe.rest;
 
 import edu.emory.bmi.datacafe.client.core.ClientExecutorEngine;
 import edu.emory.bmi.datacafe.client.core.HzClient;
-import edu.emory.bmi.datacafe.client.core.QueryBuilderClient;
+import edu.emory.bmi.datacafe.client.query_builder.QueryBuilderClient;
 import edu.emory.bmi.datacafe.client.drill.DrillConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

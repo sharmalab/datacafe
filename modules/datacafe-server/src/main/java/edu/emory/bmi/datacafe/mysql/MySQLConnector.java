@@ -122,7 +122,7 @@ public class MySQLConnector extends AbstractDataSourceConnector {
     public List<String> getAttributeValues(String database, String table, List ids, String idAttribute,
                                            String[] preferredAttributes) {
         Connection con;
-        List idList = new ArrayList<>();
+        List<String> idList = new ArrayList<>();
         try {
             con = getConnection(database);
 

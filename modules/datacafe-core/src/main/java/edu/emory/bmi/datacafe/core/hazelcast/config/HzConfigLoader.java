@@ -67,7 +67,7 @@ public class HzConfigLoader {
 
 
 
-    public static HzConfigLoader getHazelSimCore(int noOfSimultaneousInstances, String _clusterGroup) {
+    public static HzConfigLoader getHzConfigLoader(int noOfSimultaneousInstances, String _clusterGroup) {
         if (hzConfigLoader == null) {
             clusterGroup = _clusterGroup;
             hzConfigLoader = new HzConfigLoader(noOfSimultaneousInstances);
@@ -75,7 +75,7 @@ public class HzConfigLoader {
         return hzConfigLoader;
     }
 
-    public static HzConfigLoader getHazelSimCore(int noOfSimultaneousInstances) {
+    public static HzConfigLoader getHzConfigLoader(int noOfSimultaneousInstances) {
         if (hzConfigLoader == null) {
             hzConfigLoader = new HzConfigLoader(noOfSimultaneousInstances);
         }

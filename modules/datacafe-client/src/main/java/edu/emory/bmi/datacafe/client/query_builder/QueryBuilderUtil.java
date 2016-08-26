@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.client.core;
+package edu.emory.bmi.datacafe.client.query_builder;
+
+import edu.emory.bmi.datacafe.client.core.HzClient;
 
 /**
  * Utility methods for building the query.

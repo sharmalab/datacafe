@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.emory.bmi.datacafe.client.core;
+package edu.emory.bmi.datacafe.client.query_builder;
 
+import edu.emory.bmi.datacafe.client.core.HzClient;
 import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
 import edu.emory.bmi.datacafe.core.conf.QueryWrapper;
 import org.apache.logging.log4j.LogManager;

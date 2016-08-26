@@ -73,12 +73,9 @@ public class MongoConnector extends AbstractDataSourceConnector {
      * @return the list of IDs.
      */
     public List<Object> getAllIDs(FindIterable<Document> iterable, String idAttribute) {
-        List<Object> idList = new ArrayList<Object>();
-        iterable.forEach(new Block<Document>() {
-            @Override
-            public void apply(final Document document) {
-                idList.add(document.get(idAttribute));
-            }
+        List<Object> idList = new ArrayList<>();
+        iterable.forEach((Block<Document>) document -> {
+            idList.add(document.get(idAttribute));
         });
         if (logger.isDebugEnabled()) {
             for (Object anIdList : idList) {
@@ -166,7 +163,7 @@ public class MongoConnector extends AbstractDataSourceConnector {
 
 
     @Override
-    public List getAttributeValues(String database, String table, List ids, String idAttribute,
+    public List<String> getAttributeValues(String database, String table, List ids, String idAttribute,
                                    String[] preferredAttributes) {
 
         return getAttributeValues(database, table, ids, idAttribute, preferredAttributes, null);

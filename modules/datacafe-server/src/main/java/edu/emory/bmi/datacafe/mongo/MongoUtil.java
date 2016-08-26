@@ -46,12 +46,7 @@ public final class MongoUtil {
      * @param iterable the collection iterable
      */
     public static void printMongoCollection(FindIterable<Document> iterable) {
-        iterable.forEach(new Block<Document>() {
-            @Override
-            public void apply(final Document document) {
-                logger.info(document);
-            }
-        });
+        iterable.forEach((Block<Document>) logger::info);
     }
 
 

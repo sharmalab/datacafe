@@ -60,12 +60,12 @@ public class DrillConnector extends AbstractDataSourceConnector {
     @Override
     public List<String> getAttributeValues(String database, String table, List ids, String idAttribute,
                                            String[] preferredAttributes) {
-        List idList = new ArrayList<>();
+        List<String> idList = new ArrayList<>();
         try {
             Statement st = connection.createStatement();
 
             for (Object id : ids) {
-                String allAttributes = "";
+                String allAttributes;
 
                 allAttributes = getChosenAttributeNames(preferredAttributes);
                 String sql = ("SELECT " + allAttributes + " FROM " + table + " WHERE " + idAttribute + " = " +
