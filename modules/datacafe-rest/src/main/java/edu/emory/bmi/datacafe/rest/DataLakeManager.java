@@ -85,8 +85,14 @@ public class DataLakeManager {
             String datalakeID = request.queryParams("datalakeID");
             String[] attributes = (request.queryParams("attributes") != null) ? request.queryParams("attributes").split(",") : new String[0];
             QueryBuilderClient queryBuilderClient = new QueryBuilderClient(datalakeID, attributes);
-            String derivedQueryFromHazelcast = queryBuilderClient.reformatAndBuildQueryStatement(request.queryParams("query"));
+            String derivedQueryFromHazelcast;
+            if (request.queryParams("query")!=null) {
+                derivedQueryFromHazelcast = queryBuilderClient.reformatAndBuildQueryStatement(request.queryParams("query"));
+            } else {
+                derivedQueryFromHazelcast = queryBuilderClient.buildQueryStatement();
+            }
             DrillConnector.executeQueryAndReturn(derivedQueryFromHazelcast, attributes.length);
+            logger.info(String.format("The data lake with the ID [%s] has been retrieved", datalakeID));
             return datalakeID;
         });
     }
