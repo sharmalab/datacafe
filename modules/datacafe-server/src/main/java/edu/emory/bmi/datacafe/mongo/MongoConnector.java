@@ -78,9 +78,7 @@ public class MongoConnector extends AbstractDataSourceConnector {
             idList.add(document.get(idAttribute));
         });
         if (logger.isDebugEnabled()) {
-            for (Object anIdList : idList) {
-                logger.debug(anIdList);
-            }
+            idList.forEach(logger::debug);
         }
         return idList;
     }

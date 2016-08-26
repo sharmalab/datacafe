@@ -129,7 +129,7 @@ public class MySQLConnector extends AbstractDataSourceConnector {
             Statement st = con.createStatement();
 
             for (Object id : ids) {
-                String allAttributes = "";
+                String allAttributes;
 
                 allAttributes = getChosenAttributeNames(preferredAttributes);
                 String sql = ("SELECT " + allAttributes + " FROM " + table + " WHERE " + idAttribute + " = " +
