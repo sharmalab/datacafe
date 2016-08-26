@@ -85,7 +85,7 @@ public class DataLakeManager {
             String datalakeID = request.queryParams("datalakeID");
             String[] attributes = (request.queryParams("attributes") != null) ? request.queryParams("attributes").split(",") : new String[0];
             QueryBuilderClient queryBuilderClient = new QueryBuilderClient(datalakeID, attributes);
-            String derivedQueryFromHazelcast = queryBuilderClient.reformatAndBuildQueryStatement("SUBJECT_ID < 100 OR SUBJECT_ID = 120");
+            String derivedQueryFromHazelcast = queryBuilderClient.reformatAndBuildQueryStatement(request.queryParams("query"));
             DrillConnector.executeQueryAndReturn(derivedQueryFromHazelcast, attributes.length);
             return datalakeID;
         });
