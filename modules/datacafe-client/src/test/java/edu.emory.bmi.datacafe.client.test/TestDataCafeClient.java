@@ -3,7 +3,6 @@ package edu.emory.bmi.datacafe.client.test;
 import edu.emory.bmi.datacafe.client.conf.ClientConfigReader;
 import edu.emory.bmi.datacafe.client.core.ClientExecutorEngine;
 import edu.emory.bmi.datacafe.core.conf.QueryWrapper;
-import edu.emory.bmi.datacafe.client.drill.DataLakeRetriever;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;

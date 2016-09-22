@@ -17,13 +17,18 @@ package edu.emory.bmi.datacafe.hdfs;
 
 import edu.emory.bmi.datacafe.conf.ConfigReader;
 import edu.emory.bmi.datacafe.constants.HDFSConstants;
+import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
+import edu.emory.bmi.datacafe.hazelcast.HzServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Connects Data Cafe to Hive. An optional data flow to store the meta data of the structured data.
@@ -31,6 +36,11 @@ import java.sql.Statement;
 public class HiveConnector {
 
     private static Logger logger = LogManager.getLogger(HiveConnector.class.getName());
+    private String datalakeID;
+
+    public HiveConnector(String datalakeID) {
+        this.datalakeID = datalakeID;
+    }
 
     /**
      * Writes to Hive. Only when the hive server is defined in the properties.
@@ -38,33 +48,92 @@ public class HiveConnector {
      * @param hiveTable, the table name in Hive
      * @param query,     query to execute
      */
-    public static void writeToHive(String hiveTable, String query) {
+    public void writeToHive(String hiveTable, String query) {
         if (!(ConfigReader.getHiveServer().equals("") || (ConfigReader.getHiveServer() == null))) {
-            try {
-                Class.forName(ConfigReader.getHiveDriver());
-            } catch (ClassNotFoundException e) {
-                logger.error("Exception in finding the Hive driver: " + ConfigReader.getHiveDriver(), e);
-            }
+            getDriver();
+            List<String> tablesInDataLake = new ArrayList<>();
 
-            Connection con = null;
             try {
-                con = DriverManager.getConnection(HDFSConstants.HIVE_CONNECTION_URI,
-                        ConfigReader.getHiveUserName(), ConfigReader.getHivePassword());
-
-                Statement stmt = con.createStatement();
+                Statement stmt = getStatement();
 
                 stmt.execute("drop table if exists " + hiveTable);
 
                 stmt.execute("create table " + hiveTable + " " + query);
 
-                if(logger.isDebugEnabled()) {
+                if (logger.isDebugEnabled()) {
                     logger.debug(String.format("Executed the query [%s] metadata for " +
                             "Hive Table: %s", query, hiveTable));
                 }
 
-            } catch (SQLException e) {
-                logger.error("SQLException in executing the Hive query for the data source, " + hiveTable, e);
+                retrieveStoredValuesIntoGrid(tablesInDataLake, stmt);
+
+            } catch (SQLException ignored) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("SQLException in executing the Hive query for the data source, " + hiveTable, ignored);
+                }
             }
+        }
+    }
+
+    private Statement getStatement() throws SQLException {
+        Connection con;
+        con = DriverManager.getConnection(HDFSConstants.HIVE_CONNECTION_URI,
+                ConfigReader.getHiveUserName(), ConfigReader.getHivePassword());
+
+        return con.createStatement();
+    }
+
+
+    /**
+     * Read from the Hive meta store.
+     *
+     * @return the list of tables.
+     */
+    @SuppressWarnings("Ignored")
+    public List<String> readFromHive() {
+
+        List<String> tablesInDataLake = new ArrayList<>();
+
+        if (!(ConfigReader.getHiveServer().equals("") || (ConfigReader.getHiveServer() == null))) {
+            getDriver();
+
+            try {
+                Statement stmt = getStatement();
+
+                retrieveStoredValuesIntoGrid(tablesInDataLake, stmt);
+
+            } catch (SQLException ignored) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("SQL Exception ignored", ignored);
+                }
+            }
+        }
+        return tablesInDataLake;
+    }
+
+    private void retrieveStoredValuesIntoGrid(List<String> tablesInDataLake, Statement stmt) throws SQLException {
+        ResultSet resultSet = stmt.executeQuery("show tables");
+
+        while (resultSet.next()) {
+            String table = resultSet.getString(1);
+            tablesInDataLake.add(table);
+
+            ResultSet resultSet2 = stmt.executeQuery("SHOW COLUMNS FROM " + table);
+            while (resultSet2.next()) {
+                String attribute = resultSet2.getString(1);
+                HzServer.addValueToMultiMap(datalakeID + DatacafeConstants.ATTRIBUTES_TABLES_MAP_SUFFIX, attribute, table);
+                if (logger.isDebugEnabled()) {
+                    logger.debug(table + ": " + attribute);
+                }
+            }
+        }
+    }
+
+    private static void getDriver() {
+        try {
+            Class.forName(ConfigReader.getHiveDriver());
+        } catch (ClassNotFoundException e) {
+            logger.error("Exception in finding the Hive driver: " + ConfigReader.getHiveDriver(), e);
         }
     }
 }

@@ -122,14 +122,14 @@ public class MySQLConnector extends AbstractDataSourceConnector {
     public List<String> getAttributeValues(String database, String table, List ids, String idAttribute,
                                            String[] preferredAttributes) {
         Connection con;
-        List idList = new ArrayList<>();
+        List<String> idList = new ArrayList<>();
         try {
             con = getConnection(database);
 
             Statement st = con.createStatement();
 
             for (Object id : ids) {
-                String allAttributes = "";
+                String allAttributes;
 
                 allAttributes = getChosenAttributeNames(preferredAttributes);
                 String sql = ("SELECT " + allAttributes + " FROM " + table + " WHERE " + idAttribute + " = " +

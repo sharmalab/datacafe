@@ -32,7 +32,7 @@ public final class CoreUtil {
      */
     public static String constructPageFromCollection(Collection collection) {
         return (String) collection.stream()
-                .map(i -> i.toString())
+                .map(Object::toString)
                 .collect(Collectors.joining("\n"));
     }
 

@@ -23,15 +23,11 @@ import com.hazelcast.core.HazelcastInstance;
 public class HzInstance {
     protected static HazelcastInstance firstInstance;
 
-    public static void main(String[] args) {
-        init();
-    }
-
     /**
      * Initializes the Hazelcast Instance
      */
     public static void init() {
         HzInitiator.initInstance();
-        firstInstance = HazelSim.getHazelSim().getFirstInstance();
+        firstInstance = HzIntegrator.getHzIntegrator().getFirstInstance();
     }
 }

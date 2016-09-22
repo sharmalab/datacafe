@@ -18,12 +18,10 @@ package edu.emory.bmi.datacafe.core.conf;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.util.Properties;
 
 /**
@@ -38,7 +36,7 @@ public class CoreConfigReader {
 
     private static boolean loadProperties() {
         prop = new Properties();
-        InputStream input = null;
+        InputStream input;
         try {
             input = new FileInputStream(DatacafeConstants.DATACAFE_PROPERTIES_FILE);
         } catch (FileNotFoundException ex) {
@@ -56,12 +54,10 @@ public class CoreConfigReader {
             logger.error("IOException in opening the file", e);
             return false;
         } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            try {
+                input.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

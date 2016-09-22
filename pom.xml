@@ -101,6 +101,11 @@
   			<artifactId>datacafe-server</artifactId>
   			<version>${project.version}</version>
   		</dependency>
+        <dependency>
+  			<groupId>${project.groupId}</groupId>
+  			<artifactId>datacafe-client</artifactId>
+  			<version>${project.version}</version>
+  		</dependency>
   		<dependency>
   			<groupId>${project.groupId}</groupId>
   			<artifactId>documentation</artifactId>
@@ -115,6 +120,16 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
             <version>2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.21</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.21</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -189,6 +204,11 @@
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>
             <version>1.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sparkjava</groupId>
+            <artifactId>spark-core</artifactId>
+            <version>2.5</version>
         </dependency>
     </dependencies>
   </dependencyManagement>

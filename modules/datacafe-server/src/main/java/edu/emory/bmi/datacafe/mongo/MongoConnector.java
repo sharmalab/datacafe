@@ -46,12 +46,14 @@ import java.util.stream.Collectors;
  */
 public class MongoConnector extends AbstractDataSourceConnector {
     private static Logger logger = LogManager.getLogger(MongoConnector.class.getName());
-    private String executionID;
+    private String datalakeID;
 
     public MongoConnector() {}
 
-    public MongoConnector(String executionID) {
-        this.executionID = executionID;
+    public MongoConnector(String datalakeID) {
+        HzServer.addValueToMultiMap(DatacafeConstants.DATALAKES_META_MAP,
+                DatacafeConstants.DATALAKES_NAMES, datalakeID);
+        this.datalakeID = datalakeID;
     }
 
     /**
@@ -71,17 +73,12 @@ public class MongoConnector extends AbstractDataSourceConnector {
      * @return the list of IDs.
      */
     public List<Object> getAllIDs(FindIterable<Document> iterable, String idAttribute) {
-        List<Object> idList = new ArrayList<Object>();
-        iterable.forEach(new Block<Document>() {
-            @Override
-            public void apply(final Document document) {
-                idList.add(document.get(idAttribute));
-            }
+        List<Object> idList = new ArrayList<>();
+        iterable.forEach((Block<Document>) document -> {
+            idList.add(document.get(idAttribute));
         });
         if (logger.isDebugEnabled()) {
-            for (Object anIdList : idList) {
-                logger.debug(anIdList);
-            }
+            idList.forEach(logger::debug);
         }
         return idList;
     }
@@ -164,10 +161,10 @@ public class MongoConnector extends AbstractDataSourceConnector {
 
 
     @Override
-    public List<String> getAttributeValues(String database, String collection, List ids, String idAttribute,
-                                           String[] preferredAttributes) {
+    public List<String> getAttributeValues(String database, String table, List ids, String idAttribute,
+                                   String[] preferredAttributes) {
 
-        return getAttributeValues(database, collection, ids, idAttribute, preferredAttributes, null);
+        return getAttributeValues(database, table, ids, idAttribute, preferredAttributes, null);
     }
 
 
@@ -215,16 +212,16 @@ public class MongoConnector extends AbstractDataSourceConnector {
             keySet.remove(MongoConstants.ID_ATTRIBUTE);
         }
 
-        HzServer.addValuesToMultiMap(executionID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
+        HzServer.addValuesToMultiMap(datalakeID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
                 DatacafeConstants.ATTRIBUTES_MAP_ENTRY_KEY, keySet);
 
-        HzServer.addValueToMultiMap(executionID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
+        HzServer.addValueToMultiMap(datalakeID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
                 DatacafeConstants.DATASOURCES_MAP_ENTRY_KEY, QueryWrapper.
                 getDestinationInDataLakeFromDrill(database, collection));
 
         for (String key: keySet) {
-            if ((executionID!=null) && !executionID.trim().equals("")) {
-                HzServer.addValueToMultiMap(executionID, key, QueryWrapper.
+            if ((datalakeID !=null) && !datalakeID.trim().equals("")) {
+                HzServer.addValueToMultiMap(datalakeID, key, QueryWrapper.
                         getDestinationInDataLakeFromDrill(database, collection));
             } else {
                 HzServer.addValueToMultiMap(key, QueryWrapper.
@@ -274,7 +271,8 @@ public class MongoConnector extends AbstractDataSourceConnector {
                     if (!(ConfigReader.getHiveServer().equals("") || (ConfigReader.getHiveServer() == null))) {
                         //start doing the Hive Things
                         String query = DataCafeUtil.wrapTheQuery(DataCafeUtil.constructQueryFromCollection(resultNames));
-                        HiveConnector.writeToHive(fullDataSourceName, query);
+                        HiveConnector hiveConnector = new HiveConnector(datalakeID);
+                        hiveConnector.writeToHive(fullDataSourceName, query);
                     }
                     outValue += "\n";
                 }

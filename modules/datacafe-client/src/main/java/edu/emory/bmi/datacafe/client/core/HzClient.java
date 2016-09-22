@@ -18,13 +18,14 @@ package edu.emory.bmi.datacafe.client.core;
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.config.Config;
+import com.hazelcast.core.DistributedObject;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.MultiMap;
 import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
-import edu.emory.bmi.datacafe.core.hazelcast.HazelSim;
-import edu.emory.bmi.datacafe.core.hazelcast.HazelSimCore;
-import edu.emory.bmi.datacafe.core.hazelcast.HzConfigReader;
+import edu.emory.bmi.datacafe.core.hazelcast.HzIntegrator;
+import edu.emory.bmi.datacafe.core.hazelcast.config.HzConfigLoader;
+import edu.emory.bmi.datacafe.core.hazelcast.config.HzConfigReader;
 import edu.emory.bmi.datacafe.core.hazelcast.HzInstance;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,12 +40,8 @@ public class HzClient extends HzInstance {
     private static Logger logger = LogManager.getLogger(HzClient.class.getName());
     private static HazelcastInstance clientInstance;
 
-    public static void main(String[] args) {
-        initClient();
-    }
-
     /**
-     * Initializes a Hazelcast client instance.
+     * Initializes a Hazelcast client instance. Core of the Data Cafe Client Instance.
      */
     public static void initClient() {
         logger.info("Initiating a Hazelcast Client instance.");
@@ -62,10 +59,10 @@ public class HzClient extends HzInstance {
     public static void initLite() {
         logger.info("Initiating a Hazelcast Lite instance.");
         HzConfigReader.readConfig();
-        Config config = HazelSimCore.getCfg();
+        Config config = HzConfigLoader.getCfg();
         config.setLiteMember(true);
         clientInstance = Hazelcast.newHazelcastInstance(config);
-        int size = HazelSim.getHazelSim().getFirstInstance().getCluster().getMembers().size();
+        int size = HzIntegrator.getHzIntegrator().getFirstInstance().getCluster().getMembers().size();
         logger.info("Number of instances in this cluster: " + size);
     }
 
@@ -82,6 +79,72 @@ public class HzClient extends HzInstance {
         return map.get(key);
     }
 
+    /**
+     * Gets all the datalakes in the cluster.
+     *
+     * @return the datalakes.
+     */
+    public static Collection<String> getDataLakeNames() {
+        return readValuesFromMultiMap(DatacafeConstants.DATALAKES_META_MAP,
+                DatacafeConstants.DATALAKES_NAMES);
+    }
+
+    /**
+     * Reads an entry from the multi-map
+     * invoke: HzClient.readValuesFromMultiMap("my-distributed-map", "sample-key");
+     *
+     * @return the values of the entry.
+     */
+    public static Collection<DistributedObject> getDistributedObjects() {
+        Collection<DistributedObject> distributedObjects = clientInstance.getDistributedObjects();
+
+        for (DistributedObject distributedObject: distributedObjects) {
+            logger.info(distributedObject.getName());
+        }
+        return distributedObjects;
+    }
+
+    /**
+     * Return a value for a given key from the multi-map
+     * invoke: HzClient.readValuesFromMultiMap("my-distributed-map", "sample-key");
+     *
+     * @param mapName the name of the map
+     * @param key     the key
+     * @return a value of the entry.
+     */
+    private static String getAValueFromMultiMap(String mapName, String key) {
+        MultiMap<String, String> map = clientInstance.getMultiMap(mapName);
+        Collection<String> entries = map.get(key);
+        Object[] anEntry = entries.toArray();
+        return anEntry[0].toString();
+    }
+
+    /**
+     * Return an attribute for a given key from the multi-map
+     * invoke: HzClient.getAnAttributeFromMultiMap("my-distributed-map", "sample-key");
+     *
+     * @param mapName the name of the map
+     * @param attributeName     the key
+     * @return a value of the entry.
+     */
+    public static String getAnAttributeFromMultiMap(String mapName, String attributeName) {
+        MultiMap<String, String> map = clientInstance.getMultiMap(mapName);
+        Collection<String> entries = map.get(attributeName.toLowerCase());
+        Object[] anEntry = entries.toArray();
+        return anEntry[0].toString();
+    }
+
+
+    /**
+     * Reads an entry from the default multi-map
+     * invoke: HzClient.readValuesFromMultiMap("sample-key");
+     *
+     * @param key the key
+     * @return the values of the entry.
+     */
+    public static Collection<String> readValuesFromDefaultMultiMap(String key) {
+        return readValuesFromMultiMap(DatacafeConstants.DEFAULT_HAZELCAST_MULTI_MAP, key);
+    }
 
     /**
      * Reads an entry from the map
@@ -112,16 +175,6 @@ public class HzClient extends HzInstance {
         }
     }
 
-    /**
-     * Reads an entry from the default multi-map
-     * invoke: HzClient.readValuesFromMultiMap("sample-key");
-     *
-     * @param key the key
-     * @return the values of the entry.
-     */
-    public static Collection<String> readValuesFromMultiMap(String key) {
-        return readValuesFromMultiMap(DatacafeConstants.DEFAULT_HAZELCAST_MULTI_MAP, key);
-    }
 
 
     /**
@@ -146,12 +199,12 @@ public class HzClient extends HzInstance {
 
     /**
      * Gets the join attributes for a given attribute.
-     * @param tenantName the execution id.
+     * @param datalakeID the datalake id.
      * @param joinAttribute the attribute
      * @return the collection of attributes that are equal in a join with the current attribute.
      */
-    public static Collection<String> getJoins(String tenantName, String joinAttribute) {
-        MultiMap<String, String> map = clientInstance.getMultiMap(tenantName + DatacafeConstants.RELATIONS_MAP_SUFFIX);
+    public static Collection<String> getJoins(String datalakeID, String joinAttribute) {
+        MultiMap<String, String> map = clientInstance.getMultiMap(datalakeID + DatacafeConstants.RELATIONS_MAP_SUFFIX);
         return map.get(joinAttribute);
     }
 }

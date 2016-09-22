@@ -18,7 +18,7 @@ package edu.emory.bmi.datacafe.client.core;
 
 import edu.emory.bmi.datacafe.client.conf.ClientConfigReader;
 import edu.emory.bmi.datacafe.client.drill.DrillConnector;
-import edu.emory.bmi.datacafe.core.hazelcast.HzConfigReader;
+import edu.emory.bmi.datacafe.core.hazelcast.config.HzConfigReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -68,6 +68,15 @@ public final class ClientExecutorEngine {
      */
     public static long getStartTime() {
         return startTime;
+    }
+
+    /**
+     * Prints the time that it took to complete the execution from the start up time.
+     */
+    public static void printExecutionTime() {
+        long endTime = System.currentTimeMillis();
+
+        logger.info("Completed Execution in: " + (endTime - ClientExecutorEngine.getStartTime())/1000.0 + " seconds.");
     }
 }
 

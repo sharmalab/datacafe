@@ -15,14 +15,12 @@
  */
 package edu.emory.bmi.datacafe.drill;
 
-import com.hazelcast.core.MultiMap;
 import edu.emory.bmi.datacafe.core.conf.DatacafeConstants;
 import edu.emory.bmi.datacafe.hazelcast.HzServer;
 import edu.emory.bmi.datacafe.core.conf.QueryWrapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.Collection;
-import java.util.concurrent.ConcurrentMap;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -37,11 +35,11 @@ import javax.json.JsonReader;
  */
 public class QueryBuilderServer extends HzServer {
     private static Logger logger = LogManager.getLogger(QueryBuilderServer.class.getName());
-    private String executionID;
+    private String datalakeID;
     private boolean firstInTheWhere = true;
 
-    public QueryBuilderServer(String executionID) {
-        this.executionID = executionID;
+    public QueryBuilderServer(String datalakeID) {
+        this.datalakeID = datalakeID;
     }
 
 
@@ -62,14 +60,14 @@ public class QueryBuilderServer extends HzServer {
      */
     private void populateDataSourceIndicesMap() {
         Collection<String> datasources = readValuesFromMultiMap(
-                executionID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
+                datalakeID + DatacafeConstants.META_INDICES_MULTI_MAP_SUFFIX,
                 DatacafeConstants.DATASOURCES_MAP_ENTRY_KEY);
         int i = 1;
         String index;
 
         for (String datasource : datasources) {
-            index = executionID + i++;
-            addValueToMap(executionID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX, datasource, index);
+            index = datalakeID + i++;
+            addValueToMap(datalakeID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX, datasource, index);
         }
     }
 
@@ -102,25 +100,25 @@ public class QueryBuilderServer extends HzServer {
             String rawDataSource = QueryWrapper.getDestinationInDataLakeFromDrill(rawCollection);
 
             // shorter form as the map name.
-            String collection = readValuesFromMap(executionID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX,
+            String collection = readValuesFromMap(datalakeID + DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX,
                     rawDataSource);
 
-            addValueToMap(executionID + DatacafeConstants.CHOSEN_COLLECTIONS_MAP_SUFFIX, rawDataSource, collection);
+            addValueToMap(datalakeID + DatacafeConstants.CHOSEN_COLLECTIONS_MAP_SUFFIX, rawDataSource, collection);
 
             JsonObject secondaryCollectionObject = jsonObject.getJsonObject(rawCollection);
 
             Set<String> secondaryCollections = secondaryCollectionObject.keySet();
             for (String secondaryRawCollection : secondaryCollections) {
                 String rawSecondaryDataSource = QueryWrapper.getDestinationInDataLakeFromDrill(secondaryRawCollection);
-                String secondaryCollection = readValuesFromMap(executionID +
+                String secondaryCollection = readValuesFromMap(datalakeID +
                                 DatacafeConstants.COLLECTION_INDICES_MAP_SUFFIX, rawSecondaryDataSource);
 
-                addValueToMap(executionID + DatacafeConstants.CHOSEN_COLLECTIONS_MAP_SUFFIX, rawSecondaryDataSource,
+                addValueToMap(datalakeID + DatacafeConstants.CHOSEN_COLLECTIONS_MAP_SUFFIX, rawSecondaryDataSource,
                         secondaryCollection);
 
                 String attribute = secondaryCollectionObject.getString(secondaryRawCollection);
 
-                HzServer.addValueToMultiMap(executionID + DatacafeConstants.LINKS_TO_MAP_SUFFIX + collection,
+                HzServer.addValueToMultiMap(datalakeID + DatacafeConstants.LINKS_TO_MAP_SUFFIX + collection,
                         secondaryCollection, attribute);
 
                 if (firstInTheWhere) {
@@ -131,7 +129,7 @@ public class QueryBuilderServer extends HzServer {
                 where += collection + "." + attribute + " = "  + secondaryCollection + "." + attribute;
             }
         }
-        HzServer.addValueToMap(executionID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
+        HzServer.addValueToMap(datalakeID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
                 DatacafeConstants.SQL_WHERE_ENTRY_KEY, where);
         return where;
     }
@@ -142,14 +140,14 @@ public class QueryBuilderServer extends HzServer {
      * @return the From statement
      */
     private String buildTheFromStatement() {
-        Collection<String> rawDataSources = getKeysFromMap(executionID + DatacafeConstants.CHOSEN_COLLECTIONS_MAP_SUFFIX);
+        Collection<String> rawDataSources = getKeysFromMap(datalakeID + DatacafeConstants.CHOSEN_COLLECTIONS_MAP_SUFFIX);
         String from = "FROM ";
         int i = 1;
         String index;
 
         for (String rawDataSource : rawDataSources) {
             i++;
-            index = readValuesFromMap(executionID + DatacafeConstants.CHOSEN_COLLECTIONS_MAP_SUFFIX, rawDataSource);
+            index = readValuesFromMap(datalakeID + DatacafeConstants.CHOSEN_COLLECTIONS_MAP_SUFFIX, rawDataSource);
             from += rawDataSource + " " + index;
             if (i <= rawDataSources.size()) {
                 from += ",\n";
@@ -157,7 +155,7 @@ public class QueryBuilderServer extends HzServer {
                 from += "\n";
             }
         }
-        HzServer.addValueToMap(executionID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
+        HzServer.addValueToMap(datalakeID + DatacafeConstants.META_INDICES_SINGLE_MAP_SUFFIX,
                 DatacafeConstants.SQL_FROM_ENTRY_KEY, from);
         return from;
     }

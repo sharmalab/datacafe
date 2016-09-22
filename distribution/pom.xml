@@ -82,13 +82,39 @@
   	</dependency>
   	<dependency>
   		<groupId>${project.groupId}</groupId>
-		<artifactId>datacafe-samples</artifactId>
+		<artifactId>datacafe-server-samples</artifactId>
 		<version>${project.version}</version>
 		<type>jar</type>
   	</dependency>
   	<dependency>
   		<groupId>${project.groupId}</groupId>
-		<artifactId>datacafe-samples</artifactId>
+		<artifactId>datacafe-server-samples</artifactId>
+		<version>${project.version}</version>
+		<type>jar</type>
+		<classifier>sources</classifier>
+  	</dependency>
+  	<dependency>
+  		<groupId>${project.groupId}</groupId>
+		<artifactId>datacafe-rest</artifactId>
+		<version>${project.version}</version>
+		<type>jar</type>
+  	</dependency>
+  	<dependency>
+  		<groupId>${project.groupId}</groupId>
+		<artifactId>datacafe-rest</artifactId>
+		<version>${project.version}</version>
+		<type>jar</type>
+		<classifier>sources</classifier>
+  	</dependency>
+  	<dependency>
+  		<groupId>${project.groupId}</groupId>
+		<artifactId>datacafe-client-samples</artifactId>
+		<version>${project.version}</version>
+		<type>jar</type>
+  	</dependency>
+  	<dependency>
+  		<groupId>${project.groupId}</groupId>
+		<artifactId>datacafe-client-samples</artifactId>
 		<version>${project.version}</version>
 		<type>jar</type>
 		<classifier>sources</classifier>
