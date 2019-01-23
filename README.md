@@ -162,7 +162,7 @@ Please cite the below, if you use Data Cafe in your research.
  [1] Kathiravelu, P. & Sharma, A. (2016). A Dynamic Data Warehousing Platform for Creating and Accessing
      Biomedical Data Lakes. In Second International Workshop on Data Management and Analytics for Medicine
      and Healthcare (DMAH'16), co-located with 42 nd International Conference on Very Large Data Bases (VLDB
-     2016). Sep. 2016. LNCS. 18 pages. To Appear.
+     2016). Sep. 2016. LNCS. pp. 101-120. https://link.springer.com/chapter/10.1007/978-3-319-57741-8_7 
 
  [2] Kathiravelu, P., Kazerouni, A., & Sharma, A. (2016). Data Café — A Platform For Creating Biomedical Data Lakes.  
      In AMIA 2016 Joint Summits on Translational Science. Mar. 2016.
