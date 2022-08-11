@@ -1,4 +1,4 @@
-# Data Café — <br/> A Platform For Creating Biomedical Data Lakes
+# Data Café — A Platform For Creating Biomedical Data Lakes
 
 Data Cafe can be used to construct data lakes in Hadoop HDFS from heterogeneous data sources, and query the data lakes
 efficiently by leveraging Apache Drill.
